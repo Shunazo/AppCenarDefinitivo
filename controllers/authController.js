@@ -5,7 +5,7 @@ const transporter = require("../services/EmailService");
 
 const SECRET = process.env.SECRET; 
 
-
+//habichuela 
 exports.loginForm = (req, res) => {
     if (req.cookies.auth_token) {
         try {
