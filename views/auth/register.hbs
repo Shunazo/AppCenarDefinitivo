@@ -1,0 +1,136 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#clientDelivery">Cliente/Delivery</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#business">Comercio</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <!-- Formulario Cliente/Delivery -->
+                        <div class="tab-pane fade show active" id="clientDelivery">
+                            <form action="/auth/register/user" method="POST" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nombre</label>
+                                        <input type="text" name="name" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Apellido</label>
+                                        <input type="text" name="lastname" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="tel" name="phone" class="form-control" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Correo</label>
+                                    <input type="email" name="email" class="form-control" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre de usuario</label>
+                                    <input type="text" name="username" class="form-control" required>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Contraseña</label>
+                                        <input type="password" name="password" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Confirmar Contraseña</label>
+                                        <input type="password" name="confirmPassword" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Foto</label>
+                                    <input type="file" name="photo" class="form-control" accept="image/*">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Rol</label>
+                                    <select name="role" class="form-select" required>
+                                        <option value="client">Cliente</option>
+                                        <option value="delivery">Delivery</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Registrarse</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Formulario Comercio -->
+                        <div class="tab-pane fade" id="business">
+                            <form action="/auth/register/business" method="POST" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre del Comercio</label>
+                                    <input type="text" name="businessName" class="form-control" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="tel" name="phone" class="form-control" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Correo</label>
+                                    <input type="email" name="email" class="form-control" required>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Horario de Apertura</label>
+                                        <input type="time" name="openTime" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Horario de Cierre</label>
+                                        <input type="time" name="closeTime" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Logo del Comercio</label>
+                                    <input type="file" name="logo" class="form-control" accept="image/*">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Tipo de Comercio</label>
+                                    <select name="businessType" class="form-select" required>
+                                        <option value="restaurant">Restaurante</option>
+                                        <option value="market">Mercado</option>
+                                        <option value="pharmacy">Farmacia</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Contraseña</label>
+                                        <input type="password" name="password" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Confirmar Contraseña</label>
+                                        <input type="password" name="confirmPassword" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Registrar Comercio</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
