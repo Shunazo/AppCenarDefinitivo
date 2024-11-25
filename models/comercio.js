@@ -8,7 +8,7 @@ const Comercio = connection.define("comercio", {
         autoIncrement: true,
         allowNull: false
     },
-    nombre: {
+    nombreComercio: {
         type: Sequelize.STRING,
         allowNull: false
     },
