@@ -5,51 +5,51 @@ const transporter = require("../services/EmailService");
 
 const SECRET = process.env.SECRET; 
 
+
 exports.loginForm = (req, res) => {
-    if (req.user) {
-        return res.redirect(`/${req.user.rol}/home`);
+    if (req.cookies.auth_token) {
+        try {
+            const token = req.cookies.auth_token;
+            const { rol } = jwt.verify(token, SECRET);
+            return res.redirect(`/${rol}/home`);
+        } catch {
+            res.clearCookie("auth_token");
+        }
     }
     res.render("auth/login", { pageTitle: "Iniciar Sesión" });
 };
 
 
 exports.login = async (req, res) => {
-    const { usuario, contraseña } = req.body;
+    const { correo, contraseña } = req.body;
 
     try {
-        if (!usuario || !contraseña) {
+        if (!correo || !contraseña) {
             return res.render("auth/login", {
                 pageTitle: "Iniciar Sesión",
                 error: "Todos los campos son obligatorios.",
             });
         }
 
-        const user = await Usuario.findOne({
-            where: {
-                [Sequelize.Op.or]: [
-                    { correo: usuario },
-                    { nombreUsuario: usuario },
-                ],
-            },
-        });
+        const user = await Usuario.findOne({ where: { correo } });
 
         if (!user || !(await bcrypt.compare(contraseña, user.contraseña))) {
             return res.render("auth/login", {
                 pageTitle: "Iniciar Sesión",
-                error: "Usuario o contraseña incorrectos.",
+                error: "Correo o contraseña incorrectos.",
             });
         }
 
         if (!user.activo) {
             return res.render("auth/login", {
                 pageTitle: "Iniciar Sesión",
-                error: "Su cuenta está inactiva. Revise su correo o contacte a un administrador.",
+                error: "Su cuenta está inactiva. Revise su correo o contacte al soporte.",
             });
         }
 
         const token = jwt.sign({ id: user.id, rol: user.rol }, SECRET, { expiresIn: "1h" });
+        res.cookie("auth_token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
 
-        res.cookie("auth_token", token, { httpOnly: true });
         res.redirect(`/${user.rol}/home`);
     } catch (error) {
         console.error(error);
@@ -57,29 +57,23 @@ exports.login = async (req, res) => {
     }
 };
 
-// Cerrar sesión
+
 exports.logout = (req, res) => {
     res.clearCookie("auth_token");
     res.redirect("/auth/login");
 };
 
-// Formulario de registro
+
 exports.registerForm = (req, res) => {
     res.render("auth/register", { pageTitle: "Registro de Usuario" });
 };
 
-// Procesar registro
+
 exports.register = async (req, res) => {
-  try {
     const { nombre, apellido, correo, nombreUsuario, contraseña, confirmar, rol } = req.body;
-    const fotoPerfil = "/" + req.file.filepath;
+    const fotoPerfil = req.file ? "/" + req.file.path : null;
 
-    if (!req.file) {
-      return res.render("auth/register", {
-        pageTitle: "La imagen de perfil es obligatoria.",
-      });
-    }
-
+    try {
         if (!nombre || !apellido || !correo || !nombreUsuario || !contraseña || !confirmar || !rol) {
             return res.render("auth/register", {
                 pageTitle: "Registro de Usuario",
@@ -103,6 +97,7 @@ exports.register = async (req, res) => {
             nombreUsuario,
             contraseña: hashedPassword,
             rol,
+            fotoPerfil,
             activo: false,
         });
 
@@ -129,12 +124,12 @@ exports.register = async (req, res) => {
     }
 };
 
-// Formulario para restablecer contraseña
+
 exports.resetForm = (req, res) => {
     res.render("auth/reset", { pageTitle: "Restablecer Contraseña" });
 };
 
-// Procesar envío de token para restablecer contraseña
+
 exports.resetToken = async (req, res) => {
     const { correo } = req.body;
 
@@ -171,13 +166,13 @@ exports.resetToken = async (req, res) => {
     }
 };
 
-// Formulario para nueva contraseña
+
 exports.passwordForm = (req, res) => {
     const { token } = req.params;
     res.render("auth/new-password", { pageTitle: "Nueva Contraseña", token });
 };
 
-// Procesar nueva contraseña
+
 exports.password = async (req, res) => {
     const { token } = req.params;
     const { contraseña, confirmar } = req.body;
