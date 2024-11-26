@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const router = express.Router();
 const deliveryController = require("../controllers/deliveryController");
 const authMiddleware = require("../middleware/is-auth");
@@ -14,3 +14,4 @@ router.get("/ordenes/:id([0-9]+)", authMiddleware, deliveryController.ordenDetal
 router.post("/ordenes/complete/:id([0-9]+)", authMiddleware, deliveryController.completarOrden); 
 
 module.exports = router;
+*/

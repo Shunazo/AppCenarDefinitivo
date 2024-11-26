@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const router = express.Router();
 const clienteController = require("../controllers/clienteController");
 const authMiddleware = require("../middleware/is-auth");
@@ -28,3 +28,4 @@ router.post("/favoritos/toggle/:id([0-9]+)", authMiddleware, clienteController.t
 
 
 module.exports = router;
+*/

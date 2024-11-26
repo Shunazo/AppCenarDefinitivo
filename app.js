@@ -10,11 +10,18 @@ const jwt = require("jsonwebtoken");
 const flash = require("connect-flash");
 const session = require("express-session");
 
-const usuario = require("./models/usuario");
-const administrador = require("./models/administrador");
-const comercio = require("./models/comercio");
-const delivery = require("./models/delivery");
-const cliente = require("./models/cliente");
+const Usuario = require("./models/usuario");
+const Administrador = require("./models/administrador");
+const Categoria = require("./models/categoria");
+const Cliente = require("./models/cliente");
+const Comercio = require("./models/comercio");
+const Delivery = require("./models/delivery");
+const Direccion = require("./models/direccion");
+const Pedido = require("./models/pedido");
+const Producto = require("./models/producto");
+const ProductoPedido = require("./models/productopedido");
+const TipoComercio = require("./models/tipocomercio");
+const Configuracion = require("./models/configuracion");
 
 const authRoute = require("./routes/auth");
 const adminRoute = require("./routes/admin");
@@ -53,7 +60,7 @@ app.use(multer({ storage: imageStorage }).single("logo"));
 
 // Session setup
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { httpOnly: true, secure: false, maxAge: 360000 }, // 1 hour
@@ -63,14 +70,25 @@ app.use(session({
 app.use(flash());
 
 
-app.use(authRoute); // Auth routes (login, register, etc.)
-app.use('/admin', adminRoute); // Admin-related routes
-app.use('/delivery', deliveryRoute); // Delivery-related routes
-app.use('/cliente', clienteRoute); // Cliente-related routes
-app.use('/comercio', comercioRoute); // Comercio-related routes
+app.use('/login', authRoute); // Auth routes (login, register, etc.)
+/*app.use('/admin', adminRoute);
+app.use('/delivery', deliveryRoute); 
+app.use('/cliente', clienteRoute); 
+app.use('/comercio', comercioRoute); */
 
-// Error handling
-app.use(errorController.notFound); // 404 Error handling
+Usuario.associate({ Administrador, Cliente, Comercio, Delivery });
+Administrador.associate({ Usuario });
+Categoria.associate({ Comercio, Producto });
+Cliente.associate({ Usuario, Pedido, Direccion });
+Comercio.associate({ Usuario, TipoComercio, Categoria, Pedido });
+Delivery.associate({ Usuario, Pedido });
+Direccion.associate({ Cliente });
+Pedido.associate({ Cliente, Comercio, Delivery, Direccion, ProductoPedido });
+Producto.associate({ Categoria, ProductoPedido });
+ProductoPedido.associate({ Pedido, Producto });
+TipoComercio.associate({ Comercio });
+
+
 
 // Global error handling middleware (e.g., internal server errors)
 app.use((err, req, res, next) => {
@@ -78,7 +96,12 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+connection
+    .sync({})
+    .then(() => {
+        console.log(`App is running on port ${PORT}`);
+        app.listen(PORT);
+    })
+    .catch((err) => {
+        console.log(err);
 });

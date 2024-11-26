@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const router = express.Router();
 const comercioController = require("../controllers/comercioController");
 const authMiddleware = require("../middleware/is-auth");
@@ -31,5 +31,5 @@ router.get("/ordenes/:id([0-9]+)", authMiddleware, comercioController.ordenDetal
 router.post("/ordenes/assign/:id([0-9]+)", authMiddleware, comercioController.assignDelivery);
 
 
-module.exports = router;
+module.exports = router; */
 

@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
 const authMiddleware = require("../middleware/is-auth");
@@ -40,3 +40,4 @@ router.post("/tipo-comercio/delete/:id([0-9]+)", authMiddleware, adminController
 
 
 module.exports = router;
+*/
