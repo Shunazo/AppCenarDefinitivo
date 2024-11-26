@@ -1,0 +1,165 @@
+.auth-form-container {
+    min-height: 100vh;
+    background: linear-gradient(120deg, #FF5F6D, #FFC371);
+    background-image: url('https://www.transparenttextures.com/patterns/food.png');
+    background-blend-mode: soft-light;
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+}
+
+.auth-card {
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(255, 111, 97, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    transform: translateY(0);
+    transition: all 0.5s ease;
+}
+
+.auth-title {
+    color: #FF4B2B;
+    font-weight: 800;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.auth-title::after {
+    content: '🍕';
+    font-size: 2rem;
+    display: block;
+    margin-top: 10px;
+    animation: bounce 2s infinite;
+}
+
+.form-control {
+    border: 2px solid #FFE4E1;
+    border-radius: 15px;
+    padding: 15px 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control:focus {
+    border-color: #FF4B2B;
+    box-shadow: 0 0 0 4px rgba(255, 75, 43, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #FF6B6B;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(120deg, #FF4B2B, #FF416C);
+    border: none;
+    padding: 15px 30px;
+    font-weight: 700;
+    border-radius: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 75, 43, 0.3);
+    background: linear-gradient(120deg, #FF416C, #FF4B2B);
+}
+
+.btn-outline-primary {
+    border: 2px solid #FF4B2B;
+    color: #FF4B2B;
+    background: white;
+    padding: 12px 25px;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(120deg, #FF4B2B, #FF416C);
+    color: white;
+    border-color: transparent;
+}
+
+.links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.alert {
+    border: none;
+    border-radius: 15px;
+    padding: 15px 20px;
+}
+
+.alert-danger {
+    background: #FFE4E1;
+    color: #FF4B2B;
+    border-left: 4px solid #FF4B2B;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.card-body {
+    padding: 40px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+/* Food-themed decorative elements */
+.auth-card::before {
+    content: '🌮';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    font-size: 2rem;
+    animation: float 3s infinite ease-in-out;
+}
+
+.auth-card::after {
+    content: '🍔';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-size: 2rem;
+    animation: float 3s infinite ease-in-out reverse;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(10deg); }
+}
+
+.btn-password, .exit{
+    color:  #af230b;
+    margin: 20px auto 0;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.btn-password:hover{
+    color: #e92e0d;
+}
+
+.exit:hover{
+    color: #e92e0d;
+}
