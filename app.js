@@ -34,7 +34,6 @@ const authMiddleware = require("./middleware/is-auth");
 
 const PORT = 3000;
 
-// Handlebars setup
 app.engine("hbs", engine({ 
     extname: "hbs", 
     defaultLayout: "",
@@ -44,14 +43,14 @@ app.set("view engine", "hbs");
 app.set("views", "views");
 
 
-// Middleware for parsing URL-encoded bodies
+
 app.use(express.urlencoded({ extended: false }));
 
-// Static files (public assets and images)
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-// Multer configuration for file uploads
+
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "images");
@@ -63,7 +62,7 @@ const imageStorage = multer.diskStorage({
 app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }]));
 
 
-// Session setup
+
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
@@ -71,7 +70,7 @@ app.use(session({
     cookie: { httpOnly: true, secure: false, maxAge: 360000 }, // 1 hour
 }));
 
-// Flash messages
+
 app.use(flash());
 
 
