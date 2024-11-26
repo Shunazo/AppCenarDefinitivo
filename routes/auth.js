@@ -19,4 +19,6 @@ router.post("/reset-password", authController.resetToken);  // procesar
 router.get("/reset-password/:token", authController.passwordForm); // form de nueva contraseña
 router.post("/reset-password/:token", authController.password); // procesar
 
+router.post("/activate/:token", authController.activateAccount);
+
 module.exports = router;

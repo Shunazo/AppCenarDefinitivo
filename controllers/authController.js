@@ -223,16 +223,15 @@ exports.registerComercio = async (req, res) => {
 };
 
 
-// Render reset password form
+
 exports.resetForm = (req, res) => {
     res.render("auth/reset", { pageTitle: "Restablecer Contraseña" });
 };
 
-// Handle reset token request
+// Handle password reset request
 exports.resetToken = async (req, res) => {
-    const { correo } = req.body;
-
     try {
+        const { correo } = req.body;
         const user = await Usuario.findOne({ where: { correo } });
 
         if (!user) {
@@ -242,7 +241,7 @@ exports.resetToken = async (req, res) => {
             });
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: "5m" });
 
         const resetLink = `${req.protocol}://${req.get("host")}/auth/reset-password/${token}`;
 
@@ -260,16 +259,17 @@ exports.resetToken = async (req, res) => {
             success: "Revisa tu correo para restablecer la contraseña.",
         });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.render("404", { pageTitle: "Error al procesar solicitud. Intente más tarde." });
     }
 };
 
+
 // Render new password form
 exports.passwordForm = (req, res) => {
+    try {
     const { token } = req.params;
 
-    try {
         jwt.verify(token, process.env.SECRET);
 
         res.render("auth/new-password", {
@@ -277,13 +277,14 @@ exports.passwordForm = (req, res) => {
             token,
         });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.render("404", { pageTitle: "Enlace de restablecimiento inválido o expirado." });
     }
 };
 
 // Handle new password submission
 exports.password = async (req, res) => {
+    try {
     const { token } = req.params;
     const { contraseña, confirmar } = req.body;
 
@@ -295,7 +296,6 @@ exports.password = async (req, res) => {
         });
     }
 
-    try {
         const payload = jwt.verify(token, process.env.SECRET);
 
         const hashedPassword = await bcrypt.hash(contraseña, 10);
@@ -304,7 +304,34 @@ exports.password = async (req, res) => {
 
         res.redirect("/auth/login");
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.render("404", { pageTitle: "Error al procesar solicitud. Intente más tarde." });
     }
 };
+
+exports.activateAccount = async (req, res) => {
+    const { token } = req.params;
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET);
+
+        const user = await Usuario.findOne({ where: { id: decoded.id } });
+
+        if (!user) {
+            return res.render("404", { pageTitle: "Usuario no encontrado." });
+        }
+
+        await Usuario.update({ activo: true }, { where: { id: user.id } });
+
+
+        req.session.isLoggedIn = true;
+        req.session.userId = user.id;
+        req.session.rol = user.rol;
+
+        return res.redirect(`/${user.rol}/home`);
+
+    } catch (error) {
+        console.error(error);
+        res.render("404", { pageTitle: "Error al activar la cuenta. Intente más tarde." });
+    }
+};
+

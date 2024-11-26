@@ -10,7 +10,7 @@
                         <div class="alert alert-danger">{{error}}</div>
                         {{/if}}
 
-                        <form action="/registro-cliente-delivery" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="/registro/usuario" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                 <label class="form-label">Nombre</label>
@@ -29,19 +29,19 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" required>
+                                <input type="email" name="correo" class="form-control" required>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Foto de Perfil</label>
-                            <input type="file" name="foto" class="form-control" accept="image/*" required>
+                            <input type="file" name="fotoPerfil" class="form-control" accept="image/*" required>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nombre de Usuario</label>
-                                <input type="text" name="username" class="form-control" required>
+                                <input type="text" name="nombreUsuario" class="form-control" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Rol</label>
@@ -56,11 +56,11 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Contraseña</label>
-                                <input type="password" name="password" class="form-control" required>
+                                <input type="password" name="contraseña" class="form-control" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Confirmar Contraseña</label>
-                                <input type="password" name="confirmPassword" class="form-control" required>
+                                <input type="password" name="confirmar" class="form-control" required>
                             </div>
                         </div>
 
