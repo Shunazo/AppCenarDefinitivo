@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 const flash = require("connect-flash");
 const session = require("express-session");
+const bodyParser = require("body-parser");
 
 const Usuario = require("./models/usuario");
 const Administrador = require("./models/administrador");
@@ -42,14 +43,10 @@ app.engine("hbs", engine({
 app.set("view engine", "hbs");
 app.set("views", "views");
 
-
-
 app.use(express.urlencoded({ extended: false }));
-
-
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
-
 
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -61,8 +58,6 @@ const imageStorage = multer.diskStorage({
 });
 app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }]));
 
-
-
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
@@ -70,11 +65,7 @@ app.use(session({
     cookie: { httpOnly: true, secure: false, maxAge: 360000 }, // 1 hour
 }));
 
-
 app.use(flash());
-
-
-
 
 Usuario.associate({ Administrador, Cliente, Comercio, Delivery });
 Administrador.associate({ Usuario });
@@ -89,15 +80,12 @@ ProductoPedido.associate({ Pedido, Producto });
 TipoComercio.associate({ Comercio });
 
 app.use('/', authRoute); // Auth routes (login, register, etc.)
-/*app.use('/admin', adminRoute);
-app.use('/delivery', deliveryRoute); 
 app.use('/cliente', clienteRoute); 
-app.use('/comercio', comercioRoute); */
 app.use(errorController.get404);
 
 
 connection
-    .sync({})
+    .sync({ })
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);
@@ -105,3 +93,9 @@ connection
     .catch((err) => {
         console.log(err);
 });
+
+
+/*app.use('/admin', adminRoute);
+app.use('/delivery', deliveryRoute); 
+app.use('/cliente', clienteRoute); 
+app.use('/comercio', comercioRoute); */

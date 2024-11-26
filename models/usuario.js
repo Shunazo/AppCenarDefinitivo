@@ -34,7 +34,7 @@ const Usuario = connection.define("usuario", {
         unique: true,
         allowNull: false
     },
-    contraseña: {
+    password: {
         type: Sequelize.STRING,
         allowNull: false
     },

@@ -26,6 +26,5 @@ router.post("/direcciones/delete/:id([0-9]+)", authMiddleware, clienteController
 router.get("/favoritos", authMiddleware, clienteController.favoritos); 
 router.post("/favoritos/toggle/:id([0-9]+)", authMiddleware, clienteController.toggleFavorito); 
 
-
-module.exports = router;
 */
+module.exports = router;

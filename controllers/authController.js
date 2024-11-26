@@ -71,14 +71,16 @@ exports.registerForm = (req, res) => {
 
 exports.register = async (req, res) => {
     try {
-        const { nombre, apellido, correo, telefono, nombreUsuario, contraseña, confirmar, rol } = req.body;
-        const fotoPerfil = "/" + req.file.filepath;
+        const { nombre, apellido, correo, telefono, nombreUsuario, password, confirmar, rol } = req.body;
+        const fotoPerfil = "/" + req.files.fotoPerfil[0].filename;
 
-        if (!req.file) {
+        console.log("datos,", req.body);
+
+        if (!req.files || !req.files.fotoPerfil) {
             return res.render("404", { pageTitle: "La imagen es obligatoria." });
         }
 
-        if (!nombre || !apellido || !correo || !telefono || !nombreUsuario || !contraseña || !confirmar || !rol) {
+        if (!nombre || !apellido || !correo || !telefono || !nombreUsuario || !password || !confirmar || !rol) {
             return res.render("auth/registro-general", {
                 pageTitle: "Registro de Usuario",
                 error: "Todos los campos son obligatorios.",
@@ -86,7 +88,7 @@ exports.register = async (req, res) => {
         }
 
        
-        if (contraseña !== confirmar) {
+        if (password !== confirmar) {
             return res.render("auth/registro-general", {
                 pageTitle: "Registro de Usuario",
                 error: "Las contraseñas no coinciden.",
@@ -102,7 +104,7 @@ exports.register = async (req, res) => {
         }
 
         
-        const hashedPassword = await bcrypt.hash(contraseña, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         
         const user = await Usuario.create({
@@ -111,7 +113,7 @@ exports.register = async (req, res) => {
             correo,
             telefono,
             nombreUsuario,
-            contraseña: hashedPassword,
+            password: hashedPassword,
             rol,
             fotoPerfil, 
             activo: false, 
@@ -166,21 +168,21 @@ exports.registerComercioForm = async (req, res) => {
 
 exports.registerComercio = async (req, res) => {
     try {
-        const { nombreComercio, telefono, correo, nombreUsuario, contraseña, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
+        const { nombreComercio, telefono, correo, nombreUsuario, password, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
         const logo = "/" + req.file.filepath;
 
         if (!req.file) {
             return res.render("404", { pageTitle: "La imagen es obligatoria." });
         }
 
-        if (!nombreComercio || !telefono || !correo || !nombreUsuario || !contraseña || !confirmar || !tipoComercioId || !horaApertura || !horaCierre) {
+        if (!nombreComercio || !telefono || !correo || !nombreUsuario || !password || !confirmar || !tipoComercioId || !horaApertura || !horaCierre) {
             return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
                 error: "Todos los campos son obligatorios.",
             });
         }
 
-        if (contraseña !== confirmar) {
+        if (password !== confirmar) {
             return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
                 error: "Las contraseñas no coinciden.",
@@ -195,7 +197,7 @@ exports.registerComercio = async (req, res) => {
             apellido: "Comercio",
             correo,
             nombreUsuario,
-            contraseña: hashedPassword,
+            password: hashedPassword,
             rol: "comercio",
             fotoPerfil: logo,
             activo: false,
@@ -286,9 +288,9 @@ exports.passwordForm = (req, res) => {
 exports.password = async (req, res) => {
     try {
     const { token } = req.params;
-    const { contraseña, confirmar } = req.body;
+    const { password, confirmar } = req.body;
 
-    if (contraseña !== confirmar) {
+    if (password !== confirmar) {
         return res.render("auth/new-password", {
             pageTitle: "Nueva Contraseña",
             error: "Las contraseñas no coinciden.",
@@ -298,9 +300,9 @@ exports.password = async (req, res) => {
 
         const payload = jwt.verify(token, process.env.SECRET);
 
-        const hashedPassword = await bcrypt.hash(contraseña, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        await Usuario.update({ contraseña: hashedPassword }, { where: { id: payload.id } });
+        await Usuario.update({ password: hashedPassword }, { where: { id: payload.id } });
 
         res.redirect("/auth/login");
     } catch (error) {
