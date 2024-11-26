@@ -10,6 +10,12 @@ const jwt = require("jsonwebtoken");
 const flash = require("connect-flash");
 const session = require("express-session");
 
+const usuario = require("./models/usuario");
+const administrador = require("./models/administrador");
+const comercio = require("./models/comercio");
+const delivery = require("./models/delivery");
+const cliente = require("./models/cliente");
+
 const authRoute = require("./routes/auth");
 const adminRoute = require("./routes/admin");
 const deliveryRoute = require("./routes/delivery");
@@ -21,14 +27,19 @@ const authMiddleware = require("./middleware/is-auth");
 
 const PORT = 3000;
 
+// Handlebars setup
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "views");
 
+// Middleware for parsing URL-encoded bodies
 app.use(express.urlencoded({ extended: false }));
+
+// Static files (public assets and images)
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
+// Multer configuration for file uploads
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "images");
@@ -37,20 +48,37 @@ const imageStorage = multer.diskStorage({
         cb(null, uuidv4() + "-" + file.originalname);
     },
 });
-
 app.use(multer({ storage: imageStorage }).single("fotoPerfil"));
 app.use(multer({ storage: imageStorage }).single("logo"));
 
-
-/* deja eto ahi por ahora es de las sesiones
-const session = require("express-session");
-
+// Session setup
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, secure: false, maxAge: 3600000 }, // 1 hora
+    cookie: { httpOnly: true, secure: false, maxAge: 360000 }, // 1 hour
 }));
-*/
 
-//ya no se que mas poner despues de aqui 
+// Flash messages
+app.use(flash());
+
+
+app.use(authRoute); // Auth routes (login, register, etc.)
+app.use('/admin', adminRoute); // Admin-related routes
+app.use('/delivery', deliveryRoute); // Delivery-related routes
+app.use('/cliente', clienteRoute); // Cliente-related routes
+app.use('/comercio', comercioRoute); // Comercio-related routes
+
+// Error handling
+app.use(errorController.notFound); // 404 Error handling
+
+// Global error handling middleware (e.g., internal server errors)
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send('Something went wrong!');
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
