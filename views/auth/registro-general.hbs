@@ -33,9 +33,10 @@
                             </div>
                         </div>
 
+                        
                         <div class="mb-3">
-                            <label class="form-label">Foto de Perfil</label>
-                            <input type="file" name="fotoPerfil" class="form-control" accept="image/*" required>
+                            <label class="form-label">Selecciona una imagen</label>
+                            <input type="file" class="form-control" name="fotoPerfil" required />
                         </div>
 
                         <div class="row">
@@ -45,8 +46,8 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Rol</label>
-                                <select name="role" class="form-select" required>
-                                    <option value="">Seleccione un rol</option>
+                                <select name="rol" class="form-select" required>
+                                    <option value disabled selected="">Seleccione un rol</option>
                                     <option value="cliente">Cliente</option>
                                     <option value="delivery">Delivery</option>
                                 </select>
@@ -71,3 +72,4 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="../assets/css/forms.css">

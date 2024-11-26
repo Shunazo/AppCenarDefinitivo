@@ -35,9 +35,14 @@ const authMiddleware = require("./middleware/is-auth");
 const PORT = 3000;
 
 // Handlebars setup
-app.engine("handlebars", engine());
-app.set("view engine", "handlebars");
+app.engine("hbs", engine({ 
+    extname: "hbs", 
+    defaultLayout: "",
+    layoutsDir: "", 
+}));
+app.set("view engine", "hbs");
 app.set("views", "views");
+
 
 // Middleware for parsing URL-encoded bodies
 app.use(express.urlencoded({ extended: false }));
@@ -55,8 +60,8 @@ const imageStorage = multer.diskStorage({
         cb(null, uuidv4() + "-" + file.originalname);
     },
 });
-app.use(multer({ storage: imageStorage }).single("fotoPerfil"));
-app.use(multer({ storage: imageStorage }).single("logo"));
+app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }]));
+
 
 // Session setup
 app.use(session({
@@ -70,11 +75,7 @@ app.use(session({
 app.use(flash());
 
 
-app.use('/login', authRoute); // Auth routes (login, register, etc.)
-/*app.use('/admin', adminRoute);
-app.use('/delivery', deliveryRoute); 
-app.use('/cliente', clienteRoute); 
-app.use('/comercio', comercioRoute); */
+
 
 Usuario.associate({ Administrador, Cliente, Comercio, Delivery });
 Administrador.associate({ Usuario });
@@ -88,13 +89,13 @@ Producto.associate({ Categoria, ProductoPedido });
 ProductoPedido.associate({ Pedido, Producto });
 TipoComercio.associate({ Comercio });
 
+app.use('/', authRoute); // Auth routes (login, register, etc.)
+/*app.use('/admin', adminRoute);
+app.use('/delivery', deliveryRoute); 
+app.use('/cliente', clienteRoute); 
+app.use('/comercio', comercioRoute); */
+app.use(errorController.get404);
 
-
-// Global error handling middleware (e.g., internal server errors)
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Something went wrong!');
-});
 
 connection
     .sync({})

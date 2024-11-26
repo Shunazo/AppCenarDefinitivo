@@ -1,11 +1,11 @@
-/*const express = require("express");
+const express = require("express");
 const router = express.Router();
 const clienteController = require("../controllers/clienteController");
 const authMiddleware = require("../middleware/is-auth");
 
 //no voy a comentar to eto me da pereza
-router.get("/", authMiddleware, clienteController.home); 
-router.get("/perfil", authMiddleware, clienteController.perfil);
+router.get("/home", authMiddleware, clienteController.home); 
+/*router.get("/perfil", authMiddleware, clienteController.perfil);
 
 router.get("/perfil/edit", authMiddleware, clienteController.editperfilForm); 
 router.post("/perfil/edit", authMiddleware, clienteController.editperfil); 

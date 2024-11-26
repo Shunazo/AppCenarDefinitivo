@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 
-router.get("/login", authController.loginForm); // form de login
-router.post("/login", authController.login); // procesar 
+router.get("/", authController.loginForm); // form de login
+router.post("/", authController.login); // procesar 
 
 router.post("/cerrar-sesion", authController.logout);  // cerrar sesion
 

@@ -65,7 +65,7 @@ exports.logout = (req, res) => {
 
 
 exports.registerForm = (req, res) => {
-    res.render("auth/register", { pageTitle: "Registro de Usuario" });
+    res.render("auth/registro-general", { pageTitle: "Registro de Usuario" });
 };
 
 
@@ -79,7 +79,7 @@ exports.register = async (req, res) => {
         }
 
         if (!nombre || !apellido || !correo || !telefono || !nombreUsuario || !contraseña || !confirmar || !rol) {
-            return res.render("auth/register", {
+            return res.render("auth/registro-general", {
                 pageTitle: "Registro de Usuario",
                 error: "Todos los campos son obligatorios.",
             });
@@ -87,7 +87,7 @@ exports.register = async (req, res) => {
 
        
         if (contraseña !== confirmar) {
-            return res.render("auth/register", {
+            return res.render("auth/registro-general", {
                 pageTitle: "Registro de Usuario",
                 error: "Las contraseñas no coinciden.",
             });
@@ -95,7 +95,7 @@ exports.register = async (req, res) => {
 
         const existingUsuario = await Usuario.findOne({ where: { correo } });
         if (existingUsuario) {
-            return res.render("auth/register", {
+            return res.render("auth/registro-general", {
                 pageTitle: "Registro de Usuario",
                 error: "Ya existe una cuenta registrada con ese correo.",
             });
@@ -137,7 +137,7 @@ exports.register = async (req, res) => {
             }
         );
 
-        res.render("auth/register", {
+        res.render("auth/registro-general", {
             pageTitle: "Registro de Usuario",
             success: "Registro exitoso. Revisa tu correo para activar tu cuenta.",
         });
@@ -153,7 +153,7 @@ exports.registerComercioForm = async (req, res) => {
     try {
         const tipoComercios = await TipoComercio.findAll(); 
 
-        res.render("auth/registerComercio", {
+        res.render("auth/registro-comercio", {
             pageTitle: "Registro de Comercio",
             tipoComercios: tipoComercios.map(t => t.dataValues),
         });
@@ -174,14 +174,14 @@ exports.registerComercio = async (req, res) => {
         }
 
         if (!nombreComercio || !telefono || !correo || !nombreUsuario || !contraseña || !confirmar || !tipoComercioId || !horaApertura || !horaCierre) {
-            return res.render("auth/registerComercio", {
+            return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
                 error: "Todos los campos son obligatorios.",
             });
         }
 
         if (contraseña !== confirmar) {
-            return res.render("auth/registerComercio", {
+            return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
                 error: "Las contraseñas no coinciden.",
                 tipoComercios: await TipoComercio.findAll(), 
@@ -212,7 +212,7 @@ exports.registerComercio = async (req, res) => {
             usuarioId: user.id,
         });
 
-        res.render("auth/registerComercio", {
+        res.render("auth/registro-comercio", {
             pageTitle: "Registro de Comercio",
             success: "Registro exitoso. Revisa tu correo para activar tu cuenta.",
         });
@@ -225,7 +225,7 @@ exports.registerComercio = async (req, res) => {
 
 
 exports.resetForm = (req, res) => {
-    res.render("auth/reset", { pageTitle: "Restablecer Contraseña" });
+    res.render("auth/reset-password", { pageTitle: "Restablecer Contraseña" });
 };
 
 // Handle password reset request
@@ -235,7 +235,7 @@ exports.resetToken = async (req, res) => {
         const user = await Usuario.findOne({ where: { correo } });
 
         if (!user) {
-            return res.render("auth/reset", {
+            return res.render("auth/reset-password", {
                 pageTitle: "Restablecer Contraseña",
                 error: "Correo no encontrado.",
             });
@@ -254,7 +254,7 @@ exports.resetToken = async (req, res) => {
                    <a href="${resetLink}">Restablecer Contraseña</a>`,
         });
 
-        res.render("auth/reset", {
+        res.render("auth/reset-password", {
             pageTitle: "Restablecer Contraseña",
             success: "Revisa tu correo para restablecer la contraseña.",
         });
