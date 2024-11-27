@@ -76,7 +76,7 @@ Usuario.associate({ Administrador, Cliente, Comercio, Delivery });
 Administrador.associate({ Usuario });
 Categoria.associate({ Comercio, Producto });
 Cliente.associate({ Usuario, Pedido, Direccion, Favorito });
-Comercio.associate({ Usuario, TipoComercio, Categoria, Pedido, Producto });
+Comercio.associate({ Usuario, TipoComercio, Categoria, Pedido, Producto, Favorito });
 Delivery.associate({ Usuario, Pedido });
 Direccion.associate({ Cliente });
 Pedido.associate({ Cliente, Comercio, Delivery, Direccion, ProductoPedido });

@@ -10,9 +10,10 @@ router.get("/home", authMiddleware, clienteController.home);
 router.get("/perfil/edit", authMiddleware, clienteController.editperfilForm); 
 router.post("/perfil/edit", authMiddleware, clienteController.editperfil); 
 
+router.get("/tipo-comercio", authMiddleware, clienteController.tipoComercio);
 
-router.get("/ordenes", authMiddleware, clienteController.ordenes); 
-router.get("/ordenes/:id([0-9]+)", authMiddleware, clienteController.ordenDetalle); 
+router.get("/pedidos", authMiddleware, clienteController.pedidos); 
+router.get("/pedidos/:id([0-9]+)", authMiddleware, clienteController.pedidoDetalle); 
 
 
 router.get("/direcciones", authMiddleware, clienteController.direcciones);
