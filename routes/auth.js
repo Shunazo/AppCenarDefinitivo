@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 
+
 router.get("/", authController.loginForm); // form de login
 router.post("/", authController.login); // procesar 
 
@@ -19,6 +20,6 @@ router.post("/reset-password", authController.resetToken);  // procesar
 router.get("/reset-password/:token", authController.passwordForm); // form de nueva contraseña
 router.post("/reset-password/:token", authController.password); // procesar
 
-router.post("/activate/:token", authController.activateAccount);
+router.get("/auth/activate/:token", authController.activateAccount); // activar cuenta
 
 module.exports = router;

@@ -62,7 +62,10 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, secure: false, maxAge: 360000 }, // 1 hour
+    cookie: { 
+        httpOnly: true, 
+        secure: false, 
+    },
 }));
 
 app.use(flash());
@@ -79,13 +82,16 @@ Producto.associate({ Categoria, ProductoPedido });
 ProductoPedido.associate({ Pedido, Producto });
 TipoComercio.associate({ Comercio });
 
-app.use('/', authRoute); // Auth routes (login, register, etc.)
+app.use('/', authRoute); 
 app.use('/cliente', clienteRoute); 
+/*app.use('/admin', adminRoute);
+app.use('/delivery', deliveryRoute); 
+app.use('/comercio', comercioRoute); */
 app.use(errorController.get404);
 
 
 connection
-    .sync({ })
+    .sync({})
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);
@@ -97,5 +103,4 @@ connection
 
 /*app.use('/admin', adminRoute);
 app.use('/delivery', deliveryRoute); 
-app.use('/cliente', clienteRoute); 
 app.use('/comercio', comercioRoute); */

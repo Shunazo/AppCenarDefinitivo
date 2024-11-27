@@ -4,6 +4,8 @@ const Usuario = require("../models/usuario");
 const Comercio = require("../models/comercio");
 const TipoComercio = require("../models/tipocomercio");
 const transporter = require("../services/EmailService");
+const Delivery = require("../models/delivery");
+const Cliente = require("../models/cliente");
 
 
 exports.loginForm = (req, res) => {
@@ -15,10 +17,10 @@ exports.loginForm = (req, res) => {
 
 
 exports.login = async (req, res) => {
-    const { correo, contraseña } = req.body;
+    const { correo, password } = req.body;
 
     try {
-        if (!correo || !contraseña) {
+        if (!correo || !password) {
             return res.render("auth/login", {
                 pageTitle: "Iniciar Sesión",
                 error: "Todos los campos son obligatorios.",
@@ -27,7 +29,7 @@ exports.login = async (req, res) => {
 
         const user = await Usuario.findOne({ where: { correo } });
 
-        if (!user || !(await bcrypt.compare(contraseña, user.contraseña))) {
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.render("auth/login", {
                 pageTitle: "Iniciar Sesión",
                 error: "Correo o contraseña incorrectos.",
@@ -65,6 +67,9 @@ exports.logout = (req, res) => {
 
 
 exports.registerForm = (req, res) => {
+    if (req.session.isLoggedIn) {
+        return res.redirect(`/${req.session.rol}/home`);
+    }
     res.render("auth/registro-general", { pageTitle: "Registro de Usuario" });
 };
 
@@ -119,7 +124,14 @@ exports.register = async (req, res) => {
             activo: false, 
         });
 
-        
+        if (rol === "cliente") {
+            await Cliente.create({ usuarioId: user.id });
+        } else if (rol === "delivery") {
+            await Delivery.create({ usuarioId: user.id });
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '1m' });
+
         transporter.sendMail(
             {
                 from: "No-Reply <no-reply@example.com>",
@@ -128,7 +140,7 @@ exports.register = async (req, res) => {
                 html: `
                     <p>Hola ${nombre},</p>
                     <p>Gracias por registrarte. Para activar tu cuenta, haz clic en el siguiente enlace:</p>
-                    <a href="${process.env.APP_URL}/activate/${user.id}">Activar mi cuenta</a>
+                    <a href="${process.env.APP_URL}/auth/activate/${token}">Activar mi cuenta</a>
                 `,
             },
             (err) => {
@@ -138,6 +150,8 @@ exports.register = async (req, res) => {
                 }
             }
         );
+
+        console.log("Enlace de activación:", `${process.env.APP_URL}/auth/activate/${token}`);
 
         res.render("auth/registro-general", {
             pageTitle: "Registro de Usuario",
@@ -150,8 +164,10 @@ exports.register = async (req, res) => {
 };
 
 
-
 exports.registerComercioForm = async (req, res) => {
+    if (req.session.isLoggedIn) {
+        return res.redirect(`/${req.session.rol}/home`);
+    }
     try {
         const tipoComercios = await TipoComercio.findAll(); 
 
@@ -169,9 +185,11 @@ exports.registerComercioForm = async (req, res) => {
 exports.registerComercio = async (req, res) => {
     try {
         const { nombreComercio, telefono, correo, nombreUsuario, password, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
-        const logo = "/" + req.file.filepath;
+        const logo = "/" + req.files.logo[0].filename;
 
-        if (!req.file) {
+        console.log("datos,", req.body);
+
+        if (!req.files || !req.files.logo) {
             return res.render("404", { pageTitle: "La imagen es obligatoria." });
         }
 
@@ -179,6 +197,14 @@ exports.registerComercio = async (req, res) => {
             return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
                 error: "Todos los campos son obligatorios.",
+            });
+        }
+
+        const existingComercio = await Comercio.findOne({ where: { correo } });
+        if (existingComercio) {
+            return res.render("auth/registro-comercio", {
+                pageTitle: "Registro de Comercio",
+                error: "Ya existe una cuenta registrada con ese correo.",
             });
         }
 
@@ -214,6 +240,29 @@ exports.registerComercio = async (req, res) => {
             usuarioId: user.id,
         });
 
+        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '1m' });
+
+        transporter.sendMail(
+            {
+                from: "No-Reply <no-reply@example.com>",
+                to: correo,
+                subject: "Activación de cuenta",
+                html: `
+                    <p>Hola ${nombreComercio},</p>
+                    <p>Gracias por registrarte. Para activar tu cuenta, haz clic en el siguiente enlace:</p>
+                    <a href="${process.env.APP_URL}/auth/activate/${token}">Activar mi cuenta</a>
+                `,
+            },
+            (err) => {
+                if (err) {
+                    console.log("Error al enviar el email:", err);
+                    return res.render("404", { pageTitle: "Error al enviar el correo de activación." });
+                }
+            }
+        );
+
+        console.log("Enlace de activación:", `${process.env.APP_URL}/auth/activate/${token}`);
+
         res.render("auth/registro-comercio", {
             pageTitle: "Registro de Comercio",
             success: "Registro exitoso. Revisa tu correo para activar tu cuenta.",
@@ -227,6 +276,9 @@ exports.registerComercio = async (req, res) => {
 
 
 exports.resetForm = (req, res) => {
+    if (req.session.isLoggedIn) {
+        return res.redirect(`/${req.session.rol}/home`);
+    }
     res.render("auth/reset-password", { pageTitle: "Restablecer Contraseña" });
 };
 
@@ -269,6 +321,9 @@ exports.resetToken = async (req, res) => {
 
 // Render new password form
 exports.passwordForm = (req, res) => {
+    if (req.session.isLoggedIn) {
+        return res.redirect(`/${req.session.rol}/home`);
+    }
     try {
     const { token } = req.params;
 
@@ -316,24 +371,32 @@ exports.activateAccount = async (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.SECRET);
 
+       
         const user = await Usuario.findOne({ where: { id: decoded.id } });
 
         if (!user) {
             return res.render("404", { pageTitle: "Usuario no encontrado." });
         }
 
+  
         await Usuario.update({ activo: true }, { where: { id: user.id } });
-
 
         req.session.isLoggedIn = true;
         req.session.userId = user.id;
         req.session.rol = user.rol;
 
-        return res.redirect(`/${user.rol}/home`);
+        res.render("auth/activation-success", {
+            pageTitle: "Cuenta Activada",
+            message: "Tu cuenta ha sido activada exitosamente. Redirigiendo...",
+            redirectUrl: `/${user.rol}/home`,
+        });
 
     } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.render("404", { pageTitle: "El enlace de activación ha expirado." });
+        }
         console.error(error);
-        res.render("404", { pageTitle: "Error al activar la cuenta. Intente más tarde." });
+        return res.render("404", { pageTitle: "Error al activar la cuenta. Intente más tarde." });
     }
 };
 
