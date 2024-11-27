@@ -83,10 +83,10 @@ ProductoPedido.associate({ Pedido, Producto });
 TipoComercio.associate({ Comercio });
 
 app.use('/', authRoute); 
-app.use('/cliente', clienteRoute); 
-/*app.use('/admin', adminRoute);
-app.use('/delivery', deliveryRoute); 
-app.use('/comercio', comercioRoute); */
+app.use('/cliente', authMiddleware, clienteRoute); 
+/*app.use('/admin', authMiddleware, adminRoute);
+app.use('/delivery', authMiddleware, deliveryRoute); 
+app.use('/comercio', authMiddleware, comercioRoute); */
 app.use(errorController.get404);
 
 
@@ -100,7 +100,3 @@ connection
         console.log(err);
 });
 
-
-/*app.use('/admin', adminRoute);
-app.use('/delivery', deliveryRoute); 
-app.use('/comercio', comercioRoute); */
