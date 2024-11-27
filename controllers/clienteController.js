@@ -14,6 +14,15 @@ exports.home = async (req, res) => {
             order: [["nombre", "ASC"]]
         });
 
+        if (!tiposComercio.length === 0) {
+            return res.render("cliente/home-cliente", {
+              pageTitle: "Home",
+              tiposComercio: [],
+              message: "No existen tipos de comercio actualmente.",
+            });
+          }
+
+        
         res.render("cliente/home-cliente", { 
             pageTitle: "Home", 
             usuario,
