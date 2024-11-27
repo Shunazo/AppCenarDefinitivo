@@ -30,6 +30,11 @@ Cliente.associate = (models) => {
         onDelete: "CASCADE", 
         as: "direcciones" 
     });
+    Cliente.hasMany(models.Favorito, {
+        foreignKey: "clienteId",
+        onDelete: "CASCADE",
+        as: "favoritos"
+    })
 };
 
 module.exports = Cliente;

@@ -22,6 +22,7 @@ const Pedido = require("./models/pedido");
 const Producto = require("./models/producto");
 const ProductoPedido = require("./models/productopedido");
 const TipoComercio = require("./models/tipocomercio");
+const Favorito = require("./models/favorito");
 const Configuracion = require("./models/configuracion");
 
 const authRoute = require("./routes/auth");
@@ -65,6 +66,7 @@ app.use(session({
     cookie: { 
         httpOnly: true, 
         secure: false, 
+        maxAge: 60 * 1000
     },
 }));
 
@@ -73,25 +75,26 @@ app.use(flash());
 Usuario.associate({ Administrador, Cliente, Comercio, Delivery });
 Administrador.associate({ Usuario });
 Categoria.associate({ Comercio, Producto });
-Cliente.associate({ Usuario, Pedido, Direccion });
-Comercio.associate({ Usuario, TipoComercio, Categoria, Pedido });
+Cliente.associate({ Usuario, Pedido, Direccion, Favorito });
+Comercio.associate({ Usuario, TipoComercio, Categoria, Pedido, Producto });
 Delivery.associate({ Usuario, Pedido });
 Direccion.associate({ Cliente });
 Pedido.associate({ Cliente, Comercio, Delivery, Direccion, ProductoPedido });
 Producto.associate({ Categoria, ProductoPedido });
 ProductoPedido.associate({ Pedido, Producto });
 TipoComercio.associate({ Comercio });
+Favorito.associate({ Cliente });
 
 app.use('/', authRoute); 
 app.use('/cliente', authMiddleware, clienteRoute); 
-/*app.use('/admin', authMiddleware, adminRoute);
 app.use('/delivery', authMiddleware, deliveryRoute); 
+/*app.use('/admin', authMiddleware, adminRoute);
 app.use('/comercio', authMiddleware, comercioRoute); */
 app.use(errorController.get404);
 
 
 connection
-    .sync({})
+    .sync({ force : true })
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);
