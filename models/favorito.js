@@ -23,7 +23,14 @@ Favorito.associate = (models) => {
         foreignKey: "usuarioId",
         onDelete: "CASCADE",
         as: "cliente"
-    })
+    });
+    Favorito.belongsTo(models.Comercio, {
+        foreignKey: "comercioId",
+        onDelete: "CASCADE",
+        as: "comercio"
+    });
 };
+
+
 
 module.exports = Favorito;

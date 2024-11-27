@@ -83,7 +83,7 @@ Pedido.associate({ Cliente, Comercio, Delivery, Direccion, ProductoPedido });
 Producto.associate({ Categoria, ProductoPedido });
 ProductoPedido.associate({ Pedido, Producto });
 TipoComercio.associate({ Comercio });
-Favorito.associate({ Cliente });
+Favorito.associate({ Cliente, Comercio });
 
 app.use('/', authRoute); 
 app.use('/cliente', authMiddleware, clienteRoute); 
@@ -94,7 +94,7 @@ app.use(errorController.get404);
 
 
 connection
-    .sync({ force : true })
+    .sync({})
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);

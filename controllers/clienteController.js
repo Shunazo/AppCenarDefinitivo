@@ -4,6 +4,7 @@ const Pedido = require("../models/pedido");
 const Direccion = require("../models/direccion");
 const Favorito = require("../models/favorito");
 const tipoComercio = require("../models/tipocomercio");
+const Comercio = require("../models/comercio");
 
 exports.home = async (req, res) => {
     try {
@@ -39,191 +40,498 @@ exports.perfil = async (req, res) => {
     }
 };
 
-//de aqui para abajo esta to meco todo, tengo que refactorizar y jodienda, no haga na
-exports.editperfilForm = async (req, res) => {
+exports.tipoComercio = async (req, res) => {
     try {
-        const usuarioId = req.session.usuario.id;
-        const usuarioRecord = await Usuario.findByPk(req.session.usuario.id);
+      const tipoId = req.params.tipoId; 
+      const searchQuery = req.query.search ? req.query.search.toLowerCase() : "";
+      const usuarioId = req.session.usuario.id; 
+  
+     
+      const comercios = await Comercio.findAll({
+        where: { tipoComercioId: tipoId },
+        attributes: ["id", "nombreComercio", "logo"],
+        order: [["nombre", "ASC"]],
+      });
+  
+      
+      const favoritos = await Favorito.findAll({
+        where: { usuarioId },
+        attributes: ["comercioId"], 
+      });
+      
+      const favoritosSet = new Set(favoritos.map(fav => fav.comercioId));
+  
+      const filteredComercios = searchQuery
+        ? comercios.filter((comercio) =>
+            comercio.nombreComercio.toLowerCase().includes(searchQuery)
+          )
+        : comercios;
+  
+      const tipoComercio = await TipoComercio.findByPk(tipoId, {
+        attributes: ["nombre"],
+      });
+  
+      if (!tipoComercio) {
+        return res.status(404).render("404", { pageTitle: "Tipo de Comercio no encontrado" });
+      }
+  
+      const comerciosWithFavoritoStatus = filteredComercios.map((comercio) => {
+        return {
+          ...comercio.dataValues,
+          isFavorito: favoritosSet.has(comercio.id),
+          catalogoUrl: `/catalogo/${comercio.id}`, 
+        };
+      });
+  
+      res.render("cliente/tipo-comercio", {
+        pageTitle: `Comercios de tipo ${tipoComercio.nombre}`,
+        tipoNombre: tipoComercio.nombre,
+        comercios: comerciosWithFavoritoStatus, 
+        cantidad: filteredComercios.length,
+        search: req.query.search,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al cargar los comercios." });
+    }
+};
 
+  
+  exports.toggleFavorito = async (req, res) => {
+    try {
+      const comercioId = req.params.id;
+      const usuarioId = req.session.usuario.id;
+      const tipoId = req.params.tipoId; 
+  
+     
+      const favorito = await Favorito.findOne({
+        where: { usuarioId, comercioId },
+      });
+  
+     
+      if (favorito) {
+        await favorito.destroy();
+      } else {
+        await Favorito.create({ usuarioId, comercioId });
+      }
+  
+      if (tipoId) {
+        res.redirect(`/cliente/tipo-comercio/${tipoId}`);
+      } else {
+        res.redirect("/cliente/favoritos");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al procesar favorito." });
+    }
+  };
+  
+
+  exports.favoritos = async (req, res) => {
+    try {
+      const usuarioId = req.session.usuario.id; 
+      
+      const favoritos = await Favorito.findAll({
+        where: { usuarioId },
+        include: { model: Comercio, as: "comercio" }, 
+      });
+  
+     
+      if (favoritos.length === 0) {
+        return res.render("cliente/misFavoritos", {
+          pageTitle: "Mis Favoritos",
+          favoritos: [],
+          message: "No tienes comercios favoritos.",
+        });
+      }
+  
+     
+      res.render("cliente/misFavoritos", {
+        pageTitle: "Mis Favoritos",
+        favoritos: favoritos.map(fav => fav.comercio),
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al cargar los comercios favoritos." });
+    }
+  };
+  
+  exports.catalogo = async (req, res) => {
+    try {
+      const comercioId = req.params.comercioId;
+      const comercio = await Comercio.findByPk(comercioId, {
+        include: [
+          {
+            model: Categoria,
+            as: "categorías",
+            include: [
+              {
+                model: Producto,
+                as: "productos",
+              }
+            ]
+          }
+        ]
+      });
+  
+      if (!comercio) {
+        return res.status(404).render("404", { pageTitle: "Comercio no encontrado" });
+      }
+  
+      const cart = req.session.cart || [];
+  
+      res.render("cliente/catalogo-comercio", {
+        pageTitle: `Catálogo de ${comercio.nombreComercio}`,
+        comercio,
+        cart,
+        itbis: await Configuracion.findOne() 
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al cargar el catálogo." });
+    }
+  };
+  
+  exports.addToCart = async (req, res) => {
+    try {
+      const productoId = req.params.productoId;
+      const producto = await Producto.findByPk(productoId);
+  
+      if (!producto) {
+        return res.status(404).json({ error: "Producto no encontrado" });
+      }
+  
+   
+      if (!req.session.cart) {
+        req.session.cart = [];
+      }
+  
+      
+      const existingProduct = req.session.cart.find(item => item.id === producto.id);
+  
+      if (existingProduct) {
+       
+        return res.redirect(`/catalogo/${req.params.comercioId}`);
+      } else {
+        
+        req.session.cart.push({
+          id: producto.id,
+          nombre: producto.nombre,
+          precio: producto.precio,
+          cantidad: 1,
+        });
+      }
+  
+      
+      res.redirect(`/catalogo/${req.params.comercioId}`);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al agregar producto al carrito." });
+    }
+  };
+
+  exports.renderCart = async (req, res) => {
+    try {
+        const cart = req.session.cart || [];
+        const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);  
+        const itbisConfig = await Configuracion.findOne();
+        const itbisRate = itbisConfig ? itbisConfig.itbis : 18;  
+        const itbisTotal = total * itbisRate / 100;  
+        const grandTotal = total + itbisTotal;  
+
+        res.render("cliente/miCarrito", {
+            pageTitle: "Mi Carrito",
+            cart,
+            total,
+            itbisRate,
+            itbisTotal,
+            grandTotal,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al cargar el carrito." });
+    }
+};
+
+exports.removeFromCart = (req, res) => {
+    try {
+        const { productoId } = req.params;
+        let cart = req.session.cart || [];
+
+        cart = cart.filter(item => item.id !== parseInt(productoId));
+
+        req.session.cart = cart;  
+        res.redirect("cliente/miCarrito");  
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al eliminar el producto del carrito." });
+    }
+};
+
+
+  exports.checkout = async (req, res) => {
+    try {
+      const { direccionId } = req.body;  
+      const cart = req.session.cart || [];
+  
+     
+      if (!direccionId) {
+        return res.status(400).json({ error: "Debe seleccionar una dirección." });
+      }
+  
+     
+      if (cart.length === 0) {
+        return res.status(400).json({ error: "El carrito está vacío." });
+      }
+  
+      
+      const itbisConfig = await Configuracion.findOne();
+      if (!itbisConfig) {
+        return res.status(500).json({ error: "Configuración de ITBIS no encontrada." });
+      }
+      
+      const itbisRate = itbisConfig.itbis || 18;  
+      
+      const subtotal = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+  
+      const total = subtotal + (subtotal * itbisRate / 100);
+  
+    
+      const pedido = await Pedido.create({
+        estado: "pendiente",  
+        subtotal,
+        itbis: (subtotal * itbisRate / 100),
+        total,
+        fechaHora: new Date(),  
+        clienteId: req.session.usuario.id, 
+        comercioId: req.params.comercioId,  
+        direccionId,  
+      });
+  
+    
+      for (const item of cart) {
+        await ProductoPedido.create({
+          cantidad: item.cantidad,  
+          precio: item.precio,  
+          pedidoId: pedido.id,  
+          productoId: item.id,  
+        });
+      }
+  
+     
+      req.session.cart = [];
+  
+     
+      res.redirect("cliente/home-cliente");
+  
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al procesar el pedido." });
+    }
+  };
+  
+
+  
+
+
+
+exports.editPerfilForm = async (req, res) => {
+    try {
+        const usuarioRecord = await Usuario.findByPk(req.session.usuario.id);
+        
         if (!usuarioRecord) {
             return res.status(404).json({ error: "Usuario no encontrado." });
         }
 
-        res.render("cliente/editar-perfil", { 
+        res.render("cliente/edit-perfil-cliente", {
             pageTitle: "Editar Perfil",
             usuario: usuarioRecord.dataValues,
-            currentImage: usuarioRecord.fotoPerfil
-         });
+            currentImage: usuarioRecord.fotoPerfil || null 
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error al cargar el formulario." });
+        res.status(500).json({ error: "Error al cargar el formulario de edición." });
     }
 };
 
-
-exports.editperfil = async (req, res) => {
+  
+exports.editPerfil = async (req, res) => {
     try {
-        const { nombre, email, password } = req.body;
-        if (!nombre || !email) {
-            return res.status(400).json({ error: "Nombre y correo son obligatorios." });
+        const usuarioRecord = await Usuario.findByPk(req.session.usuario.id);
+        
+        if (!usuarioRecord) {
+            return res.render("404", { pageTitle: "Usuario no encontrado." });
         }
-        const usuario = await Usuario.findByPk(req.session.usuario.id);
-        usuario.nombre = nombre;
-        usuario.email = email;
-        if (password) {
-            usuario.password = await bcrypt.hash(password, 10);
+
+        const { nombre, apellido, email, telefono } = req.body;
+        
+       
+        const fotoPerfil = req.files && req.files.fotoPerfil ? "/" + req.files.fotoPerfil[0].filename : usuario.fotoPerfil;
+
+      
+        if (!req.files && !fotoPerfil) {
+            return res.render("404", { pageTitle: "La imagen es obligatoria." });
         }
-        await usuario.save();
+
+        await usuario.update({
+            nombre,
+            apellido,
+            email,
+            telefono,
+            fotoPerfil,
+        });
+
         res.redirect("/cliente/perfil");
+
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al actualizar el perfil." });
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
     }
 };
 
 
-exports.ordenes = async (req, res) => {
+
+
+exports.pedidos = async (req, res) => {
     try {
-        const ordenes = await Orden.findAll({ where: { usuarioId: req.session.usuario.id } });
-        res.render("cliente/ordenes", { ordenes });
+      const usuarioId = req.session.usuario.id;
+      const pedidos = await Pedido.findAll({ where: { clienteId: usuarioId } });
+  
+      res.render("cliente/misPedidos", {
+        pageTitle: "Mis Pedidos",
+        pedidos: pedidos.map(pedido => pedido.dataValues),
+      });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar las órdenes." });
+      console.error(error);
+      res.status(500).json({ error: "Error al cargar los pedidos." });
     }
-};
-
-
-exports.ordenDetalle = async (req, res) => {
+  };
+  
+  exports.pedidoDetalle = async (req, res) => {
     try {
-        const orden = await Orden.findByPk(req.params.id);
-        if (!orden || orden.usuarioId !== req.session.usuario.id) {
-            return res.status(404).json({ error: "Orden no encontrada." });
-        }
-        res.render("cliente/ordenDetalle", { orden });
+      const pedidoId = req.params.id;
+      const pedidoRecord = await Pedido.findByPk(pedidoId, {
+        include: [
+          {
+            model: Producto,
+            as: "productos",
+            through: { attributes: ["cantidad", "precio"] },
+          },
+        ],
+      });
+  
+      if (!pedidoRecord) {
+        return res.status(404).render("404", { pageTitle: "Pedido no encontrado" });
+      }
+  
+      res.render("cliente/pedido-detalle", {
+        pageTitle: `Detalles del Pedido ${pedidoId}`,
+        pedido: pedidoRecord.dataValues,
+      });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar el detalle de la orden." });
+      console.error(error);
+      res.status(500).json({ error: "Error al cargar los detalles del pedido." });
     }
-};
+  };
+  
+
 
 
 exports.direcciones = async (req, res) => {
     try {
-        const direcciones = await Direccion.findAll({ where: { usuarioId: req.session.usuario.id } });
-        res.render("cliente/direcciones", { direcciones });
+        const usuarioId = req.session.usuario.id;
+        const direcciones = await Direccion.findAll({
+            where: { clienteId: usuarioId },
+        });
+
+        res.render("cliente/misDirecciones", {
+            pageTitle: "Mis Direcciones",
+            direcciones: direcciones.map(direccion => direccion.dataValues),
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al cargar las direcciones." });
     }
 };
 
-
 exports.createdireccionForm = (req, res) => {
-    res.render("cliente/createDireccion");
+    res.render("cliente/crear-direccion", { pageTitle: "Crear Dirección" });
 };
-
 
 exports.createdireccion = async (req, res) => {
     try {
-        const { calle, ciudad, estado, codigoPostal } = req.body;
-        if (!calle || !ciudad || !estado || !codigoPostal) {
-            return res.status(400).json({ error: "Todos los campos son obligatorios." });
-        }
-        await Direccion.create({
-            usuarioId: req.session.usuario.id,
-            calle,
-            ciudad,
-            estado,
-            codigoPostal,
+        const { nombre, descripcion } = req.body;
+        const direccionRecord = await Direccion.create({
+            clienteId: req.session.usuario.id,
+            nombre,
+            descripcion,
         });
-        res.redirect("/cliente/direcciones");
+
+        res.redirect("/cliente/misDirecciones");
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al crear la dirección." });
     }
 };
 
-
 exports.editdireccionForm = async (req, res) => {
     try {
-        const direccion = await Direccion.findByPk(req.params.id);
-        if (!direccion || direccion.usuarioId !== req.session.usuario.id) {
-            return res.status(404).json({ error: "Dirección no encontrada." });
+        const direccionId = req.params.id;
+        const direccionRecord = await Direccion.findByPk(direccionId);
+
+        if (!direccionRecord) {
+            return res.status(404).render("404", { pageTitle: "Dirección no encontrada" });
         }
-        res.render("cliente/editDireccion", { direccion });
+
+        res.render("cliente/editar-direccion", {
+            pageTitle: "Editar Dirección",
+            direccion: direccionRecord.dataValues,
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error al cargar el formulario." });
+        res.status(500).json({ error: "Error al cargar el formulario de edición de dirección." });
     }
 };
 
-
 exports.editdireccion = async (req, res) => {
     try {
-        const direccion = await Direccion.findByPk(req.params.id);
-        if (!direccion || direccion.usuarioId !== req.session.usuario.id) {
+        const direccionId = req.params.id;
+        const { nombre, descripcion } = req.body;
+
+        const direccionRecord = await Direccion.findByPk(direccionId);
+
+        if (!direccionRecord) {
             return res.status(404).json({ error: "Dirección no encontrada." });
         }
-        const { calle, ciudad, estado, codigoPostal } = req.body;
-        direccion.calle = calle;
-        direccion.ciudad = ciudad;
-        direccion.estado = estado;
-        direccion.codigoPostal = codigoPostal;
-        await direccion.save();
-        res.redirect("/cliente/direcciones");
+
+        await direccionRecord.update({
+            nombre,
+            descripcion,
+        });
+
+        res.redirect("/cliente/misDirecciones");  
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error al editar la dirección." });
+        res.status(500).json({ error: "Error al actualizar la dirección." });
     }
 };
 
 
 exports.deletedireccion = async (req, res) => {
     try {
-        const direccion = await Direccion.findByPk(req.params.id);
-        if (!direccion || direccion.usuarioId !== req.session.usuario.id) {
+        const direccionId = req.params.id;
+
+        const direccionRecord = await Direccion.findByPk(direccionId);
+
+        if (!direccionRecord) {
             return res.status(404).json({ error: "Dirección no encontrada." });
         }
-        await direccion.destroy();
-        res.redirect("/cliente/direcciones");
+
+        await direccionRecord.destroy(); 
+
+        res.redirect("/cliente/direcciones");  
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al eliminar la dirección." });
     }
 };
-
-exports.favoritos = async (req, res) => {
-    try {
-        const favoritos = await Favorito.findAll({
-            where: { usuarioId: req.session.usuario.id },
-            include: { model: Comercio, as: "comercio" }, 
-        });
-        res.render("cliente/favoritos", { favoritos });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar favoritos." });
-    }
-};
-
-
-exports.toggleFavorito = async (req, res) => {
-    try {
-        const comercioId = req.params.id; 
-        const favorito = await Favorito.findOne({
-            where: { usuarioId: req.session.usuario.id, comercioId },
-        });
-
-        if (favorito) {
-            await favorito.destroy(); 
-        } else {
-            await Favorito.create({ usuarioId: req.session.usuario.id, comercioId });
-        }
-
-        res.redirect("/cliente/favoritos");
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al procesar favorito." });
-    }
-};
-
-
