@@ -5,7 +5,6 @@ const authMiddleware = require("../middleware/is-auth");
 
 // Home and Profile
 router.get("/home", authMiddleware, clienteController.home); 
-router.get("/perfil", authMiddleware, clienteController.perfil);
 router.get("/perfil/edit", authMiddleware, clienteController.editPerfilForm);  
 router.post("/perfil/edit", authMiddleware, clienteController.editPerfil);  
 

@@ -37,20 +37,62 @@ exports.home = async (req, res) => {
     }
 };
 
-exports.perfil = async (req, res) => {
-    try {
-        const usuario = await Usuario.findByPk(req.session.userId);
+exports.editPerfilForm = async (req, res) => {
+  try {
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
+      
+      if (!usuarioRecord) {
+          return res.status(404).json({ error: "Usuario no encontrado." });
+      }
 
-        res.render("cliente/perfil-cliente", { 
-            pageTitle: "Perfil",
-            usuario: usuario ? usuario.dataValues : null 
-          });
-
-    } catch (error) {
-        console.log(error);
-        res.render("404", { pageTitle: "Error al cargar el perfil. Intente más tarde." });
-    }
+      res.render("cliente/perfil-cliente", {
+          pageTitle: "Editar Perfil",
+          usuario: usuarioRecord.dataValues,
+          currentImage: usuarioRecord.fotoPerfil || null 
+      });
+  } catch (error) {
+      console.log(error);
+      res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+  }
 };
+
+
+exports.editPerfil = async (req, res) => {
+  try {
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
+      
+      if (!usuarioRecord) {
+          return res.render("404", { pageTitle: "Usuario no encontrado." });
+      }
+
+      const { nombre, apellido, email, telefono } = req.body;
+      
+     
+      const fotoPerfil = req.files && req.files.fotoPerfil ? "/images/" + req.files.fotoPerfil[0].filename : usuarioRecord.fotoPerfil;
+
+    
+      if (!req.files && !fotoPerfil) {
+          return res.render("404", { pageTitle: "La imagen es obligatoria." });
+      }
+
+      await usuarioRecord.update({
+          nombre,
+          apellido,
+          email,
+          telefono,
+          fotoPerfil,
+      });
+
+      res.redirect("/cliente/home");
+
+  } catch (error) {
+      console.log(error);
+      res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+  }
+};
+
+
+
 
 exports.tipoComercio = async (req, res) => {
     try {
@@ -342,67 +384,6 @@ exports.removeFromCart = (req, res) => {
     }
   };
   
-
-  
-
-
-
-exports.editPerfilForm = async (req, res) => {
-    try {
-        const usuarioRecord = await Usuario.findByPk(req.session.userId);
-        
-        if (!usuarioRecord) {
-            return res.status(404).json({ error: "Usuario no encontrado." });
-        }
-
-        res.render("cliente/edit-perfil-cliente", {
-            pageTitle: "Editar Perfil",
-            usuario: usuarioRecord.dataValues,
-            currentImage: usuarioRecord.fotoPerfil || null 
-        });
-    } catch (error) {
-        console.log(error);
-        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
-    }
-};
-
-  
-exports.editPerfil = async (req, res) => {
-    try {
-        const usuarioRecord = await Usuario.findByPk(req.session.userId);
-        
-        if (!usuarioRecord) {
-            return res.render("404", { pageTitle: "Usuario no encontrado." });
-        }
-
-        const { nombre, apellido, email, telefono } = req.body;
-        
-       
-        const fotoPerfil = req.files && req.files.fotoPerfil ? "/" + req.files.fotoPerfil[0].filename : usuario.fotoPerfil;
-
-      
-        if (!req.files && !fotoPerfil) {
-            return res.render("404", { pageTitle: "La imagen es obligatoria." });
-        }
-
-        await usuarioRecord.update({
-            nombre,
-            apellido,
-            email,
-            telefono,
-            fotoPerfil,
-        });
-
-        res.redirect("/cliente/perfil");
-
-    } catch (error) {
-        console.log(error);
-        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
-    }
-};
-
-
-
 
 exports.pedidos = async (req, res) => {
     try {
