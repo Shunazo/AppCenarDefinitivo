@@ -66,7 +66,6 @@ app.use(session({
     cookie: { 
         httpOnly: true, 
         secure: false, 
-        maxAge: 60 * 1000
     },
 }));
 
@@ -87,9 +86,10 @@ Favorito.associate({ Cliente, Comercio });
 
 app.use('/', authRoute); 
 app.use('/cliente', authMiddleware, clienteRoute); 
-app.use('/delivery', authMiddleware, deliveryRoute); 
-/*app.use('/admin', authMiddleware, adminRoute);
-app.use('/comercio', authMiddleware, comercioRoute); */
+app.use('/admin', authMiddleware, adminRoute);
+
+app.use('/delivery', authMiddleware, deliveryRoute); // aun le faltan cosas
+/*app.use('/comercio', authMiddleware, comercioRoute); */
 app.use(errorController.get404);
 
 

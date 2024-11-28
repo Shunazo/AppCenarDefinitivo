@@ -1,0 +1,65 @@
+<!-- crea un navbar con las opciones de a donde puede ir un admin, osea el home, clientes, comercios, asi como en la pokedex o el gestor de cine -->
+
+<!-- En la pantalla inicial de un administrador se mostrará un menú con las siguientes opciones:
+● Home
+● Listado de clientes
+● Listado de delivery
+● Listado de comercios
+● Mantenimiento de configuración
+● Mantenimiento de administradores
+● Mantenimiento de tipo de comercios
+● Cerrar session(se destruye la sesión y se redirecciona al usuario a la pantalla de
+login)
+
+
+Aparte del menú debe mostrar en esa pantalla los siguientes indicadores:
+* Las cantidades de pedidos que se han realizado en el sistema desde el inicio de los
+tiempos(desde que se creó) y los pedidos de ese día.
+* Las cantidades de comercios activos e inactivos que hay.
+* Las cantidades de clientes activos e inactivos que hay.
+* Las cantidades de delivery activos e inactivos que hay.
+* Las cantidades de productos creados.
+-->
+
+
+<!--
+
+Estos mensajes dejalos en caso de que no haya algo creado
+ya sea pedidos comercios o lo que tu quiera la verdad pero dejalo por ahi
+como los mensajes en el login
+
+{{#if missingData.pedidosHoy}}
+    <p>{{missingData.pedidosHoy}}</p>
+{{/if}}
+
+{{#if missingData.totalPedidos}}
+    <p>{{missingData.totalPedidos}}</p>
+{{/if}}
+
+{{#if missingData.comerciosActivos}}
+    <p>{{missingData.comerciosActivos}}</p>
+{{/if}}
+
+{{#if missingData.comerciosInactivos}}
+    <p>{{missingData.comerciosInactivos}}</p>
+{{/if}}
+
+{{#if missingData.clientesActivos}}
+    <p>{{missingData.clientesActivos}}</p>
+{{/if}}
+
+{{#if missingData.clientesInactivos}}
+    <p>{{missingData.clientesInactivos}}</p>
+{{/if}}
+
+{{#if missingData.deliveriesActivos}}
+    <p>{{missingData.deliveriesActivos}}</p>
+{{/if}}
+
+{{#if missingData.deliveriesInactivos}}
+    <p>{{missingData.deliveriesInactivos}}</p>
+{{/if}}
+
+{{#if missingData.productos}}
+    <p>{{missingData.productos}}</p>
+{{/if}}

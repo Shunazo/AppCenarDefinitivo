@@ -1,9 +1,10 @@
-/*const express = require("express");
+const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
 const authMiddleware = require("../middleware/is-auth");
 
 router.get("/", authMiddleware, adminController.home); 
+
 
 router.get("/clientes", authMiddleware, adminController.clientes); 
 router.post("/clientes/activate/:id([0-9]+)", authMiddleware, adminController.activateCliente); 
@@ -16,7 +17,7 @@ router.post("/deliveries/deactivate/:id([0-9]+)", authMiddleware, adminControlle
 router.get("/comercios", authMiddleware, adminController.comercios); 
 router.post("/comercios/activate/:id([0-9]+)", authMiddleware, adminController.activateComercio); 
 router.post("/comercios/deactivate/:id([0-9]+)", authMiddleware, adminController.deactivateComercio);
-
+/*
 router.get("/config", authMiddleware, adminController.config);
 router.get("/config/edit", authMiddleware, adminController.editconfigForm);
 router.post("/config/edit", authMiddleware, adminController.editconfig); 
@@ -38,6 +39,5 @@ router.get("/tipo-comercio/edit/:id([0-9]+)", authMiddleware, adminController.ed
 router.post("/tipo-comercio/edit/:id([0-9]+)", authMiddleware, adminController.edittipoComercio); 
 router.post("/tipo-comercio/delete/:id([0-9]+)", authMiddleware, adminController.deletetipoComercio);
 
-
-module.exports = router;
 */
+module.exports = router;

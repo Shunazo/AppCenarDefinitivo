@@ -44,8 +44,8 @@ exports.perfil = async (req, res) => {
             usuario: usuario.map(u => u.dataValues) });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar el perfil." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al cargar el perfil. Intente más tarde." });
     }
 };
 
@@ -100,8 +100,8 @@ exports.tipoComercio = async (req, res) => {
         search: req.query.search,
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al cargar los comercios." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al cargar el tipo de comercio. Intente más tarde." });
     }
 };
 
@@ -130,8 +130,8 @@ exports.tipoComercio = async (req, res) => {
         res.redirect("/cliente/favoritos");
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al procesar favorito." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al procesar solicitud. Intente más tarde." });
     }
   };
   
@@ -160,8 +160,8 @@ exports.tipoComercio = async (req, res) => {
         favoritos: favoritos.map(fav => fav.comercio),
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al cargar los comercios favoritos." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al cargar los favoritos. Intente más tarde." });
     }
   };
   
@@ -196,8 +196,8 @@ exports.tipoComercio = async (req, res) => {
         itbis: await Configuracion.findOne() 
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al cargar el catálogo." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al cargar el catálogo. Intente más tarde." });
     }
   };
   
@@ -234,8 +234,8 @@ exports.tipoComercio = async (req, res) => {
       
       res.redirect(`/catalogo/${req.params.comercioId}`);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al agregar producto al carrito." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al agregar al carrito. Intente más tarde." });
     }
   };
 
@@ -257,8 +257,8 @@ exports.tipoComercio = async (req, res) => {
             grandTotal,
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar el carrito." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al cargar el carrito. Intente más tarde." });
     }
 };
 
@@ -272,8 +272,8 @@ exports.removeFromCart = (req, res) => {
         req.session.cart = cart;  
         res.redirect("cliente/miCarrito");  
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al eliminar el producto del carrito." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al eliminar del carrito. Intente más tarde." });
     }
 };
 
@@ -334,8 +334,8 @@ exports.removeFromCart = (req, res) => {
       res.redirect("cliente/home-cliente");
   
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al procesar el pedido." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al realizar el pedido. Intente más tarde." });
     }
   };
   
@@ -358,8 +358,8 @@ exports.editPerfilForm = async (req, res) => {
             currentImage: usuarioRecord.fotoPerfil || null 
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar el formulario de edición." });
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
     }
 };
 
@@ -411,8 +411,8 @@ exports.pedidos = async (req, res) => {
         pedidos: pedidos.map(pedido => pedido.dataValues),
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al cargar los pedidos." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al cargar los pedidos. Intente más tarde." });
     }
   };
   
@@ -438,8 +438,8 @@ exports.pedidos = async (req, res) => {
         pedido: pedidoRecord.dataValues,
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al cargar los detalles del pedido." });
+      console.log(error);
+      res.render("404", { pageTitle: "Error al cargar el detalle del pedido. Intente más tarde." });
     }
   };
   
@@ -458,8 +458,8 @@ exports.direcciones = async (req, res) => {
             direcciones: direcciones.map(direccion => direccion.dataValues),
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar las direcciones." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al cargar las direcciones. Intente más tarde." });
     }
 };
 
@@ -478,8 +478,8 @@ exports.createdireccion = async (req, res) => {
 
         res.redirect("/cliente/misDirecciones");
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al crear la dirección." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al crear la direccion. Intente más tarde." });
     }
 };
 
@@ -497,8 +497,8 @@ exports.editdireccionForm = async (req, res) => {
             direccion: direccionRecord.dataValues,
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al cargar el formulario de edición de dirección." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al cargar la direccion. Intente más tarde." });
     }
 };
 
@@ -520,8 +520,8 @@ exports.editdireccion = async (req, res) => {
 
         res.redirect("/cliente/misDirecciones");  
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al actualizar la dirección." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al editar la direccion. Intente más tarde." });
     }
 };
 
@@ -540,7 +540,7 @@ exports.deletedireccion = async (req, res) => {
 
         res.redirect("/cliente/direcciones");  
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al eliminar la dirección." });
+       console.log(error);
+        res.render("404", { pageTitle: "Error al eliminar la direccion. Intente más tarde." });
     }
 };
