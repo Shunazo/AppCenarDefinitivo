@@ -1,8 +1,6 @@
 const Usuario = require("../models/usuario");
 const Cliente = require("../models/cliente");
 const Pedido = require("../models/pedido");
-const Direccion = require("../models/direccion");
-const Favorito = require("../models/favorito");
 const tipoComercio = require("../models/tipocomercio");
 const Comercio = require("../models/comercio");
 const { Op, where } = require("sequelize");
@@ -374,50 +372,304 @@ exports.editconfig = async (req, res) => {
 }
         
     
-
-
-
-
-
-
-
-
-
-
-// **Administradores**
 exports.administradores = async (req, res) => {
     try {
         const admins = await Usuario.findAll({
-            where: { role: 'admin' },
+            where: { rol: "administrador" },
+            include: [{ model: Administrador, as: "administrador" }]
         });
 
-        res.render("admin/administradores", { admins });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Error fetching admins");
+        res.render("administrador/home-administrador", {
+            pageTitle: "Listado de Administradores",
+            admins: admins.map(a => a.dataValues)
+        });
+
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("administrador/home-administrador", { 
+            pageTitle: "Error al cargar el listado de administradores. Intente más tarde." });
     }
 };
+
+
+exports.createAdminForm = (req, res) => {
+    res.render("administrador/crear-admin", {
+        pageTitle: "Crear Administrador"
+    });
+};
+
+
+exports.createAdmin = async (req, res) => {
+    try {
+        const { nombre, apellido, correo, telefono, password, cedula } = req.body;
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        const newUser = await Usuario.create({
+            nombre,
+            apellido,
+            correo,
+            telefono,
+            password: hashedPassword,
+            rol: "administrador",
+            activo: false
+        });
+
+        await Administrador.create({
+            usuarioId: newUser.id,
+            cedula
+        });
+
+        res.redirect("administrador/home-administrador");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error al crear el administrador");
+    }
+};
+
+
+exports.editAdminForm = async (req, res) => {
+    try {
+        const adminRecord = await Usuario.findByPk(req.params.id, {
+            include: [{ model: Administrador, as: "administrador" }]
+        });
+
+        if (!adminRecord) {
+            return res.status(404).send("Administrador no encontrado");
+        }
+
+        res.render("administrador/editar-administrador", {
+            pageTitle: "Editar Administrador",
+            usuario: adminRecord.dataValues,
+            administrador: adminRecord.administrador.dataValues
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error al cargar el administrador");
+    }
+};
+
+
+exports.editAdmin = async (req, res) => {
+    try {
+        const { nombre, apellido, correo, telefono, cedula, password, confirmar } = req.body;
+
+        const adminRecord = await Usuario.findByPk(req.params.id, {
+            include: [{ model: Administrador, as: "administrador" }]
+        });
+
+        if (!adminRecord || !adminRecord.administrador) {
+            return res.status(404).send("Administrador no encontrado");
+        }
+
+       
+        if (!nombre || !apellido || !correo || !telefono || !cedula || !password || !confirmar) {
+            return res.status(400).send("Todos los campos son obligatorios.");
+        }
+
+       
+        if (password !== confirmar) {
+            return res.status(400).send("Las contraseñas no coinciden.");
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        await adminRecord.update({
+            nombre,
+            apellido,
+            correo,
+            telefono,
+            password: hashedPassword
+        });
+
+        await adminRecord.administrador.update({ 
+            cedula 
+        });
+
+        res.redirect("administrador/home-administrador");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error al actualizar el administrador");
+    }
+};
+
+
 
 exports.activateAdmin = async (req, res) => {
     try {
-        const admin = await Usuario.findByPk(req.params.id);
-        admin.isActive = true;
-        await admin.save();
-        res.redirect("/admin/administradores");
+        const adminRecord = await Usuario.findByPk(req.params.id);
+
+        if (!adminRecord || adminRecord.rol !== "administrador") {
+            return res.status(404).send("Administrador no encontrado");
+        }
+
+        await adminRecord.update({ activo: true });
+
+        res.redirect("administrador/home-administrador");
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Error activating admin");
+        console.log(error);
+        res.status(500).send("Error al activar el administrador");
     }
 };
 
+
 exports.deactivateAdmin = async (req, res) => {
     try {
-        const admin = await Usuario.findByPk(req.params.id);
-        admin.isActive = false;
-        await admin.save();
-        res.redirect("/admin/administradores");
+        const adminRecord = await Usuario.findByPk(req.params.id);
+
+        if (!adminRecord || adminRecord.rol !== "administrador") {
+            return res.status(404).send("Administrador no encontrado");
+        }
+
+        await adminRecord.update({ activo: false });
+
+        res.redirect("administrador/home-administrador");
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Error deactivating admin");
+        console.log(error);
+        res.status(500).send("Error al desactivar el administrador");
     }
 };
+
+
+exports.tipoComercio = async (req, res) => {
+    try {
+        const tipocomercios = await tipoComercio.findAll({
+            attributes: ["nombre", "icono", "descripcion"],
+            include: [
+                {
+                    model: Comercio,
+                    as: "comercios",
+                }
+            ]
+        });
+
+        const tipocomerciosData =  tipocomercios.map(c => ({
+            ...c.dataValues,
+            comerciosCount: c.comercios ? c.comercios.length : 0,
+        }));
+
+        res.render("administrador/Listado-tipo", {
+            pageTitle: "Listado de Tipos de Comercio",
+            tipocomercios: tipocomerciosData
+        });
+    }
+    catch(error) {
+        console.log(error);
+        res.render("administrador/Listado-tipo", { 
+            pageTitle: "Error al cargar el listado de tipos de comercio. Intente más tarde." });
+    }
+};
+
+exports.createtipoComercioForm = (req, res) => {
+    res.render("administrador/crear-tipo", {
+        pageTitle: "Crear Tipo de Comercio"
+    });
+};
+
+exports.createtipoComercio = async (req, res) => {
+    try {
+        const { nombre, descripcion } = req.body;
+        const icono = "/images/" + req.files.icono[0].filename;
+
+        if (!req.files || !req.files.icono) {
+            return res.render("administrador/crear-tipo", { 
+                pageTitle: "La imagen es obligatoria." });
+        }
+
+        if (!nombre || !descripcion) {
+            return res.render("administrador/crear-tipo", { 
+                pageTitle: "Todos los campos son obligatorios." });
+        }
+
+        await tipoComercio.create({
+            nombre,
+            icono,
+            descripcion,
+        });
+
+        res.redirect("administrador/Listado-tipo");
+    } catch (error) {
+        console.log(error);
+        res.render("administrador/crear-tipo", { 
+            pageTitle: "Error al crear el tipo de comercio. Intente más tarde." });
+    }
+};
+
+exports.edittipoComercioForm = async (req, res) => {
+    try {
+        const tipocomercioRecord = await tipoComercio.findByPk(req.params.id);
+
+        if (!tipocomercioRecord) {
+            return res.status(404).send("Tipo de comercio no encontrado");
+        }
+
+        res.render("administrador/editar-tipo", {
+            pageTitle: "Editar Tipo de Comercio",
+            tipocomercio: tipocomercioRecord.dataValues,
+            currentImage: tipocomercioRecord.icono
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        res.status(500).send("Error al cargar el tipo de comercio");
+    }
+};
+
+exports.edittipoComercio = async (req, res) => {
+    try {
+        const tipocomercioRecord = await tipoComercio.findByPk(req.params.id);
+
+        if (!tipocomercioRecord) {
+            return res.status(404).send("Tipo de comercio no encontrado");
+        }
+
+        const { nombre, descripcion } = req.body;
+        const icono = req.files && req.files.icono ? "/images/" + req.files.icono[0].filename : tipocomercioRecord.icono;
+        
+
+        if (!nombre || !icono || !descripcion) {
+            return res.status(400).send("Todos los campos son obligatorios.");
+        }
+
+        if (!req.files && !req.files.icono) {
+            return res.status(400).send("La imagen es obligatoria.");
+        }
+
+        await tipoComercio.update({
+            nombre,
+            icono,
+            descripcion,
+        }, {
+            where: {
+                id: req.params.id
+            }
+        });
+
+        res.redirect("administrador/Listado-tipo");
+    } catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Error al editar el tipo de comercio. Intente más tarde." });
+    }
+};
+
+exports.deletetipoComercio = async (req, res) => {
+    try {
+        const tipocomercioRecord = await tipoComercio.findByPk(req.params.id);
+
+        if (!tipocomercioRecord) {
+            return res.status(404).send("Tipo de comercio no encontrado");
+        }
+
+        await tipocomercioRecord.destroy();
+
+        res.redirect("administrador/Listado-tipo");
+    } catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Error al eliminar el tipo de comercio. Intente más tarde." });
+    }
+};
+
+
+
+        

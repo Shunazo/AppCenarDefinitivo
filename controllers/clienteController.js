@@ -8,7 +8,7 @@ const Comercio = require("../models/comercio");
 
 exports.home = async (req, res) => {
     try {
-        const usuario = await Usuario.findOne({ where: { id: req.session.userId } });
+        const usuarioRecord = await Usuario.findOne({ where: { id: req.session.userId } });
         const tiposComercio = await tipoComercio.findAll({ 
             attributes: ["nombre", "icono"],
             order: [["nombre", "ASC"]]
@@ -18,17 +18,16 @@ exports.home = async (req, res) => {
         if (!tiposComercio.length === 0) {
             return res.render("cliente/home-cliente", {
               pageTitle: "Home",
+              usuario: usuarioRecord.dataValues,
               tiposComercio: [],
               message: "No existen tipos de comercio actualmente.",
             });
           }
 
-          console.log("FotoPerfil:", usuario?.fotoPerfil);
-
         res.render("cliente/home-cliente", { 
             pageTitle: "Home", 
-            usuario: usuario ? usuario.dataValues : null,
-            tiposComercio: tiposComercio.map(t => t.dataValues)
+            usuario: usuarioRecord.dataValues,
+            tiposComercio: tiposComercio.map(t => t.dataValues),
         });
 
     } 

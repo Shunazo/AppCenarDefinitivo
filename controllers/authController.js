@@ -80,7 +80,7 @@ exports.registerForm = (req, res) => {
 exports.register = async (req, res) => {
     try {
         const { nombre, apellido, correo, telefono, nombreUsuario, password, confirmar, rol } = req.body;
-        const fotoPerfil = "/" + req.files.fotoPerfil[0].filename;
+        const fotoPerfil = "/images/" + req.files.fotoPerfil[0].filename;
 
         console.log("datos,", req.body);
 
@@ -188,7 +188,7 @@ exports.registerComercioForm = async (req, res) => {
 exports.registerComercio = async (req, res) => {
     try {
         const { nombreComercio, telefono, correo, nombreUsuario, password, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
-        const logo = "/" + req.files.logo[0].filename;
+        const logo = "/images/" + req.files.logo[0].filename;
 
         console.log("datos,", req.body);
 

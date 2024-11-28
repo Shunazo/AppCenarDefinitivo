@@ -22,7 +22,6 @@ router.get("/config", authMiddleware, adminController.config);
 router.get("/config/edit", authMiddleware, adminController.editconfigForm);
 router.post("/config/edit", authMiddleware, adminController.editconfig); 
 
-/*
 router.get("/administradores", authMiddleware, adminController.administradores);
 router.get("/administradores/create", authMiddleware, adminController.createAdminForm);
 router.post("/administradores/create", authMiddleware, adminController.createAdmin);
@@ -38,5 +37,5 @@ router.post("/tipo-comercio/create", authMiddleware, adminController.createtipoC
 router.get("/tipo-comercio/edit/:id([0-9]+)", authMiddleware, adminController.edittipoComercioForm); 
 router.post("/tipo-comercio/edit/:id([0-9]+)", authMiddleware, adminController.edittipoComercio); 
 router.post("/tipo-comercio/delete/:id([0-9]+)", authMiddleware, adminController.deletetipoComercio);
-*/
+
 module.exports = router;
