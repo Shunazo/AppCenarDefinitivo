@@ -325,7 +325,6 @@ exports.config = async (req, res) => {
             ...c.dataValues,
         }));
 
-
         res.render("administrador/Mantenimiento-configuracion", {
              config: configData
             });
@@ -337,6 +336,44 @@ exports.config = async (req, res) => {
     }
 }
 
+exports.editconfigForm = async (req, res) => {
+    try {
+        const configRecord = await Configuracion.findOne();
+
+        if (!config) {
+            return res.status(404).send("Configuración no encontrada");
+        }
+
+        res.render("administrador/editar-configuracion", {
+             config: configRecord.dataValues
+            });
+
+    } catch (error) {
+        console.log(error);
+        res.render("administrador/editar-configuracion", 
+            { pageTitle: "Error al cargar la configuración. Intente más tarde." });
+    }
+}
+
+exports.editconfig = async (req, res) => {
+    try {
+        const configRecord = await Configuracion.findOne();
+
+        if (!config) {
+            return res.status(404).send("Configuración no encontrada");
+        }
+        const { itbis } = req.body;
+        await configRecord.update({ itbis });
+
+        res.redirect("administrador/Mantenimiento-configuracion");
+    } catch (error) {
+        console.log(error);
+        res.render("administrador/editar-configuracion", 
+            { pageTitle: "Error al editar la configuración. Intente más tarde." });
+    }
+}
+        
+    
 
 
 

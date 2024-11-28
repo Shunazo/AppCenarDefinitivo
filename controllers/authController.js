@@ -285,7 +285,7 @@ exports.resetForm = (req, res) => {
     res.render("auth/reset-password", { pageTitle: "Restablecer Contraseña" });
 };
 
-// Handle password reset request
+
 exports.resetToken = async (req, res) => {
     try {
         const { correo } = req.body;
@@ -362,7 +362,7 @@ exports.password = async (req, res) => {
 
         await Usuario.update({ password: hashedPassword }, { where: { id: payload.id } });
 
-        res.redirect("/auth/login");
+        res.redirect("/");
     } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Error al procesar solicitud. Intente más tarde." });

@@ -44,7 +44,8 @@ exports.perfil = async (req, res) => {
 
         res.render("cliente/perfil-cliente", { 
             pageTitle: "Perfil",
-            usuario: usuario ? usuario.dataValues : null });
+            usuario: usuario ? usuario.dataValues : null 
+          });
 
     } catch (error) {
         console.log(error);
@@ -112,7 +113,7 @@ exports.tipoComercio = async (req, res) => {
   exports.toggleFavorito = async (req, res) => {
     try {
       const comercioId = req.params.id;
-      const usuarioId = req.session.usuario.id;
+      const usuarioId = req.session.userId;
       const tipoId = req.params.tipoId; 
   
      
@@ -141,7 +142,7 @@ exports.tipoComercio = async (req, res) => {
 
   exports.favoritos = async (req, res) => {
     try {
-      const usuarioId = req.session.usuario.id; 
+      const usuarioId = req.session.userId; 
       
       const favoritos = await Favorito.findAll({
         where: { usuarioId },
@@ -315,7 +316,7 @@ exports.removeFromCart = (req, res) => {
         itbis: (subtotal * itbisRate / 100),
         total,
         fechaHora: new Date(),  
-        clienteId: req.session.usuario.id, 
+        clienteId: req.session.userId, 
         comercioId: req.params.comercioId,  
         direccionId,  
       });
@@ -349,7 +350,7 @@ exports.removeFromCart = (req, res) => {
 
 exports.editPerfilForm = async (req, res) => {
     try {
-        const usuarioRecord = await Usuario.findByPk(req.session.usuario.id);
+        const usuarioRecord = await Usuario.findByPk(req.session.userId);
         
         if (!usuarioRecord) {
             return res.status(404).json({ error: "Usuario no encontrado." });
@@ -369,7 +370,7 @@ exports.editPerfilForm = async (req, res) => {
   
 exports.editPerfil = async (req, res) => {
     try {
-        const usuarioRecord = await Usuario.findByPk(req.session.usuario.id);
+        const usuarioRecord = await Usuario.findByPk(req.session.userId);
         
         if (!usuarioRecord) {
             return res.render("404", { pageTitle: "Usuario no encontrado." });
@@ -385,7 +386,7 @@ exports.editPerfil = async (req, res) => {
             return res.render("404", { pageTitle: "La imagen es obligatoria." });
         }
 
-        await usuario.update({
+        await usuarioRecord.update({
             nombre,
             apellido,
             email,
@@ -406,7 +407,7 @@ exports.editPerfil = async (req, res) => {
 
 exports.pedidos = async (req, res) => {
     try {
-      const usuarioId = req.session.usuario.id;
+      const usuarioId = req.session.userId;
       const pedidos = await Pedido.findAll({ where: { clienteId: usuarioId } });
   
       res.render("cliente/misPedidos", {
@@ -451,7 +452,7 @@ exports.pedidos = async (req, res) => {
 
 exports.direcciones = async (req, res) => {
     try {
-        const usuarioId = req.session.usuario.id;
+        const usuarioId = req.session.userId;
         const direcciones = await Direccion.findAll({
             where: { clienteId: usuarioId },
         });
@@ -473,8 +474,9 @@ exports.createdireccionForm = (req, res) => {
 exports.createdireccion = async (req, res) => {
     try {
         const { nombre, descripcion } = req.body;
-        const direccionRecord = await Direccion.create({
-            clienteId: req.session.usuario.id,
+
+        await Direccion.create({
+            clienteId: req.session.userId,
             nombre,
             descripcion,
         });
