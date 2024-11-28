@@ -57,7 +57,7 @@ const imageStorage = multer.diskStorage({
         cb(null, uuidv4() + "-" + file.originalname);
     },
 });
-app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }, { name: "icono", maxCount: 1 }]));
+app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }, { name: "icono", maxCount: 1 }, { name: "imagen", maxCount: 1 }]));
 
 app.use(session({
     secret: process.env.SECRET,
@@ -94,7 +94,7 @@ app.use(errorController.get404);
 
 
 connection
-    .sync({  })
+    .sync({   })
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);

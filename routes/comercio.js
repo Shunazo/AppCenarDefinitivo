@@ -1,10 +1,14 @@
-/*const express = require("express");
+const express = require("express");
 const router = express.Router();
 const comercioController = require("../controllers/comercioController");
 const authMiddleware = require("../middleware/is-auth");
 
 router.get("/", authMiddleware, comercioController.home); 
 
+router.get("/pedidos/:id([0-9]+)", authMiddleware, comercioController.pedidoDetalle);
+router.post("/pedidos/assign/:id([0-9]+)", authMiddleware, comercioController.assignDelivery);
+
+/*
 router.get("/perfil", authMiddleware, comercioController.perfil);
 router.get("/perfil/edit", authMiddleware, comercioController.editperfilForm); 
 router.post("/perfil/edit", authMiddleware, comercioController.editperfil); 
@@ -25,11 +29,6 @@ router.get("/productos/edit/:id([0-9]+)", authMiddleware, comercioController.edi
 router.post("/productos/edit/:id([0-9]+)", authMiddleware, comercioController.editproducto); 
 router.post("/productos/delete/:id([0-9]+)", authMiddleware, comercioController.deleteproducto);
 
-
-router.get("/ordenes", authMiddleware, comercioController.ordenes); 
-router.get("/ordenes/:id([0-9]+)", authMiddleware, comercioController.ordenDetalle);
-router.post("/ordenes/assign/:id([0-9]+)", authMiddleware, comercioController.assignDelivery);
-
-
-module.exports = router; */
+*/
+module.exports = router; 
 
