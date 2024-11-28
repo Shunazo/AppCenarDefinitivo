@@ -1,0 +1,33 @@
+
+<!--
+<div class="container">
+    <h1>Detalles del Pedido</h1>
+    <div class="pedido-detail">
+        <img src="{{pedido.comercio.logo}}" alt="{{pedido.comercio.nombreComercio}}" class="comercio-logo">
+        <h2>{{pedido.comercio.nombreComercio}}</h2>
+        <p>Estado: {{pedido.estado}}</p>
+        <p>Fecha y Hora: {{pedido.fechaHora}}</p>
+
+        <h3>Productos</h3>
+        <ul>
+            {{#each pedido.productosPedido}}
+            <li>
+                <img src="/images/{{producto.imagen}}" alt="{{producto.nombre}}" class="product-image">
+                <span>{{producto.nombre}} - ${{producto.precio}}</span>
+                <span>Cantidad: {{cantidad}}</span>
+            </li>
+            {{/each}}
+        </ul>
+
+        <h3>Total: ${{pedido.total}}</h3>
+
+        {{#if pedido.estado === 'pendiente'}}
+        <form action="/comercio/pedidos/assign/{{pedido.id}}" method="POST">
+            <button type="submit" class="btn btn-primary">Asignar Delivery</button>
+        </form>
+        {{/if}}
+
+        <a href="/comercio" class="btn btn-secondary">Volver al Home</a>
+    </div>
+</div>
+-->

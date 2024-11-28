@@ -82,6 +82,15 @@ body {
 .logout {
     margin-top: auto;
     color: #DC3545;
+    border: none;
+
+    background: #a8043d;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 /* Main Content */
@@ -257,6 +266,7 @@ body {
     color: #666;
     margin-top: 0.5rem;
 }
+
 
 /* Responsive */
 @media (max-width: 768px) {
