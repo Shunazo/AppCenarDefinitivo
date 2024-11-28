@@ -46,8 +46,11 @@ exports.login = async (req, res) => {
         req.session.isLoggedIn = true;
         req.session.userId = user.id;
         req.session.rol = user.rol;
+        return req.session.save((err) => {
+            console.log(err);
+            res.redirect(`/${user.rol}/home`);
+        });
 
-        res.redirect(`/${user.rol}/home`);
     } catch (error) {
         console.error(error);
         res.render("404", { pageTitle: "Error al iniciar sesión. Intente más tarde." });

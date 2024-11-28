@@ -1,3 +1,16 @@
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("logout-btn").addEventListener("click", function() {
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/cerrar-sesion"; // Your logout endpoint
+
+        // Append the form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+    });
+});
+
+
 /*function confirmDelete(button) {
     const form = button.closest("form");
   
@@ -158,3 +171,4 @@ function limitToFourDigits(inputId) {
   
   limitToFourDigits('fechaPublicacion');
   */
+
