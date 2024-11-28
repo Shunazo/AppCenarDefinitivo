@@ -15,39 +15,35 @@
             <div class="sidebar-header">
                 <img src="https://via.placeholder.com/200x80/FF0F65/FFFFFF?text=AppCenar" alt="AppCenar Logo" class="logo">
                 <div class="user-info">
-    {{#if fotoPerfil}}
-        <img src="data:image/jpeg;base64,{{fotoPerfil}}" alt="Profile" class="user-avatar">
-    {{else}}
-        <img src="https://ui-avatars.com/api/?name={{nombre}}" alt="Profile" class="user-avatar">
-    {{/if}}
-    <span>{{nombre}}</span>
+        <img src="/images/{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
+    <span>{{usuario.nombre}}</span>
 </div>
 
 
             </div>
             
             <div class="sidebar-menu">
-                <a href="/client/home" class="menu-item active">
+                <a href="/cliente/home" class="menu-item active">
                     <i class="fas fa-home"></i>
                     <span>Inicio</span>
                 </a>
-                <a href="/client/profile" class="menu-item">
+                <a href="/cliente/perfil" class="menu-item">
                     <i class="fas fa-user"></i>
                     <span>Mi Perfil</span>
                 </a>
-                <a href="/client/orders" class="menu-item">
+                <a href="/pedidos" class="menu-item">
                     <i class="fas fa-receipt"></i>
                     <span>Mis Pedidos</span>
                 </a>
-                <a href="/client/addresses" class="menu-item">
+                <a href="/direcciones" class="menu-item">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Mis Direcciones</span>
                 </a>
-                <a href="/client/favorites" class="menu-item">
+                <a href="/favoritos" class="menu-item">
                     <i class="fas fa-heart"></i>
                     <span>Favoritos</span>
                 </a>
-                <a href="/logout" class="menu-item logout">
+                <a href="/auth/logout" class="menu-item logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Cerrar Sesión</span>
                 </a>
@@ -62,7 +58,7 @@
                     <i class="fas fa-location-dot"></i>
                     <div>
                         <span>Entregar en</span>
-                        <h6>{{user.direccionPrincipal}}</h6>
+                        <h6>{{cliente.direccion}}</h6>
                     </div>
                 </div>
                 <div class="search-bar">

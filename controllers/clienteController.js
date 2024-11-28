@@ -14,6 +14,7 @@ exports.home = async (req, res) => {
             order: [["nombre", "ASC"]]
         });
 
+  
         if (!tiposComercio.length === 0) {
             return res.render("cliente/home-cliente", {
               pageTitle: "Home",
@@ -22,10 +23,11 @@ exports.home = async (req, res) => {
             });
           }
 
-        
+          console.log("FotoPerfil:", usuario?.fotoPerfil);
+
         res.render("cliente/home-cliente", { 
             pageTitle: "Home", 
-            usuario,
+            usuario: usuario ? usuario.dataValues : null,
             tiposComercio: tiposComercio.map(t => t.dataValues)
         });
 
@@ -38,10 +40,11 @@ exports.home = async (req, res) => {
 
 exports.perfil = async (req, res) => {
     try {
-        const usuario = await Usuario.findByPk(req.session.usuario.id);
+        const usuario = await Usuario.findByPk(req.session.userId);
+
         res.render("cliente/perfil-cliente", { 
             pageTitle: "Perfil",
-            usuario: usuario.map(u => u.dataValues) });
+            usuario: usuario ? usuario.dataValues : null });
 
     } catch (error) {
         console.log(error);
@@ -53,7 +56,7 @@ exports.tipoComercio = async (req, res) => {
     try {
       const tipoId = req.params.tipoId; 
       const searchQuery = req.query.search ? req.query.search.toLowerCase() : "";
-      const usuarioId = req.session.usuario.id; 
+      const usuarioId = req.session.userId;
   
      
       const comercios = await Comercio.findAll({

@@ -61,7 +61,7 @@ exports.logout = (req, res) => {
             console.error(err);
             return res.render("404", { pageTitle: "Error al cerrar sesión. Intente más tarde." });
         }
-        res.redirect("/auth/login");
+        res.redirect("/");
     });
 };
 
