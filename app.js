@@ -57,7 +57,7 @@ const imageStorage = multer.diskStorage({
         cb(null, uuidv4() + "-" + file.originalname);
     },
 });
-app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }]));
+app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }, { name: "icono", maxCount: 1 }]));
 
 app.use(session({
     secret: process.env.SECRET,
@@ -88,14 +88,13 @@ Favorito.associate({ Cliente, Comercio });
 app.use('/', authRoute); 
 app.use('/cliente', authMiddleware, clienteRoute); 
 app.use('/admin', authMiddleware, adminRoute);
-
 app.use('/delivery', authMiddleware, deliveryRoute); // aun le faltan cosas
 /*app.use('/comercio', authMiddleware, comercioRoute); */
 app.use(errorController.get404);
 
 
 connection
-    .sync({})
+    .sync({  })
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);

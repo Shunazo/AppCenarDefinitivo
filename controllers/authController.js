@@ -46,8 +46,11 @@ exports.login = async (req, res) => {
         req.session.isLoggedIn = true;
         req.session.userId = user.id;
         req.session.rol = user.rol;
+        return req.session.save((err) => {
+            console.log(err);
+            res.redirect(`/${user.rol}/home`);
+        });
 
-        res.redirect(`/${user.rol}/home`);
     } catch (error) {
         console.error(error);
         res.render("404", { pageTitle: "Error al iniciar sesión. Intente más tarde." });
@@ -77,7 +80,7 @@ exports.registerForm = (req, res) => {
 exports.register = async (req, res) => {
     try {
         const { nombre, apellido, correo, telefono, nombreUsuario, password, confirmar, rol } = req.body;
-        const fotoPerfil = "/" + req.files.fotoPerfil[0].filename;
+        const fotoPerfil = "/images/" + req.files.fotoPerfil[0].filename;
 
         console.log("datos,", req.body);
 
@@ -185,7 +188,7 @@ exports.registerComercioForm = async (req, res) => {
 exports.registerComercio = async (req, res) => {
     try {
         const { nombreComercio, telefono, correo, nombreUsuario, password, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
-        const logo = "/" + req.files.logo[0].filename;
+        const logo = "/images/" + req.files.logo[0].filename;
 
         console.log("datos,", req.body);
 
@@ -282,7 +285,7 @@ exports.resetForm = (req, res) => {
     res.render("auth/reset-password", { pageTitle: "Restablecer Contraseña" });
 };
 
-// Handle password reset request
+
 exports.resetToken = async (req, res) => {
     try {
         const { correo } = req.body;
@@ -359,7 +362,7 @@ exports.password = async (req, res) => {
 
         await Usuario.update({ password: hashedPassword }, { where: { id: payload.id } });
 
-        res.redirect("/auth/login");
+        res.redirect("/");
     } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Error al procesar solicitud. Intente más tarde." });

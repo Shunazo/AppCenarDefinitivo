@@ -17,11 +17,10 @@ router.post("/deliveries/deactivate/:id([0-9]+)", authMiddleware, adminControlle
 router.get("/comercios", authMiddleware, adminController.comercios); 
 router.post("/comercios/activate/:id([0-9]+)", authMiddleware, adminController.activateComercio); 
 router.post("/comercios/deactivate/:id([0-9]+)", authMiddleware, adminController.deactivateComercio);
-/*
+
 router.get("/config", authMiddleware, adminController.config);
 router.get("/config/edit", authMiddleware, adminController.editconfigForm);
 router.post("/config/edit", authMiddleware, adminController.editconfig); 
-
 
 router.get("/administradores", authMiddleware, adminController.administradores);
 router.get("/administradores/create", authMiddleware, adminController.createAdminForm);
@@ -39,5 +38,4 @@ router.get("/tipo-comercio/edit/:id([0-9]+)", authMiddleware, adminController.ed
 router.post("/tipo-comercio/edit/:id([0-9]+)", authMiddleware, adminController.edittipoComercio); 
 router.post("/tipo-comercio/delete/:id([0-9]+)", authMiddleware, adminController.deletetipoComercio);
 
-*/
 module.exports = router;

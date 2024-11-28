@@ -15,13 +15,12 @@
             <div class="sidebar-header">
                 <img src="https://via.placeholder.com/200x80/FF0F65/FFFFFF?text=AppCenar" alt="AppCenar Logo" class="logo">
                 <div class="user-info">
-        <img src="/images/{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
+        <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
     <span>{{usuario.nombre}}</span>
 </div>
 
 
-            </div>
-            
+        </div>
             <div class="sidebar-menu">
                 <a href="/cliente/home" class="menu-item active">
                     <i class="fas fa-home"></i>
@@ -31,22 +30,22 @@
                     <i class="fas fa-user"></i>
                     <span>Mi Perfil</span>
                 </a>
-                <a href="/pedidos" class="menu-item">
+                <a href="/cliente/pedidos" class="menu-item">
                     <i class="fas fa-receipt"></i>
                     <span>Mis Pedidos</span>
                 </a>
-                <a href="/direcciones" class="menu-item">
+                <a href="/cliente/direcciones" class="menu-item">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Mis Direcciones</span>
                 </a>
-                <a href="/favoritos" class="menu-item">
+                <a href="/cliente/favoritos" class="menu-item">
                     <i class="fas fa-heart"></i>
                     <span>Favoritos</span>
                 </a>
-                <a href="/auth/logout" class="menu-item logout">
+                <button id="logout-btn" class="menu-item logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Cerrar Sesión</span>
-                </a>
+                </button>
             </div>
         </div>
 
@@ -180,5 +179,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/index.js"></script>
 </body>
 </html>
