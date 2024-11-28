@@ -11,6 +11,26 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('fotoPerfil');
+    const previewImage = document.getElementById('previewImage');
+
+    if (fileInput && previewImage) {
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Update the src of the image preview
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+
+
 /*function confirmDelete(button) {
     const form = button.closest("form");
   
