@@ -65,7 +65,7 @@ exports.editPerfil = async (req, res) => {
           return res.render("404", { pageTitle: "Usuario no encontrado." });
       }
 
-      const { nombre, apellido, email, telefono } = req.body;
+      const { nombre, apellido, telefono } = req.body;
       const fotoPerfil = req.files && req.files.fotoPerfil ? "/images/" + req.files.fotoPerfil[0].filename : usuarioRecord.fotoPerfil;
 
     
@@ -73,14 +73,13 @@ exports.editPerfil = async (req, res) => {
           return res.render("404", { pageTitle: "La imagen es obligatoria." });
       }
 
-      if (!nombre || !apellido || !email || !telefono) {
+      if (!nombre || !apellido || !telefono) {
           return res.render("404", { pageTitle: "Todos los campos son obligatorios." });
       }
 
       await usuarioRecord.update({
           nombre,
           apellido,
-          email,
           telefono,
           fotoPerfil,
       });

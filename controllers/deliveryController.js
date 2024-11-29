@@ -56,13 +56,69 @@ exports.home = async (req, res) => {
     }
 };
 
+exports.editperfilForm = async (req, res) => {
+    try {
+        const usuarioRecord = await Usuario.findByPk(req.session.userId);
+        
+        if (!usuarioRecord) {
+            return res.status(404).json({ error: "Usuario no encontrado." });
+        }
+  
+        res.render("delivery/perfil-delivery", {
+            pageTitle: "Editar Perfil",
+            usuario: usuarioRecord.dataValues,
+            currentImage: usuarioRecord.fotoPerfil || null 
+        });
+    } catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+  };
+
+exports.editPerfil = async (req, res) => {
+    try {
+        const usuarioRecord = await Usuario.findByPk(req.session.userId);
+        
+        if (!usuarioRecord) {
+            return res.render("404", { pageTitle: "Usuario no encontrado." });
+        }
+  
+        const { nombre, apellido, telefono } = req.body;
+        const fotoPerfil = req.files && req.files.fotoPerfil ? "/images/" + req.files.fotoPerfil[0].filename : usuarioRecord.fotoPerfil;
+  
+      
+        if (!req.files && !fotoPerfil) {
+            return res.render("404", { pageTitle: "La imagen es obligatoria." });
+        }
+  
+        if (!nombre || !apellido || !telefono) {
+            return res.render("404", { pageTitle: "Todos los campos son obligatorios." });
+        }
+  
+        await usuarioRecord.update({
+            nombre,
+            apellido,
+            telefono,
+            fotoPerfil,
+        });
+  
+        res.redirect("/cliente/home");
+  
+    } catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+  };
+  
+
 exports.pedidoDetalle = async (req, res) => {
     try {
         const pedidoRecord = await Pedido.findByPk(req.params.id, {
             include: [
                 { model: Comercio, attributes: ['nombreComercio'] },
                 { model: ProductoPedido, as: 'productosPedido', 
-                    include: [{ model: Producto, attributes: ['nombre', 'precio', 'imagen'] }] }
+                    include: [{ model: Producto, attributes: ['nombre', 'precio', 'imagen'] }] },
+                { model: Direccion, attributes: ['nombre'] }  // Include Direccion here
             ]
         });
 
@@ -70,15 +126,21 @@ exports.pedidoDetalle = async (req, res) => {
             return res.render("404", { pageTitle: "Pedido no encontrado." });
         }
 
+        const isPedidoEnProceso = pedidoRecord.estado === 'en proceso';
+        const showAddress = pedidoRecord.estado !== 'completado';
+
         res.render("delivery/detalle-pedido", {
             pageTitle: "Detalle del Pedido",
-            pedido: pedidoRecord.dataValues
+            pedido: pedidoRecord.dataValues,
+            isPedidoEnProceso,
+            showAddress,
         });
     } catch (error) {
         console.error(error);
         res.render("404", { pageTitle: "Error al cargar el detalle del pedido. Intente más tarde." });
     }
 };
+
 
 exports.completarPedido = async (req, res) => {
     try {

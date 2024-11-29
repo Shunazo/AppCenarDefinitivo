@@ -1,0 +1,36 @@
+<!--
+
+mas vainas del controlador en si (lo que deberia mostrar)
+
+
+
+<h1>{{pageTitle}}</h1>
+<h2>Pedido de: {{pedido.Comercio.nombreComercio}}</h2>
+<p>Estado: {{pedido.estado}}</p>
+<p>Fecha y Hora: {{pedido.fechaHora}}</p>
+<p>Total: ${{pedido.total}}</p>
+
+{{#if pedido.estado '===' 'en proceso'}}
+    <button id="completar-pedido">Completar Pedido</button>
+{{/if}}
+
+{{#if pedido.estado '===' 'completado'}}
+{{else}}
+    <p>Dirección de entrega: {{pedido.Direccion.direccion}}</p>
+{{/if}}
+
+<h3>Productos:</h3>
+<ul>
+    {{#each pedido.productosPedido}}
+        <li>
+            <img src="{{this.Producto.imagen}}" alt="{{this.Producto.nombre}}">
+            <p>{{this.Producto.nombre}} - ${{this.Producto.precio}} x {{this.cantidad}}</p>
+        </li>
+    {{/each}}
+</ul>
+
+
+<a href="/delivery/home">Volver al Home</a>
+
+
+-->
