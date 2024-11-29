@@ -234,8 +234,6 @@ exports.registerComercio = async (req, res) => {
 
         await Comercio.create({
             nombreComercio,
-            telefono,
-            correo,
             logo,
             horaApertura,
             horaCierre,

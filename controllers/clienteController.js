@@ -66,13 +66,15 @@ exports.editPerfil = async (req, res) => {
       }
 
       const { nombre, apellido, email, telefono } = req.body;
-      
-     
       const fotoPerfil = req.files && req.files.fotoPerfil ? "/images/" + req.files.fotoPerfil[0].filename : usuarioRecord.fotoPerfil;
 
     
       if (!req.files && !fotoPerfil) {
           return res.render("404", { pageTitle: "La imagen es obligatoria." });
+      }
+
+      if (!nombre || !apellido || !email || !telefono) {
+          return res.render("404", { pageTitle: "Todos los campos son obligatorios." });
       }
 
       await usuarioRecord.update({

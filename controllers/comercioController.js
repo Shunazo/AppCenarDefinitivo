@@ -37,10 +37,11 @@ exports.home = async (req, res) => {
                         }
                     ]
                 }
-            ]
+            ],
+            attributes: ["id", 'estado', 'fechaHora', 'total']
         });
 
-        if (!pedidos.length === 0) {
+        if (pedidos.length === 0) {
             return res.render('comercio/home-comercio', 
                 { pageTitle: 'Home', 
                     usuario: usuarioRecord.dataValues, 
@@ -128,6 +129,72 @@ exports.assignDelivery = async (req, res) => {
         res.render('404', { pageTitle: 'Error al asignar el delivery' });
     }
 };
+
+exports.editperfilForm = async (req, res) => {
+    try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId , {
+            include: [{ model: Usuario, as: "usuario" }]
+        });
+        
+        if (!comercioRecord) {
+            return res.status(404).json({ error: "Comercio no encontrado." });
+        }
+
+        res.render("comercio/perfil-comercio", {
+            pageTitle: "Editar Perfil",
+            comercio: comercioRecord.dataValues,
+            currentImage: comercioRecord.logo || null 
+        });
+    } catch (error) {
+        console.log(error);
+        res.render("404", { 
+            pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }    
+};
+
+exports.editperfil = async (req, res) => {
+    try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
+            include: [{ model: Usuario, as: "usuario" }]
+        });
+        
+        if (!comercioRecord) {
+            return res.render("404", { pageTitle: "Comercio no encontrado." });
+        }
+
+        const { horaApertura, horaCierre, telefono, correo } = req.body;
+        const logo = req.files && req.files.logo ? "/images/" + req.files.logo[0].filename : comercioRecord.logo;
+
+        if (!req.files && !logo) {
+            return res.render("404", { pageTitle: "La imagen es obligatoria." });
+        }
+
+        if (!horaApertura || !horaCierre || !telefono || !correo) {
+            return res.render("404", { pageTitle: "Todos los campos son obligatorios." });
+        }
+
+        await comercioRecord.usuario.update({
+            telefono,
+            correo,
+            fotoPerfil: logo
+        })
+
+        await comercioRecord.update({
+            horaApertura,
+            horaCierre,
+            logo
+        });
+
+        res.redirect("/comercio/home");
+    } catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.categorias
+             
+
 
 
 

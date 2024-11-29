@@ -12,14 +12,6 @@ const Comercio = connection.define("comercio", {
         type: Sequelize.STRING,
         allowNull: false
     },
-    telefono: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    correo: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
     logo: {
         type: Sequelize.STRING,
         allowNull: true

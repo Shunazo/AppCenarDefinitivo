@@ -2,27 +2,27 @@
 
 <div class="container">
     <h1>Pedidos</h1>
-    <ul class="list-group">
-        {{#each pedidos}}
-        <li class="list-group-item">
-            <div>
-                <img src="{{comercio.logo}}" alt="{{comercio.nombreComercio}}" class="comercio-logo">
-                <span>{{comercio.nombreComercio}}</span>
-                <span>{{estado}}</span>
-                <span>{{total}}</span>
-                <span>{{fechaHora}}</span>
-                <span>{{productosPedido.length}} productos</span>
-
-                <a href="/comercio/pedidos/{{id}}" class="btn btn-info">Ver detalles</a> 
-                esta parte de aca tu la puedes cambiar por un hover al pedido
-                asi que si tu le clickeas encima al pedido en cualquier parte po te manda al detalle
-                supongo
-
-
-            </div>
-        </li>
-        {{/each}}
-    </ul>
+    {{#if pedidos.length}}
+        <ul class="list-group">
+            {{#each pedidos}}
+            <a href="/comercio/pedidos/{{id}}" class="list-group-item list-group-item-action d-flex align-items-center">
+                <img src="{{comercio.logo}}" alt="{{comercio.nombreComercio}}" class="comercio-logo me-3" style="width: 50px; height: 50px;">
+                <div class="w-100">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-1">{{comercio.nombreComercio}}</h5>
+                        <small class="text-muted">{{fechaHora}}</small>
+                    </div>
+                    <p class="mb-1">
+                        Estado: {{estado}} | Productos: {{totalProductos}} | Total: ${{total}}
+                    </p>
+                </div>
+            </a>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p class="text-center">No existen pedidos actualmente.</p>
+    {{/if}}
 </div>
+
 
 -->
