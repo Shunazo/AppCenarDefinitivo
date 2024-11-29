@@ -153,6 +153,7 @@ exports.editperfilForm = async (req, res) => {
         res.render("comercio/perfil-comercio", {
             pageTitle: "Editar Perfil",
             comercio: comercioRecord.dataValues,
+            usuario: comercioRecord.usuario.dataValues,
             currentImage: comercioRecord.logo || null 
         });
     } catch (error) {
@@ -195,7 +196,7 @@ exports.editperfil = async (req, res) => {
             logo
         });
 
-        res.redirect("comercio/home");
+        res.redirect("/comercio/home");
     } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
