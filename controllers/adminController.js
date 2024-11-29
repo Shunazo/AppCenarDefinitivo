@@ -149,7 +149,7 @@ exports.activateCliente = async (req, res) => {
         await clienteRecord.usuario.update({ activo: true });
 
       
-        res.redirect("administrador/Listado-clientes");
+        res.redirect("/administrador/Listado-clientes");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error activating client");
@@ -170,7 +170,7 @@ exports.deactivateCliente = async (req, res) => {
 
         await clienteRecord.usuario.update({ activo: false });
     
-        res.redirect("administrador/Listado-clientes");
+        res.redirect("/administrador/Listado-clientes");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error deactivating client");
@@ -226,7 +226,7 @@ exports.activateDelivery = async (req, res) => {
 
         await deliveryRecord.usuario.update({ activo: true });
         
-        res.redirect("administrador/Listado-delivery")
+        res.redirect("/administrador/Listado-delivery")
     } catch (error) {
         console.log(error);
         res.status(500).send("Error activating delivery");
@@ -249,7 +249,7 @@ exports.deactivateDelivery = async (req, res) => {
         await deliveryRecord.usuario.update({ activo: false });
         
 
-        res.redirect("administrador/Listado-delivery");
+        res.redirect("/administrador/Listado-delivery");
 
     } catch (error) {
         console.log(error);
@@ -286,7 +286,7 @@ exports.comercios = async (req, res) => {
     } 
     catch (error) {
         console.log(error);
-        res.render("administrador/Listado-comercios", { pageTitle: "Error al cargar el listado de comercios. Intente más tarde." });
+        res.render("/administrador/Listado-comercios", { pageTitle: "Error al cargar el listado de comercios. Intente más tarde." });
     }
 };
 
@@ -306,7 +306,7 @@ exports.activateComercio = async (req, res) => {
         await comercioRecord.usuario.update({ activo: true });
         
 
-        res.redirect("administrador/Listado-comercios");
+        res.redirect("/administrador/Listado-comercios");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error activating comercio");
@@ -329,7 +329,7 @@ exports.deactivateComercio = async (req, res) => {
         await comercioRecord.usuario.update({ activo: false });
 
 
-        res.redirect("administrador/Listado-comercios");
+        res.redirect("/administrador/Listado-comercios");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error deactivating comercio");
@@ -388,7 +388,7 @@ exports.editconfig = async (req, res) => {
         const { itbis } = req.body;
         await configRecord.update({ itbis });
 
-        res.redirect("administrador/Mantenimiento-configuracion");
+        res.redirect("/administrador/Mantenimiento-configuracion");
     } catch (error) {
         console.log(error);
         res.render("administrador/editar-configuracion", 
@@ -446,7 +446,7 @@ exports.createAdmin = async (req, res) => {
             cedula
         });
 
-        res.redirect("administrador/Listado-administrador");
+        res.redirect("/administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al crear el administrador");
@@ -512,7 +512,7 @@ exports.editAdmin = async (req, res) => {
             cedula 
         });
 
-        res.redirect("administrador/Listado-administrador");
+        res.redirect("/administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al actualizar el administrador");
@@ -531,7 +531,7 @@ exports.activateAdmin = async (req, res) => {
 
         await adminRecord.update({ activo: true });
 
-        res.redirect("administrador/Listado-administrador");
+        res.redirect("/administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al activar el administrador");
@@ -549,7 +549,7 @@ exports.deactivateAdmin = async (req, res) => {
 
         await adminRecord.update({ activo: false });
 
-        res.redirect("administrador/Listado-administrador");
+        res.redirect("/administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al desactivar el administrador");

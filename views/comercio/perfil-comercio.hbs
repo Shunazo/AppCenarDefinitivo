@@ -34,11 +34,14 @@
                     </a>
                 </li>
                 <li>
+<<<<<<< HEAD
                     <a href="/comercio/productos" class="nav-link text-white">
                         <i class="fas fa-box me-2"></i>Productos
                     </a>
                 </li>
                 <li>
+=======
+>>>>>>> fc26ad39df0915d1a6037eda3d465701f9106c00
                     <button id="logout-btn" class="nav-link text-white logout-btn">
                     <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
                     </button>
@@ -54,7 +57,7 @@
                         <h3 class="mb-0"><i class="fas fa-user-edit me-2"></i>Editar Perfil</h3>
                     </div>
                     <div class="card-body">
-                        <form action="/comercio/perfil/update" method="POST" enctype="multipart/form-data">
+                        <form action="/comercio/perfil/edit" method="POST" enctype="multipart/form-data">
                             <!-- Logo Upload -->
                             <div class="mb-4">
                                 <label class="form-label">Logo del Comercio</label>
@@ -62,7 +65,7 @@
                                     <img src="{{comercio.logo}}" 
                                          alt="Logo actual" 
                                          class="current-logo mb-2" 
-                                         id="logoPreview">
+                                         id="previewImage">
                                     <div class="upload-section">
                                         <input type="file" 
                                                class="form-control" 
@@ -110,7 +113,7 @@
                                            class="form-control" 
                                            id="telefono" 
                                            name="telefono" 
-                                           value="{{comercio.telefono}}" 
+                                           value="{{usuario.telefono}}" 
                                            required>
                                 </div>
                                 <div class="col-md-6">
@@ -121,7 +124,7 @@
                                            class="form-control" 
                                            id="correo" 
                                            name="correo" 
-                                           value="{{comercio.correo}}" 
+                                           value="{{usuario.correo}}" 
                                            required>
                                 </div>
                             </div>
@@ -143,18 +146,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Logo Preview
-        document.getElementById('logo').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('logoPreview').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>

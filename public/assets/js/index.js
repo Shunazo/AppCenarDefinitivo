@@ -12,23 +12,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const fileInput = document.getElementById('fotoPerfil');
-    const previewImage = document.getElementById('previewImage');
-
-    if (fileInput && previewImage) {
-        fileInput.addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    // Update the src of the image preview
-                    previewImage.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
+    const ids = ['fotoPerfil', 'logo', 'icono', 'imagen'];
+    
+    ids.forEach(id => {
+        const fileInput = document.getElementById(id);
+        const previewImage = document.getElementById('previewImage'); // Ensure previewImage applies correctly for each case
+        
+        if (fileInput && previewImage) {
+            fileInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    });
 });
+
 
 
 function confirmDelete(button) {
