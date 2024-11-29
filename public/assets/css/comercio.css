@@ -1,0 +1,197 @@
+/* Layout Structure */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Navigation Links */
+.components {
+    padding: 20px 0;
+}
+
+.components li a {
+    padding: 15px 25px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 1.1em;
+}
+
+.components li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+}
+
+.components li.active a {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+}
+
+/* Main Content Area */
+#content {
+    flex: 1;
+    padding: 30px;
+    background: #f8f9fa;
+}
+
+/* Order Cards */
+.list-group-item {
+    border: none;
+    margin-bottom: 15px;
+    border-radius: 10px !important;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.list-group-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Status Badges */
+.badge {
+    padding: 8px 12px;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.badge.bg-warning {
+    background-color: #ffd54f !important;
+    color: #000;
+}
+
+.badge.bg-info {
+    background-color: #4fc3f7 !important;
+}
+
+.badge.bg-success {
+    background-color: #66bb6a !important;
+}
+
+/* Order Details */
+.comercio-logo {
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+/* Typography */
+h1 {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Filter Dropdown */
+.btn-outline-primary {
+    border-color: #1e3c72;
+    color: #1e3c72;
+}
+
+.btn-outline-primary:hover {
+    background-color: #1e3c72;
+    border-color: #1e3c72;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-state i {
+    font-size: 4em;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 200px;
+        min-width: 200px;
+    }
+
+    .sidebar-header img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .components li a {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 576px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    #sidebar {
+        width: 100%;
+        min-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #content {
+        padding: 15px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.list-group-item {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e3c72;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2a5298;
+}

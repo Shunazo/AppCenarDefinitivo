@@ -1,0 +1,216 @@
+/* Layout & Structure */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.sidebar-header h3 {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Navigation Menu */
+.components {
+    padding: 0;
+    margin: 0;
+}
+
+.components li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.components li a {
+    padding: 15px 25px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 1.1em;
+}
+
+.components li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+}
+
+.components li.active a {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #3498db;
+}
+
+/* Main Content Area */
+#content {
+    flex: 1;
+    padding: 30px;
+    background: #f8f9fa;
+}
+
+/* Dashboard Cards */
+.stat-card {
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card .card-body {
+    padding: 25px;
+}
+
+.stat-card .card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-card h3 {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Card Color Variations */
+.bg-primary {
+    background: linear-gradient(45deg, #4e73df 0%, #224abe 100%) !important;
+}
+
+.bg-success {
+    background: linear-gradient(45deg, #1cc88a 0%, #13855c 100%) !important;
+}
+
+.bg-info {
+    background: linear-gradient(45deg, #36b9cc 0%, #258391 100%) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(45deg, #f6c23e 0%, #dda20a 100%) !important;
+}
+
+.bg-secondary {
+    background: linear-gradient(45deg, #858796 0%, #60616f 100%) !important;
+}
+
+/* Typography */
+h1 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+small {
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+/* Icons */
+.fas {
+    width: 20px;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2c3e50;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1a252f;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    #sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+
+    .stat-card .card-body {
+        padding: 20px;
+    }
+
+    .stat-card h3 {
+        font-size: 1.8em;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    #sidebar {
+        width: 100%;
+        min-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #content {
+        padding: 15px;
+    }
+
+    .stat-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    #sidebar {
+        display: none;
+    }
+
+    #content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .stat-card {
+        break-inside: avoid;
+    }
+}

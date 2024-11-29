@@ -1,4 +1,4 @@
-/*const Usuario = require('./models/usuario');
+const Usuario = require('./models/usuario');
 const Administrador = require('./models/administrador');
 const bcrypt = require('bcryptjs');
 
@@ -30,4 +30,3 @@ const createAdmin = async () => {
 };
 
 createAdmin();
-*/
