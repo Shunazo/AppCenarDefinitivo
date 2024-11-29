@@ -26,7 +26,7 @@ const Favorito = require("./models/favorito");
 const Configuracion = require("./models/configuracion");
 
 const authRoute = require("./routes/auth");
-const adminRoute = require("./routes/admin");
+const administradorRoute = require("./routes/administrador");
 const deliveryRoute = require("./routes/delivery");
 const clienteRoute = require("./routes/cliente");
 const comercioRoute = require("./routes/comercio");
@@ -87,14 +87,14 @@ Favorito.associate({ Cliente, Comercio });
 
 app.use('/', authRoute); 
 app.use('/cliente', authMiddleware, clienteRoute); 
-app.use('/admin', authMiddleware, adminRoute);
+app.use('/administrador', authMiddleware, administradorRoute);
 app.use('/delivery', authMiddleware, deliveryRoute); // aun le faltan cosas
 app.use('/comercio', authMiddleware, comercioRoute); 
 app.use(errorController.get404);
 
 
 connection
-    .sync({})
+    .sync({  })
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);

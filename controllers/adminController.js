@@ -1,9 +1,16 @@
 const Usuario = require("../models/usuario");
 const Cliente = require("../models/cliente");
 const Pedido = require("../models/pedido");
+const Direccion = require("../models/direccion");
+const Producto = require("../models/producto");
+const ProductoPedido = require("../models/productopedido");
+const Delivery = require("../models/delivery");
+const Categoria = require("../models/categoria");
+const Configuracion = require("../models/configuracion");
+const Favorito = require("../models/favorito");
 const tipoComercio = require("../models/tipocomercio");
 const Comercio = require("../models/comercio");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 
 exports.home = async (req, res) => {
     try {
@@ -20,28 +27,29 @@ exports.home = async (req, res) => {
         });
 
         const comerciosActivos = await Comercio.count({
-            include : [{ model: Usuario, where : { activo: true } }],
+            include: [{ model: Usuario, as: 'usuario', where: { activo: true } }],
         });
-
+        
         const comerciosInactivos = await Comercio.count({
-            include : [{ model: Usuario, where : { activo: false } }],
+            include: [{ model: Usuario, as: 'usuario', where: { activo: false } }],
         });
-
+        
         const clientesActivos = await Cliente.count({
-            include : [{ model: Usuario, where : { activo: true } }],
+            include: [{ model: Usuario, as: 'usuario', where: { activo: true } }],
         });
-
+        
         const clientesInactivos = await Cliente.count({
-            include : [{ model: Usuario, where : { activo: false } }],
+            include: [{ model: Usuario, as: 'usuario', where: { activo: false } }],
         });
-
+        
         const deliveriesActivos = await Delivery.count({
-            include : [{ model: Usuario, where : { activo: true } }],
+            include: [{ model: Usuario, as: 'usuario', where: { activo: true } }],
         });
-
+        
         const deliveriesInactivos = await Delivery.count({
-            include : [{ model: Usuario, where : { activo: false } }],
+            include: [{ model: Usuario, as: 'usuario', where: { activo: false } }],
         });
+        
 
         const totalProductos = await Producto.count();
 

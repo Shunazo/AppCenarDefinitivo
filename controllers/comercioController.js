@@ -106,9 +106,9 @@ exports.pedidoDetalle = async (req, res) => {
 
 exports.assignDelivery = async (req, res) => {
     try {
-        const pedido = await Pedido.findByPk(req.params.id);
+        const pedidoRecord = await Pedido.findByPk(req.params.id);
         
-        if (pedido.estado !== 'pendiente') {
+        if (pedidoRecord.estado !== 'pendiente') {
             return res.status(400).send('Este pedido no está en estado pendiente.');
         }
 
@@ -120,7 +120,7 @@ exports.assignDelivery = async (req, res) => {
             return res.status(400).send('No hay delivery disponible en este momento.');
         }
 
-       await pedido.update({ estado: 'en proceso', deliveryId: availableDelivery.id });
+       await pedidoRecord.update({ estado: 'en proceso', deliveryId: availableDelivery.id });
        await availableDelivery.update({ estado: 'ocupado' });
 
         res.redirect(`/comercio/pedidos/${pedido.id}`);

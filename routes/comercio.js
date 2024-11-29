@@ -3,7 +3,7 @@ const router = express.Router();
 const comercioController = require("../controllers/comercioController");
 const authMiddleware = require("../middleware/is-auth");
 
-router.get("/", authMiddleware, comercioController.home); 
+router.get("/home", authMiddleware, comercioController.home); 
 
 router.get("/pedidos/:id([0-9]+)", authMiddleware, comercioController.pedidoDetalle);
 router.post("/pedidos/assign/:id([0-9]+)", authMiddleware, comercioController.assignDelivery);

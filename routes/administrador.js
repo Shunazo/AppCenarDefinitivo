@@ -3,8 +3,7 @@ const router = express.Router();
 const adminController = require("../controllers/adminController");
 const authMiddleware = require("../middleware/is-auth");
 
-router.get("/", authMiddleware, adminController.home); 
-
+router.get("/home", authMiddleware, adminController.home); 
 
 router.get("/clientes", authMiddleware, adminController.clientes); 
 router.post("/clientes/activate/:id([0-9]+)", authMiddleware, adminController.activateCliente); 

@@ -4,13 +4,12 @@ const deliveryController = require("../controllers/deliveryController");
 const authMiddleware = require("../middleware/is-auth");
 
 router.get("/home", authMiddleware, deliveryController.home);
-
-/*router.get("/perfil", authMiddleware, deliveryController.perfil);
+/*
 router.get("/perfil/edit", authMiddleware, deliveryController.editperfilForm); 
 router.post("/perfil/edit", authMiddleware, deliveryController.editperfil);
 
-router.get("/ordenes", authMiddleware, deliveryController.ordenes); 
-router.get("/ordenes/:id([0-9]+)", authMiddleware, deliveryController.ordenDetalle); 
-router.post("/ordenes/complete/:id([0-9]+)", authMiddleware, deliveryController.completarOrden); 
+router.get("/pedidos", authMiddleware, deliveryController.ordenes); 
+router.get("/pedidos/:id([0-9]+)", authMiddleware, deliveryController.pedidoDetalle); 
+router.post("/pedidos/complete/:id([0-9]+)", authMiddleware, deliveryController.completarPedido); 
 */
 module.exports = router;
