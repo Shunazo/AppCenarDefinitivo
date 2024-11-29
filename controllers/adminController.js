@@ -10,82 +10,97 @@ const Configuracion = require("../models/configuracion");
 const Favorito = require("../models/favorito");
 const tipoComercio = require("../models/tipocomercio");
 const Comercio = require("../models/comercio");
+const Administrador = require("../models/administrador");
 const { Op } = require("sequelize");
 
 exports.home = async (req, res) => {
     try {
         const usuario = await Usuario.findOne({ where: { id: req.session.userId } });
 
-        const totalPedidos = await Pedido.count();
-        const pedidosHoy = await Pedido.count({ 
-            where: { 
-                createdAt: {
-                    [Op.gte]: new Date().setHours(0, 0, 0, 0),
-                    [Op.lte]: new Date().setHours(23, 59, 59, 999)
-                }
-            } 
-        });
+        // Estadísticas
+        const stats = [
+            {
+                title: "Pedidos",
+                bgColor: "primary",
+                textColor: "white",
+                details: [
+                    { value: await Pedido.count(), label: "Total histórico" },
+                    { value: await Pedido.count({
+                        where: { 
+                            createdAt: {
+                                [Op.gte]: new Date().setHours(0, 0, 0, 0),
+                                [Op.lte]: new Date().setHours(23, 59, 59, 999)
+                            }
+                        } 
+                    }), label: "Hoy" }
+                ]
+            },
+            {
+                title: "Comercios",
+                bgColor: "success",
+                textColor: "white",
+                details: [
+                    { value: await Comercio.count({ 
+                        include: [{ model: Usuario, as: 'usuario', where: { activo: true } }] 
+                    }), label: "Activos" },
+                    { value: await Comercio.count({ 
+                        include: [{ model: Usuario, as: 'usuario', where: { activo: false } }] 
+                    }), label: "Inactivos" }
+                ]
+            },
+            {
+                title: "Clientes",
+                bgColor: "info",
+                textColor: "white",
+                details: [
+                    { value: await Cliente.count({ 
+                        include: [{ model: Usuario, as: 'usuario', where: { activo: true } }] 
+                    }), label: "Activos" },
+                    { value: await Cliente.count({ 
+                        include: [{ model: Usuario, as: 'usuario', where: { activo: false } }] 
+                    }), label: "Inactivos" }
+                ]
+            },
+            {
+                title: "Delivery",
+                bgColor: "warning",
+                textColor: "dark",
+                details: [
+                    { value: await Delivery.count({ 
+                        include: [{ model: Usuario, as: 'usuario', where: { activo: true } }] 
+                    }), label: "Activos" },
+                    { value: await Delivery.count({ 
+                        include: [{ model: Usuario, as: 'usuario', where: { activo: false } }] 
+                    }), label: "Inactivos" }
+                ]
+            },
+            {
+                title: "Productos",
+                bgColor: "secondary",
+                textColor: "white",
+                value: await Producto.count(),
+                label: "Total productos creados"
+            }
+        ];
 
-        const comerciosActivos = await Comercio.count({
-            include: [{ model: Usuario, as: 'usuario', where: { activo: true } }],
+        // Mensajes faltantes
+        const missingData = stats.map(stat => {
+            const total = stat.details?.reduce((sum, detail) => sum + detail.value, 0) || stat.value;
+            return total === 0 ? `No hay ${stat.title.toLowerCase()} registrados.` : null;
         });
-        
-        const comerciosInactivos = await Comercio.count({
-            include: [{ model: Usuario, as: 'usuario', where: { activo: false } }],
-        });
-        
-        const clientesActivos = await Cliente.count({
-            include: [{ model: Usuario, as: 'usuario', where: { activo: true } }],
-        });
-        
-        const clientesInactivos = await Cliente.count({
-            include: [{ model: Usuario, as: 'usuario', where: { activo: false } }],
-        });
-        
-        const deliveriesActivos = await Delivery.count({
-            include: [{ model: Usuario, as: 'usuario', where: { activo: true } }],
-        });
-        
-        const deliveriesInactivos = await Delivery.count({
-            include: [{ model: Usuario, as: 'usuario', where: { activo: false } }],
-        });
-        
-
-        const totalProductos = await Producto.count();
-
-        const missingData = {
-            totalPedidos: totalPedidos === 0 ? "No hay pedidos aun." : null,
-            pedidosHoy: pedidosHoy === 0 ? "No hay pedidos hoy." : null,
-            comerciosActivos: comerciosActivos === 0 ? "No hay comercios activos." : null,
-            comerciosInactivos: comerciosInactivos === 0 ? "No hay comercios inactivos." : null,
-            clientesActivos: clientesActivos === 0 ? "No hay clientes activos." : null,
-            clientesInactivos: clientesInactivos === 0 ? "No hay clientes inactivos." : null,
-            deliveriesActivos: deliveriesActivos === 0 ? "No hay deliveries activos." : null,
-            deliveriesInactivos: deliveriesInactivos === 0 ? "No hay deliveries inactivos." : null,
-            totalProductos: totalProductos === 0 ? "No hay productos aun." : null
-        }
-            
 
         res.render("administrador/home-administrador", { 
             pageTitle: "Home", 
             usuario,
-            totalPedidos,
-            pedidosHoy,
-            comerciosActivos,
-            comerciosInactivos,
-            clientesActivos,
-            clientesInactivos,
-            deliveriesActivos,
-            deliveriesInactivos,
-            totalProductos,
+            stats,
             missingData
         });
-
     } catch (error) {
         console.log(error);
         res.render("administrador/home-administrador", { pageTitle: "Error al cargar el home. Intente más tarde." });
     }
 };
+
 
 exports.clientes = async (req, res) => {
     try {
@@ -168,7 +183,8 @@ exports.deliveries = async (req, res) => {
         const deliveries = await Delivery.findAll({
             include: [{
                 model: Usuario,
-                attributes: ['nombre', 'apellido', 'telefono', 'correo', 'activo']
+                attributes: ['nombre', 'apellido', 'telefono', 'correo', 'activo'],
+                as: "usuario"
             },
             {
                 model: Pedido,
@@ -247,7 +263,8 @@ exports.comercios = async (req, res) => {
         const comercios = await Comercio.findAll({
             include: [{
                 model: Usuario,
-                attributes: ['nombre', 'logo', 'telefono', 'horaApertura', 'horaCierre', 'correo', 'activo']
+                attributes: ['nombre', 'logo', 'telefono', 'horaApertura', 'horaCierre', 'correo', 'activo'],
+                as: "usuario"
             },
             {
                 model: Pedido,
@@ -387,7 +404,7 @@ exports.administradores = async (req, res) => {
             include: [{ model: Administrador, as: "administrador" }]
         });
 
-        res.render("administrador/home-administrador", {
+        res.render("administrador/Listado-administrador", {
             pageTitle: "Listado de Administradores",
             admins: admins.map(a => a.dataValues)
         });
@@ -429,7 +446,7 @@ exports.createAdmin = async (req, res) => {
             cedula
         });
 
-        res.redirect("administrador/home-administrador");
+        res.redirect("administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al crear el administrador");
@@ -495,7 +512,7 @@ exports.editAdmin = async (req, res) => {
             cedula 
         });
 
-        res.redirect("administrador/home-administrador");
+        res.redirect("administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al actualizar el administrador");
@@ -514,7 +531,7 @@ exports.activateAdmin = async (req, res) => {
 
         await adminRecord.update({ activo: true });
 
-        res.redirect("administrador/home-administrador");
+        res.redirect("administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al activar el administrador");
@@ -532,7 +549,7 @@ exports.deactivateAdmin = async (req, res) => {
 
         await adminRecord.update({ activo: false });
 
-        res.redirect("administrador/home-administrador");
+        res.redirect("administrador/Listado-administrador");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al desactivar el administrador");
@@ -543,7 +560,7 @@ exports.deactivateAdmin = async (req, res) => {
 exports.tipoComercio = async (req, res) => {
     try {
         const tipocomercios = await tipoComercio.findAll({
-            attributes: ["nombre", "icono", "descripcion"],
+            attributes: ["id", "nombre", "icono", "descripcion"],
             include: [
                 {
                     model: Comercio,
@@ -561,8 +578,7 @@ exports.tipoComercio = async (req, res) => {
             pageTitle: "Listado de Tipos de Comercio",
             tipocomercios: tipocomerciosData
         });
-    }
-    catch(error) {
+    } catch (error) {
         console.log(error);
         res.render("administrador/Listado-tipo", { 
             pageTitle: "Error al cargar el listado de tipos de comercio. Intente más tarde." });
@@ -596,7 +612,7 @@ exports.createtipoComercio = async (req, res) => {
             descripcion,
         });
 
-        res.redirect("administrador/Listado-tipo");
+        res.redirect("/administrador/tipo-comercio");
     } catch (error) {
         console.log(error);
         res.render("administrador/crear-tipo", { 
@@ -617,8 +633,7 @@ exports.edittipoComercioForm = async (req, res) => {
             tipocomercio: tipocomercioRecord.dataValues,
             currentImage: tipocomercioRecord.icono
         });
-    } 
-    catch (error) {
+    } catch (error) {
         console.log(error);
         res.status(500).send("Error al cargar el tipo de comercio");
     }
@@ -634,14 +649,9 @@ exports.edittipoComercio = async (req, res) => {
 
         const { nombre, descripcion } = req.body;
         const icono = req.files && req.files.icono ? "/images/" + req.files.icono[0].filename : tipocomercioRecord.icono;
-        
 
-        if (!nombre || !icono || !descripcion) {
+        if (!nombre || !descripcion) {
             return res.status(400).send("Todos los campos son obligatorios.");
-        }
-
-        if (!req.files && !req.files.icono) {
-            return res.status(400).send("La imagen es obligatoria.");
         }
 
         await tipoComercio.update({
@@ -654,7 +664,7 @@ exports.edittipoComercio = async (req, res) => {
             }
         });
 
-        res.redirect("administrador/Listado-tipo");
+        res.redirect("/administrador/tipo-comercio");
     } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Error al editar el tipo de comercio. Intente más tarde." });
@@ -671,7 +681,7 @@ exports.deletetipoComercio = async (req, res) => {
 
         await tipocomercioRecord.destroy();
 
-        res.redirect("administrador/Listado-tipo");
+        res.redirect("/administrador/tipo-comercio");
     } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Error al eliminar el tipo de comercio. Intente más tarde." });

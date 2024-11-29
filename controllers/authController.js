@@ -46,6 +46,12 @@ exports.login = async (req, res) => {
         req.session.isLoggedIn = true;
         req.session.userId = user.id;
         req.session.rol = user.rol;
+
+        if (user.rol === 'comercio') {
+            const comercio = await Comercio.findOne({ where: { usuarioId: user.id } });
+            req.session.comercioId = comercio.id;
+        }
+
         return req.session.save((err) => {
             console.log(err);
             res.redirect(`/${user.rol}/home`);
@@ -174,6 +180,8 @@ exports.registerComercioForm = async (req, res) => {
     try {
         const tipoComercios = await TipoComercio.findAll(); 
 
+        console.log("Tipo Comercios:", tipoComercios);
+
         res.render("auth/registro-comercio", {
             pageTitle: "Registro de Comercio",
             tipoComercios: tipoComercios.map(t => t.dataValues),
@@ -187,44 +195,47 @@ exports.registerComercioForm = async (req, res) => {
 
 exports.registerComercio = async (req, res) => {
     try {
-        const { nombreComercio, telefono, correo, nombreUsuario, password, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
+        const tipoComercios = await TipoComercio.findAll();
+        const { nombreComercio, telefono, correo, password, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
         const logo = "/images/" + req.files.logo[0].filename;
-
-        console.log("datos,", req.body);
-
+        
+        // Check if the logo is uploaded
         if (!req.files || !req.files.logo) {
-            return res.render("404", { pageTitle: "La imagen es obligatoria." });
-        }
-
-        if (!nombreComercio || !telefono || !correo || !nombreUsuario || !password || !confirmar || !tipoComercioId || !horaApertura || !horaCierre) {
             return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
-                error: "Todos los campos son obligatorios.",
+                error: "La imagen de logo es obligatoria.",
+                tipoComercios: tipoComercios.map(t => t.dataValues),
             });
         }
 
-        const existingComercio = await Comercio.findOne({ where: { correo } });
-        if (existingComercio) {
-            return res.render("auth/registro-comercio", {
-                pageTitle: "Registro de Comercio",
-                error: "Ya existe una cuenta registrada con ese correo.",
-            });
-        }
-
+        
         if (password !== confirmar) {
             return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
                 error: "Las contraseñas no coinciden.",
-                tipoComercios: await TipoComercio.findAll(), 
+                tipoComercios: tipoComercios.map(t => t.dataValues),
             });
         }
 
-        const hashedPassword = await bcrypt.hash(contraseña, 10);
+      
+        let nombreUsuario = nombreComercio;
+        let existingUser = await Usuario.findOne({ where: { nombreUsuario } });
+        let counter = 1;
 
+        while (existingUser) {
+            nombreUsuario = `${nombreComercio} ${counter}`;
+            existingUser = await Usuario.findOne({ where: { nombreUsuario } });
+            counter++;
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+     
         const user = await Usuario.create({
             nombre: nombreComercio,
             apellido: "Comercio",
             correo,
+            telefono,
             nombreUsuario,
             password: hashedPassword,
             rol: "comercio",
@@ -232,6 +243,7 @@ exports.registerComercio = async (req, res) => {
             activo: false,
         });
 
+       
         await Comercio.create({
             nombreComercio,
             logo,
@@ -241,8 +253,10 @@ exports.registerComercio = async (req, res) => {
             usuarioId: user.id,
         });
 
+        
         const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '5m' });
 
+       
         transporter.sendMail(
             {
                 from: "No-Reply <no-reply@example.com>",
@@ -273,6 +287,7 @@ exports.registerComercio = async (req, res) => {
         res.render("404", { pageTitle: "Error al registrar comercio. Intente más tarde." });
     }
 };
+
 
 
 
@@ -385,6 +400,11 @@ exports.activateAccount = async (req, res) => {
         req.session.isLoggedIn = true;
         req.session.userId = user.id;
         req.session.rol = user.rol;
+
+        if (user.rol === 'comercio') {
+            const comercio = await Comercio.findOne({ where: { usuarioId: user.id } });
+            req.session.comercioId = comercio.id;
+        }
 
         res.render("auth/activation-success", {
             pageTitle: "Cuenta Activada",

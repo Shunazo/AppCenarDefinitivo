@@ -15,218 +15,63 @@
             <div class="sidebar-header">
                 <h3><i class="fas fa-user-shield me-2"></i>Panel Admin</h3>
             </div>
-
-            <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="/administrador/home">
-                        <i class="fas fa-home me-2"></i>Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="/administrador/clientes">
-                        <i class="fas fa-users me-2"></i>Clientes
-                    </a>
-                </li>
-                <li>
-                    <a href="/administrador/delivery">
-                        <i class="fas fa-motorcycle me-2"></i>Delivery
-                    </a>
-                </li>
-                <li>
-                    <a href="/administrador/comercios">
-                        <i class="fas fa-store me-2"></i>Comercios
-                    </a>
-                </li>
-                <li>
-                    <a href="/administrador/configuracion">
-                        <i class="fas fa-cogs me-2"></i>Configuración
-                    </a>
-                </li>
-                <li>
-                    <a href="/administrador/administradores">
-                        <i class="fas fa-user-tie me-2"></i>Administradores
-                    </a>
-                </li>
-                <li>
-                    <a href="/administrador/tipo-comercios">
-                        <i class="fas fa-store-alt me-2"></i>Tipos de Comercio
-                    </a>
-                </li>
-                <li>
-                    <a href="/logout">
-                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                    </a>
-                </li>
+           <ul class="list-unstyled components">
+                <li class="active"><a href="/administrador/home"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+                <li><a href="/administrador/clientes"><i class="fas fa-users me-2"></i>Clientes</a></li>
+                <li><a href="/administrador/deliveries"><i class="fas fa-motorcycle me-2"></i>Delivery</a></li>
+                <li><a href="/administrador/comercios"><i class="fas fa-store me-2"></i>Comercios</a></li>
+                <li><a href="/administrador/config"><i class="fas fa-cogs me-2"></i>Configuración</a></li>
+                <li><a href="/administrador/administradores"><i class="fas fa-user-tie me-2"></i>Administradores</a></li>
+                <li><a href="/administrador/tipo-comercio"><i class="fas fa-store-alt me-2"></i>Tipos de Comercio</a></li>
             </ul>
+                <button id="logout-btn" class="btn-sidebar">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                </button>
         </nav>
 
         <!-- Page Content -->
         <div id="content">
             <div class="container-fluid">
                 <h1 class="mb-4">Dashboard</h1>
-
                 <div class="row">
-                    <!-- Pedidos Stats -->
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card stat-card bg-primary text-white">
-                            <div class="card-body">
-                                <h5 class="card-title">Pedidos</h5>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h3 class="mb-0">{{stats.totalPedidos}}</h3>
-                                        <small>Total histórico</small>
-                                    </div>
-                                    <div>
-                                        <h3 class="mb-0">{{stats.pedidosHoy}}</h3>
-                                        <small>Hoy</small>
-                                    </div>
+                    <!-- Cards dinámicas -->
+                    {{#each stats as |stat|}}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card stat-card bg-{{stat.bgColor}} text-{{stat.textColor}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{stat.title}}</h5>
+                                    {{#if stat.details}}
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            {{#each stat.details as |detail|}}
+                                                <div>
+                                                    <h3 class="mb-0">{{detail.value}}</h3>
+                                                    <small>{{detail.label}}</small>
+                                                </div>
+                                            {{/each}}
+                                        </div>
+                                    {{else}}
+                                        <div class="text-center">
+                                            <h3 class="mb-0">{{stat.value}}</h3>
+                                            <small>{{stat.label}}</small>
+                                        </div>
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {{/each}}
 
-                    <!-- Comercios Stats -->
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card stat-card bg-success text-white">
-                            <div class="card-body">
-                                <h5 class="card-title">Comercios</h5>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h3 class="mb-0">{{stats.comerciosActivos}}</h3>
-                                        <small>Activos</small>
-                                    </div>
-                                    <div>
-                                        <h3 class="mb-0">{{stats.comerciosInactivos}}</h3>
-                                        <small>Inactivos</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Clientes Stats -->
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card stat-card bg-info text-white">
-                            <div class="card-body">
-                                <h5 class="card-title">Clientes</h5>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h3 class="mb-0">{{stats.clientesActivos}}</h3>
-                                        <small>Activos</small>
-                                    </div>
-                                    <div>
-                                        <h3 class="mb-0">{{stats.clientesInactivos}}</h3>
-                                        <small>Inactivos</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Delivery Stats -->
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card stat-card bg-warning text-dark">
-                            <div class="card-body">
-                                <h5 class="card-title">Delivery</h5>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h3 class="mb-0">{{stats.deliveryActivos}}</h3>
-                                        <small>Activos</small>
-                                    </div>
-                                    <div>
-                                        <h3 class="mb-0">{{stats.deliveryInactivos}}</h3>
-                                        <small>Inactivos</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Productos Stats -->
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card stat-card bg-secondary text-white">
-                            <div class="card-body">
-                                <h5 class="card-title">Productos</h5>
-                                <div class="text-center">
-                                    <h3 class="mb-0">{{stats.totalProductos}}</h3>
-                                    <small>Total productos creados</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Mensajes faltantes -->
+                    {{#each missingData as |msg|}}
+                        {{#if msg}}
+                            <p class="text-danger">{{msg}}</p>
+                        {{/if}}
+                    {{/each}}
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>
-
-<!-- crea un navbar con las opciones de a donde puede ir un admin, osea el home, clientes, comercios, asi como en la pokedex o el gestor de cine -->
-
-<!-- En la pantalla inicial de un administrador se mostrará un menú con las siguientes opciones:
-● Home
-● Listado de clientes
-● Listado de delivery
-● Listado de comercios
-● Mantenimiento de configuración
-● Mantenimiento de administradores
-● Mantenimiento de tipo de comercios
-● Cerrar session(se destruye la sesión y se redirecciona al usuario a la pantalla de
-login)
-
-
-Aparte del menú debe mostrar en esa pantalla los siguientes indicadores:
-* Las cantidades de pedidos que se han realizado en el sistema desde el inicio de los
-tiempos(desde que se creó) y los pedidos de ese día.
-* Las cantidades de comercios activos e inactivos que hay.
-* Las cantidades de clientes activos e inactivos que hay.
-* Las cantidades de delivery activos e inactivos que hay.
-* Las cantidades de productos creados.
--->
-
-
-<!--
-
-Estos mensajes dejalos en caso de que no haya algo creado
-ya sea pedidos comercios o lo que tu quiera la verdad pero dejalo por ahi
-como los mensajes en el login
-
-{{#if missingData.pedidosHoy}}
-    <p>{{missingData.pedidosHoy}}</p>
-{{/if}}
-
-{{#if missingData.totalPedidos}}
-    <p>{{missingData.totalPedidos}}</p>
-{{/if}}
-
-{{#if missingData.comerciosActivos}}
-    <p>{{missingData.comerciosActivos}}</p>
-{{/if}}
-
-{{#if missingData.comerciosInactivos}}
-    <p>{{missingData.comerciosInactivos}}</p>
-{{/if}}
-
-{{#if missingData.clientesActivos}}
-    <p>{{missingData.clientesActivos}}</p>
-{{/if}}
-
-{{#if missingData.clientesInactivos}}
-    <p>{{missingData.clientesInactivos}}</p>
-{{/if}}
-
-{{#if missingData.deliveriesActivos}}
-    <p>{{missingData.deliveriesActivos}}</p>
-{{/if}}
-
-{{#if missingData.deliveriesInactivos}}
-    <p>{{missingData.deliveriesInactivos}}</p>
-{{/if}}
-
-{{#if missingData.productos}}
-    <p>{{missingData.productos}}</p>
-{{/if}}
-
-

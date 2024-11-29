@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/comercio/perfil" class="nav-link text-white">
+                    <a href="/comercio/perfil/edit" class="nav-link text-white">
                         <i class="fas fa-user me-2"></i>Perfil
                     </a>
                 </li>
@@ -39,11 +39,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/logout" class="nav-link text-white">
-                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                    </a>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
                 </li>
             </ul>
+            
         </nav>
 
         <!-- Main Content -->
@@ -78,9 +79,9 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5 class="mb-1">{{comercio.nombreComercio}}</h5>
                                         <span class="badge rounded-pill 
-                                            {{#if (eq estado 'pendiente')}}bg-warning{{/if}}
-                                            {{#if (eq estado 'en_proceso')}}bg-info{{/if}}
-                                            {{#if (eq estado 'completado')}}bg-success{{/if}}">
+                                            {{#if estado 'pendiente'}}bg-warning{{/if}}
+                                            {{#if estado 'en_proceso'}}bg-info{{/if}}
+                                            {{#if estado 'completado'}}bg-success{{/if}}">
                                             {{estado}}
                                         </span>
                                     </div>
@@ -89,7 +90,7 @@
                                         <div>
                                             <i class="fas fa-box me-1"></i> {{totalProductos}} productos
                                             <span class="mx-2">|</span>
-                                            <i class="fas fa-dollar-sign me-1"></i> {{total}}
+                                            <i class="fas fa-dollar-sign me-1"></i>Total: {{total}}
                                         </div>
                                         <small class="text-muted">
                                             <i class="far fa-clock me-1"></i>{{fechaHora}}
@@ -112,5 +113,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>

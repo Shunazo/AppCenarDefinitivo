@@ -10,8 +10,12 @@
                     <h2 class="auth-title text-center">Registro de Comercio</h2>
                     
                     {{#if error}}
-                    <div class="alert alert-danger">{{error}}</div>
-                    {{/if}}
+                        <div class="alert alert-danger">{{error}}</div>
+                        {{/if}}
+
+                        {{#if success}}
+                        <div class="alert alert-success">{{success}}</div>
+                        {{/if}}
 
                     <form action="/registro/comercio" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <div class="mb-3 cont-inputs">
@@ -48,9 +52,9 @@
 
                         <div class="mb-3 ">
                             <label class="form-label ">Tipo de Comercio</label>
-                            <select name="tipoComercio" class="form-select cont-inputs select-edit form-select-edit" required>
+                            <select name="tipoComercioId" class="form-select cont-inputs select-edit form-select-edit" required>
                                 <option value="">Seleccione un tipo</option>
-                                {{#each tiposComercio}}
+                                {{#each tipoComercios}}
                                 <option value="{{this.id}}">{{this.nombre}}</option>
                                 {{/each}}
                             </select>

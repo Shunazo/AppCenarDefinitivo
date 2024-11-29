@@ -14,10 +14,11 @@ const { Op } = require("sequelize");
 
 exports.home = async (req, res) => {
     try {
-        const usuarioRecord = await Usuario.findOne({ where: { id: req.session.userId } });
-        
+        const comercioRecord = await Comercio.findOne({ where: { id: req.session.comercioId } });
+        const estado = req.query.estado || 'todos';
+        const filterOptions = estado !== 'todos' ? { estado } : {};
         const pedidos = await Pedido.findAll({
-            where: { comercioId: req.session.comercioId }, 
+            where: { comercioId: req.session.comercioId, ...filterOptions }, 
             order: [['fechaHora', 'DESC']],  
             include: [
                 {
@@ -40,11 +41,20 @@ exports.home = async (req, res) => {
             ],
             attributes: ["id", 'estado', 'fechaHora', 'total']
         });
-
-        if (pedidos.length === 0) {
+        
+        const pedidosWithTotalProductos = pedidos.map(p => {
+            const totalProductos = p.productosPedido.reduce((acc, prod) => acc + prod.cantidad, 0); 
+            return {
+                ...p.dataValues,
+                totalProductos, 
+                fechaHora: p.fechaHora.toLocaleString()  
+            };
+        });                                                                                                     
+        
+        if (pedidosWithTotalProductos.length === 0) {
             return res.render('comercio/home-comercio', 
                 { pageTitle: 'Home', 
-                    usuario: usuarioRecord.dataValues, 
+                    comercio: comercioRecord.dataValues,
                     pedidos: [], 
                     message: 'No existen pedidos actualmente' 
                 });
@@ -52,8 +62,8 @@ exports.home = async (req, res) => {
 
         res.render('comercio/home-comercio', {
             pageTitle: 'Home',
-            usuario: usuarioRecord.dataValues,
-            pedidos: pedidos.map(p => p.dataValues),
+            comercio: comercioRecord.dataValues,
+            pedidos: pedidosWithTotalProductos,
         });
     } 
     catch (error) {
@@ -96,7 +106,7 @@ exports.pedidoDetalle = async (req, res) => {
 
         res.render('comercio/pedido-detalle', {
             pageTitle: 'Detalles del Pedido',
-            pedido,
+            pedido: pedido.dataValues
         });
     } catch (error) {
         console.error(error);
@@ -109,7 +119,7 @@ exports.assignDelivery = async (req, res) => {
         const pedidoRecord = await Pedido.findByPk(req.params.id);
         
         if (pedidoRecord.estado !== 'pendiente') {
-            return res.status(400).send('Este pedido no está en estado pendiente.');
+            return res.status(400).send('Este pedido ya fue asignado o completado.');
         }
 
         const availableDelivery = await Delivery.findOne({
@@ -123,7 +133,7 @@ exports.assignDelivery = async (req, res) => {
        await pedidoRecord.update({ estado: 'en proceso', deliveryId: availableDelivery.id });
        await availableDelivery.update({ estado: 'ocupado' });
 
-        res.redirect(`/comercio/pedidos/${pedido.id}`);
+        res.redirect(`/comercio/pedidos/${pedidoRecord.id}`);
     } catch (error) {
         console.error(error);
         res.render('404', { pageTitle: 'Error al asignar el delivery' });

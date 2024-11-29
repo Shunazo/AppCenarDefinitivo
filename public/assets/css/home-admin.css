@@ -214,3 +214,33 @@ small {
         break-inside: avoid;
     }
 }
+
+
+/* Logout Button Styling */
+.btn-sidebar {
+    background: none;
+    border: none;
+    color: #fff;
+    width: 100%;
+    padding: 15px 25px;
+    text-align: left;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-sidebar:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+}
+
+.btn-sidebar:focus {
+    outline: none;
+}
+
+.btn-sidebar i {
+    width: 20px;
+    text-align: center;
+}
