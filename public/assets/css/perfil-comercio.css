@@ -234,3 +234,26 @@ input[type="time"] {
 .d-flex {
     justify-content: center !important;
 }
+
+.logout-btn {
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 1.1em;
+    background: none; 
+    border: none;     
+    width: 100%;      
+    text-align: left; 
+    cursor: pointer;  
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;  
+}
+
+.logout-btn:focus {
+    outline: none 
+}
+

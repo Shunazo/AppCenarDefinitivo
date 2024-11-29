@@ -1,0 +1,156 @@
+/* Main Layout */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-avatar {
+    padding: 25px;
+    text-align: center;
+}
+
+.delivery-avatar i {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+/* Pedido Card Styling */
+.pedido-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.pedido-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.pedido-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 20px;
+}
+
+.comercio-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f8f9fa;
+}
+
+.comercio-nombre {
+    color: #1e3c72;
+    margin-bottom: 10px;
+}
+
+/* Status Badges */
+.badge {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bg-warning {
+    background: linear-gradient(45deg, #f7971e, #ffd200) !important;
+}
+
+.bg-info {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed) !important;
+}
+
+.bg-success {
+    background: linear-gradient(45deg, #11998e, #38ef7d) !important;
+}
+
+/* Pedido Info */
+.pedido-info p {
+    margin-bottom: 5px;
+    color: #6c757d;
+}
+
+.pedido-fecha {
+    text-align: right;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Alert Styling */
+.alert-info {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed);
+    color: white;
+    border: none;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Navigation Menu */
+.components li a {
+    padding: 15px 25px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.components li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+}
+
+.components li.active a {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.pedido-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    
+    #sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .pedido-fecha {
+        text-align: left;
+        margin-top: 10px;
+    }
+    
+    .comercio-logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+    }
+}

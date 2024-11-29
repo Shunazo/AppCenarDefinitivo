@@ -1,1 +1,94 @@
-<h2> test habichuela</h2>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Delivery - AppCenar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/home-delivery.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="bg-dark text-white">
+            <div class="sidebar-header">
+                <div class="delivery-avatar">
+                    <i class="fas fa-user-circle fa-4x"></i>
+                    <h4>{{delivery.nombre}}</h4>
+                    <span class="badge {{#if delivery.disponible}}bg-success{{else}}bg-warning{{/if}}">
+                        {{#if delivery.disponible}}Disponible{{else}}Ocupado{{/if}}
+                    </span>
+                </div>
+            </div>
+            
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="/delivery/home"><i class="fas fa-home me-2"></i>Home</a>
+                </li>
+                <li>
+                    <a href="/delivery/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                </li>
+                <li>
+                    <a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Content -->
+        <div id="content" class="p-4">
+            <div class="container">
+                <h2 class="mb-4"><i class="fas fa-motorcycle me-2"></i>Mis Pedidos</h2>
+
+                {{#if pedidos.length}}
+                    <div class="pedidos-list">
+                        {{#each pedidos}}
+                        <div class="pedido-card">
+                            <a href="/delivery/pedidos/{{id}}" class="pedido-link">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="{{comercio.logo}}" alt="{{comercio.nombre}}" class="comercio-logo">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h5 class="comercio-nombre">{{comercio.nombre}}</h5>
+                                        <span class="badge 
+                                            {{#if (eq estado 'pendiente')}}bg-warning{{/if}}
+                                            {{#if (eq estado 'en_proceso')}}bg-info{{/if}}
+                                            {{#if (eq estado 'completado')}}bg-success{{/if}}">
+                                            {{estado}}
+                                        </span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="pedido-info">
+                                            <p><i class="fas fa-box me-2"></i>{{productos.length}} productos</p>
+                                            <p><i class="fas fa-dollar-sign me-2"></i>Total: ${{total}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="pedido-fecha">
+                                            <i class="far fa-calendar-alt me-2"></i>
+                                            {{formatDate fecha}}
+                                            <br>
+                                            <i class="far fa-clock me-2"></i>
+                                            {{formatTime fecha}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{/each}}
+                    </div>
+                {{else}}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        No tienes pedidos asignados en este momento.
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+/* Main Layout */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-avatar {
+    padding: 25px;
+    text-align: center;
+}
+
+/* Main Content Card */
+.pedido-detail-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    padding: 30px;
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Comercio Header */
+.comercio-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.comercio-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 4px solid #f8f9fa;
+}
+
+/* Status Badge */
+.badge {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 30px;
+}
+
+.bg-warning {
+    background: linear-gradient(45deg, #f7971e, #ffd200) !important;
+}
+
+.bg-info {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed) !important;
+}
+
+.bg-success {
+    background: linear-gradient(45deg, #11998e, #38ef7d) !important;
+}
+
+/* Info Sections */
+.pedido-info {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    color: #6c757d;
+}
+
+.info-row i {
+    margin-right: 10px;
+    color: #1e3c72;
+}
+
+/* Productos List */
+.productos-list {
+    margin: 30px 0;
+}
+
+.producto-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.producto-item:hover {
+    transform: translateX(5px);
+    background: #f0f0f0;
+}
+
+.producto-imagen {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.producto-info h4 {
+    color: #1e3c72;
+    margin-bottom: 5px;
+}
+
+.precio {
+    font-weight: 600;
+    color: #2a5298;
+}
+
+/* Total Section */
+.total-section {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-amount {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Action Buttons */
+.actions-section {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #11998e, #38ef7d);
+    border: none;
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    
+    #sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .comercio-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .comercio-logo {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .actions-section {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}

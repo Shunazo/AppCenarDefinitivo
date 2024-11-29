@@ -1,0 +1,179 @@
+/* Main Layout */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    padding: 25px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Product Card Styling */
+.producto-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.producto-imagen {
+    height: 200px;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.producto-imagen:hover {
+    transform: scale(1.05);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1e3c72;
+}
+
+.descripcion {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 15px;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Price Styling */
+.precio {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2a5298;
+    margin: 15px 0;
+}
+
+.precio-valor {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Category Badge */
+.categoria-badge {
+    margin: 10px 0;
+}
+
+.badge {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 30px;
+}
+
+.badge.bg-info {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed) !important;
+}
+
+/* Action Buttons */
+.acciones {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #f7971e, #ffd200);
+    border: none;
+    color: #fff;
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, #eb3349, #f45c43);
+    border: none;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .col-lg-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    
+    #sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.producto-card {
+    animation: fadeIn 0.5s ease-out;
+}

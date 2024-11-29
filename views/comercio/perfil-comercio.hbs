@@ -10,31 +10,41 @@
 </head>
 <body>
     <div class="wrapper">
-        <!-- Sidebar -->
+         <!-- Sidebar Navigation -->
         <nav id="sidebar" class="bg-dark text-white">
             <div class="sidebar-header">
-                <img src="{{comercio.logo}}" alt="Logo" class="logo-img mb-3">
-                <h4>{{comercio.nombreComercio}}</h4>
+                <img src="{{comercio.logo}}" alt="Logo Comercio" class="rounded-circle mb-3" style="width: 80px; height: 80px;">
+                <h4 class="text-white">{{comercio.nombreComercio}}</h4>
             </div>
             
             <ul class="list-unstyled components">
-                <li>
-                    <a href="/comercio/home"><i class="fas fa-home me-2"></i>Home</a>
-                </li>
                 <li class="active">
-                    <a href="/comercio/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                    <a href="/comercio/home" class="nav-link text-white">
+                        <i class="fas fa-home me-2"></i>Home
+                    </a>
                 </li>
                 <li>
-                    <a href="/comercio/categorias"><i class="fas fa-tags me-2"></i>Categorías</a>
+                    <a href="/comercio/perfil/edit" class="nav-link text-white">
+                        <i class="fas fa-user me-2"></i>Perfil
+                    </a>
                 </li>
                 <li>
-                    <a href="/comercio/productos"><i class="fas fa-box me-2"></i>Productos</a>
+                    <a href="/comercio/categorias" class="nav-link text-white">
+                        <i class="fas fa-tags me-2"></i>Categorías
+                    </a>
                 </li>
                 <li>
-                    <a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
+                    <a href="/comercio/productos" class="nav-link text-white">
+                        <i class="fas fa-box me-2"></i>Productos
+                    </a>
+                </li>
+                <li>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
                 </li>
             </ul>
-        </nav>
+            
 
         <!-- Content -->
         <div id="content" class="p-4">
