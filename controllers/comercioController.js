@@ -192,7 +192,7 @@ exports.editperfil = async (req, res) => {
     }
 };
 
-exports.categorias
+
              
 
 
