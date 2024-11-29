@@ -28,9 +28,11 @@
                               <a href="/cliente/direcciones/edit/{{id}}" class="btn btn-warning">
                                   <i class="fas fa-edit"></i> Editar
                               </a>
-                              <button onclick="confirmarEliminar({{id}})" class="btn btn-danger">
-                                  <i class="fas fa-trash"></i> Eliminar
-                              </button>
+                              <form method="POST" action="/cliente/direcciones/delete/{{id}}" data-entity-name="{{direccion.nombre}}" data-entity-type="Dirección">
+                                <button type="button" onclick="confirmDelete(this)" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                                </form>
                           </div>
                       </div>
                   </div>
@@ -40,6 +42,6 @@
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <script src="/assets/js/direcciones.js"></script>
+      <script src="../../assets/js/index.js"></script>
   </body>
   </html>

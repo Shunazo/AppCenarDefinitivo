@@ -241,7 +241,7 @@ exports.registerComercio = async (req, res) => {
             usuarioId: user.id,
         });
 
-        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '1m' });
+        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '5m' });
 
         transporter.sendMail(
             {

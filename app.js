@@ -80,7 +80,7 @@ Comercio.associate({ Usuario, TipoComercio, Categoria, Pedido, Producto, Favorit
 Delivery.associate({ Usuario, Pedido });
 Direccion.associate({ Cliente });
 Pedido.associate({ Cliente, Comercio, Delivery, Direccion, ProductoPedido });
-Producto.associate({ Categoria, ProductoPedido });
+Producto.associate({ Categoria, ProductoPedido, Comercio });
 ProductoPedido.associate({ Pedido, Producto });
 TipoComercio.associate({ Comercio });
 Favorito.associate({ Cliente, Comercio });
@@ -89,7 +89,7 @@ app.use('/', authRoute);
 app.use('/cliente', authMiddleware, clienteRoute); 
 app.use('/admin', authMiddleware, adminRoute);
 app.use('/delivery', authMiddleware, deliveryRoute); // aun le faltan cosas
-/*app.use('/comercio', authMiddleware, comercioRoute); */
+app.use('/comercio', authMiddleware, comercioRoute); 
 app.use(errorController.get404);
 
 

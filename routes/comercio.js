@@ -11,7 +11,7 @@ router.post("/pedidos/assign/:id([0-9]+)", authMiddleware, comercioController.as
 router.get("/perfil/edit", authMiddleware, comercioController.editperfilForm); 
 router.post("/perfil/edit", authMiddleware, comercioController.editperfil); 
 
-/*
+
 router.get("/categorias", authMiddleware, comercioController.categorias);
 router.get("/categorias/create", authMiddleware, comercioController.createcategoriaForm); 
 router.post("/categorias/create", authMiddleware, comercioController.createcategoria);
@@ -26,6 +26,5 @@ router.get("/productos/edit/:id([0-9]+)", authMiddleware, comercioController.edi
 router.post("/productos/edit/:id([0-9]+)", authMiddleware, comercioController.editproducto); 
 router.post("/productos/delete/:id([0-9]+)", authMiddleware, comercioController.deleteproducto);
 
-*/
 module.exports = router; 
 

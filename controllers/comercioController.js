@@ -185,12 +185,277 @@ exports.editperfil = async (req, res) => {
             logo
         });
 
-        res.redirect("/comercio/home");
+        res.redirect("comercio/home");
     } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
     }
 };
+
+exports.categorias = async (req, res) => {
+    try {
+        const categorias = await Categoria.findAll({ 
+            where: { comercioId: req.session.comercioId },
+            include: [{
+                model: Producto,
+                as: "productos"  
+            }]
+        });
+
+        const categoriasData = categorias.map(c => ({
+            ...c.dataValues,
+            productosCount: c.productos ? c.productos.length : 0
+        }))
+
+        res.render("comercio/mantenimiento-Categorias", { 
+            pageTitle: "Categorias",
+            categorias: categoriasData
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.createcategoriaForm = async (req, res) => {
+    try {
+        res.render("comercio/crear-categoria", { 
+            pageTitle: "Crear Categoria" });
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.createcategoria = async (req, res) => {
+    try {
+        const { nombre, descripcion } = req.body;
+
+        await Categoria.create({
+            comercioId: req.session.comercioId,
+            nombre,
+            descripcion
+        });
+
+        res.redirect("/comercio/mantenimiento-Categorias");
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.editcategoriaForm = async (req, res) => {
+    try {
+        const categoriaRecord = await Categoria.findByPk(req.params.id);
+
+        if (!categoriaRecord) {
+            return res.render("404", { pageTitle: "Categoria no encontrada." });
+        }
+
+        res.render("comercio/editar-categoria", { 
+            pageTitle: "Editar Categoria",
+            categoria: categoriaRecord.dataValues
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.editcategoria = async (req, res) => {
+    try {
+        const categoriaRecord = await Categoria.findByPk(req.params.id);
+
+        if (!categoriaRecord) {
+            return res.render("404", { pageTitle: "Categoria no encontrada." });
+        }
+
+        const { nombre, descripcion } = req.body;
+
+        await categoriaRecord.update({
+            nombre,
+            descripcion
+        });
+
+        res.redirect("/comercio/mantenimiento-Categorias");
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.deletecategoria = async (req, res) => {
+    try {
+        const categoriaRecord = await Categoria.findByPk(req.params.id);
+
+        if (!categoriaRecord) {
+            return res.render("404", { pageTitle: "Categoria no encontrada." });
+        }
+
+        await categoriaRecord.destroy();
+
+        res.redirect("/comercio/mantenimiento-Categorias");
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.productos = async (req, res) => {
+    try {
+        const productos = await Producto.findAll({ 
+            where: { comercioId: req.session.comercioId },
+            include: [{
+                model: Categoria,
+                as: "categoria",  
+                attributes: ['nombre']  
+            }]
+        });
+
+        res.render("comercio/mantenimiento-productos", { 
+            pageTitle: "Mantenimiento de Productos",
+            productos: productos.map(p => p.dataValues)
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.createproductoForm = async (req, res) => {
+    try {
+        const categorias = await Categoria.findAll({ 
+            where: { comercioId: req.session.comercioId }
+        });
+
+        res.render("comercio/crear-producto", { 
+            pageTitle: "Crear Producto",
+            categorias: categorias.map(c => c.dataValues)
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.createproducto = async (req, res) => {
+    try {
+        const { nombre, descripcion, precio, categoriaId } = req.body;
+        const imagen = "/images/" + req.files.imagen[0].filename;
+
+        if (!req.files || !req.files.imagen) {
+            return res.render("comercio/crear-producto", { 
+                pageTitle: "La imagen es obligatoria." });
+        }
+
+        if (!nombre || !descripcion || !precio ||   !categoriaId) {
+            return res.render("comercio/crear-producto", { 
+                pageTitle: "Todos los campos son obligatorios." });
+        }
+
+        await Producto.create({
+            comercioId: req.session.comercioId,
+            nombre,
+            descripcion,
+            precio,
+            imagen,
+            categoriaId
+        });
+
+        res.redirect("/comercio/mantenimiento-productos");
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.editproductoForm = async (req, res) => {
+    try {
+        const productoRecord = await Producto.findByPk(req.params.id);
+
+        if (!productoRecord) {
+            return res.render("404", { pageTitle: "Producto no encontrado." });
+        }
+
+        const categorias = await Categoria.findAll({
+            where: { comercioId: req.session.comercioId }
+        });
+
+        if (!categorias) {
+            return res.render("404", { pageTitle: "Categorias no encontradas." });
+        }
+
+        res.render("comercio/editar-producto", {
+            pageTitle: "Editar Producto",
+            producto: productoRecord.dataValues,
+            categorias: categorias.map(c => c.dataValues)
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+        
+exports.editproducto = async (req, res) => {
+    try {
+        const productoRecord = await Producto.findByPk(req.params.id);
+
+        if (!productoRecord) {
+            return res.render("404", { pageTitle: "Producto no encontrado." });
+        }
+
+        const { nombre, descripcion, precio, categoriaId } = req.body;
+        const imagen = req.files && req.files.imagen ? "/images/" + req.files.imagen[0].filename : productoRecord.imagen;
+
+        if (!nombre || !descripcion || !precio || !categoriaId) {
+            return res.render("comercio/editar-producto", { 
+                pageTitle: "Todos los campos son obligatorios." });
+        }
+
+        await productoRecord.update({
+            nombre,
+            descripcion,            
+            precio,
+            imagen,
+            categoriaId
+        });
+
+        res.redirect("/comercio/mantenimiento-productos");
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
+exports.deleteproducto = async (req, res) => {
+    try {
+        const productoRecord = await Producto.findByPk(req.params.id);
+
+        if (!productoRecord) {
+            return res.render("404", { pageTitle: "Producto no encontrado." });
+        }
+
+        await productoRecord.destroy();
+
+        res.redirect("/comercio/mantenimiento-productos");
+    } 
+    catch (error) {
+        console.log(error);
+        res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
+    }
+};
+
 
 
              

@@ -31,25 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/*function confirmDelete(button) {
+function confirmDelete(button) {
     const form = button.closest("form");
-  
+    
     const cardTitle = button.closest(".card").querySelector(".card-title");
-    const entityName = cardTitle ? cardTitle.innerText : "";
-  
-    let entityType = '';
-    if (button.closest(".libros")) {
-        entityType = 'Libro';
-    } else if (button.closest(".categorias")) {
-        entityType = 'Categoría';
-    } else if (button.closest(".autores")) {
-        entityType = 'Autor';
-    } else if (button.closest(".editoriales")) {
-        entityType = 'Editorial';
-    }
-  
+    const entityName = cardTitle ? cardTitle.innerText : button.closest("form").getAttribute("data-entity-name");
+
+    const entityType = button.closest("form").getAttribute("data-entity-type") || "Elemento";
+
     const confirmationMessage = `¿Estás seguro de que deseas borrar ${entityType}: "${entityName}"?`;
-  
+
     Swal.fire({
         title: 'Confirmación',
         text: confirmationMessage,
@@ -70,8 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-  }
-  
+}
+
+  /*
   function confirmCreateOrEdit(button, event) {
     const form = button.closest("form");
   

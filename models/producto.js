@@ -41,6 +41,11 @@ Producto.associate = (models) => {
         onDelete: "CASCADE", 
         as: "productosPedido" 
     });
+    Producto.belongsTo(models.Comercio, { 
+        foreignKey: "comercioId", 
+        onDelete: "CASCADE", 
+        as: "comercio" 
+    });
 };
 
 module.exports = Producto;
