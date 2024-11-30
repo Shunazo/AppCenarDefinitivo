@@ -20,13 +20,31 @@
             </div>
             
             <ul class="list-unstyled components">
-                <li><a href="/comercio/home"><i class="fas fa-home me-2"></i>Home</a></li>
-                <li><a href="/comercio/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
-                <li><a href="/comercio/categorias"><i class="fas fa-tags me-2"></i>Categorías</a></li>
                 <li class="active">
-                    <a href="/comercio/productos"><i class="fas fa-box me-2"></i>Productos</a>
+                    <a href="/comercio/home" class="nav-link text-white">
+                        <i class="fas fa-home me-2"></i>Home
+                    </a>
                 </li>
-                <li><a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                <li>
+                    <a href="/comercio/perfil/edit" class="nav-link text-white">
+                        <i class="fas fa-user me-2"></i>Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="/comercio/categorias" class="nav-link text-white">
+                        <i class="fas fa-tags me-2"></i>Categorías
+                    </a>
+                </li>
+                <li>
+                    <a href="/comercio/productos" class="nav-link text-white">
+                        <i class="fas fa-box me-2"></i>Productos
+                    </a>
+                </li>
+                <li>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
+                </li>
             </ul>
         </nav>
 
@@ -138,22 +156,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Form validation
-        (function() {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>

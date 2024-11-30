@@ -336,30 +336,41 @@ exports.deletecategoria = async (req, res) => {
 
 exports.productos = async (req, res) => {
     try {
+       
         const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
             include: [{ model: Usuario, as: "usuario" }]
-        })
-        const productos = await Producto.findAll({ 
+        });
+
+        
+        const productosRecord = await Producto.findAll({
             where: { comercioId: req.session.comercioId },
             include: [{
                 model: Categoria,
+                attributes: ['nombre'],  
                 as: "categoria",  
-                attributes: ['nombre']  
             }]
         });
 
-        res.render("comercio/mantenimiento-productos", { 
-            pageTitle: "Mantenimiento de Productos",
-            productos: productos.map(p => p.dataValues),
-            comercio: comercioRecord.dataValues,
-            usuario: comercioRecord.usuario.dataValues
+
+        const productos = productosRecord.map(p => {
+            return {
+                ...p.dataValues,
+                categoria: p.categoria ? p.categoria.dataValues : null  
+            };
         });
-    } 
-    catch (error) {
+
+        res.render("comercio/mantenimiento-productos", {
+            pageTitle: "Mantenimiento de Productos",
+            productos: productos, 
+            comercio: comercioRecord.dataValues, 
+            usuario: comercioRecord.usuario.dataValues  
+        });
+    } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
     }
 };
+
 
 exports.createproductoForm = async (req, res) => {
     try {
@@ -417,22 +428,25 @@ exports.createproducto = async (req, res) => {
 
 exports.editproductoForm = async (req, res) => {
     try {
-        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
-            include: [{ model: Usuario, as: "usuario" }]
-        })
-        const productoRecord = await Producto.findByPk(req.params.id);
+        const productoId = req.params.id;
+        const productoRecord = await Producto.findByPk(productoId);
 
         if (!productoRecord) {
             return res.render("404", { pageTitle: "Producto no encontrado." });
         }
 
-        const categorias = await Categoria.findAll({
-            where: { comercioId: req.session.comercioId }
-        });
+        const [comercioRecord, categorias] = await Promise.all([
+            Comercio.findByPk(req.session.comercioId, { include: [{ model: Usuario, as: "usuario" }] }),
+            Categoria.findAll({ where: { comercioId: req.session.comercioId } })
+        ]);
 
         if (!categorias) {
-            return res.render("404", { pageTitle: "Categorias no encontradas." });
+            return res.render("404", { pageTitle: "Categorías no encontradas." });
         }
+
+        categorias.forEach(categoria => {
+            categoria.selected = categoria.id === productoRecord.categoriaId; 
+        });
 
         res.render("comercio/editar-producto", {
             pageTitle: "Editar Producto",
@@ -441,12 +455,14 @@ exports.editproductoForm = async (req, res) => {
             comercio: comercioRecord.dataValues,
             usuario: comercioRecord.usuario.dataValues
         });
-    } 
-    catch (error) {
+
+    } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Se produjo un error, vuelva al home o intente más tarde." });
     }
 };
+
+
         
 exports.editproducto = async (req, res) => {
     try {

@@ -10,7 +10,7 @@ exports.home = async (req, res) => {
     try {
         const usuarioRecord = await Usuario.findOne({ where: { id: req.session.userId } });
         const tiposComercio = await tipoComercio.findAll({ 
-            attributes: ["nombre", "icono"],
+            attributes: ["id", "nombre", "icono"],
             order: [["nombre", "ASC"]]
         });
 
@@ -107,7 +107,7 @@ exports.tipoComercio = async (req, res) => {
       const comercios = await Comercio.findAll({
         where: { tipoComercioId: tipoId },
         attributes: ["id", "nombreComercio", "logo"],
-        order: [["nombre", "ASC"]],
+        order: [["nombreComercio", "ASC"]],
       });
   
       
@@ -124,11 +124,11 @@ exports.tipoComercio = async (req, res) => {
           )
         : comercios;
   
-      const tipoComercio = await TipoComercio.findByPk(tipoId, {
+      const tipocomercioRecord = await tipoComercio.findByPk(tipoId, {
         attributes: ["nombre"],
       });
   
-      if (!tipoComercio) {
+      if (!tipocomercioRecord) {
         return res.status(404).render("404", { pageTitle: "Tipo de Comercio no encontrado" });
       }
   
@@ -142,7 +142,7 @@ exports.tipoComercio = async (req, res) => {
   
       res.render("cliente/tipo-comercio", {
         pageTitle: `Comercios de tipo ${tipoComercio.nombre}`,
-        tipoNombre: tipoComercio.nombre,
+        tipoNombre: tipocomercioRecord.nombre,
         comercios: comerciosWithFavoritoStatus, 
         cantidad: filteredComercios.length,
         search: req.query.search,
