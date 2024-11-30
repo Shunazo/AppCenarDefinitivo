@@ -1,0 +1,166 @@
+/* Main Layout */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* User Avatar Section */
+.user-avatar {
+    text-align: center;
+    padding: 25px;
+}
+
+.user-avatar .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.user-avatar i.fa-user-circle {
+    font-size: 120px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 15px;
+}
+
+.user-avatar h4 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin: 10px 0;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Navigation Menu */
+.components li a, .logout-btn {
+    padding: 15px 25px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 1.1em;
+}
+
+.components li a:hover, .logout-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+}
+
+.components li.active a {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+}
+
+.logout-btn {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Content Area */
+#content {
+    flex: 1;
+    padding: 40px;
+}
+
+/* Business Type Cards */
+.tipo-comercio-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.tipo-comercio-card:hover {
+    transform: translateY(-5px);
+}
+
+.tipo-comercio-card .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.tipo-comercio-card:hover .card {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.tipo-comercio-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    color: #2a5298;
+    font-weight: 600;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed);
+    color: white;
+    border: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    
+    #sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    #content {
+        padding: 20px;
+    }
+    
+    .col-md-4 {
+        padding: 10px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tipo-comercio-card {
+    animation: fadeIn 0.5s ease-out forwards;
+}

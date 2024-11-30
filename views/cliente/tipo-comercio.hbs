@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - AppCenar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/tipo-comercio.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="bg-dark text-white">
+            <div class="sidebar-header">
+                <div class="user-avatar">
+                    {{#if usuario.fotoPerfil}}
+                        <img src="{{usuario.fotoPerfil}}" alt="Foto de perfil" class="profile-image">
+                    {{else}}
+                        <i class="fas fa-user-circle fa-4x"></i>
+                    {{/if}}
+                    <h4>{{usuario.nombreUsuario}}</h4>
+                </div>
+            </div>
+            
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="/cliente/home"><i class="fas fa-home me-2"></i>Home</a>
+                </li>
+                <li>
+                    <a href="/cliente/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                </li>
+                <li>
+                    <a href="/cliente/pedidos"><i class="fas fa-shopping-bag me-2"></i>Mis Pedidos</a>
+                </li>
+                <li>
+                    <a href="/cliente/direcciones"><i class="fas fa-map-marker-alt me-2"></i>Mis Direcciones</a>
+                </li>
+                <li>
+                    <a href="/cliente/favoritos"><i class="fas fa-heart me-2"></i>Mis Favoritos</a>
+                </li>
+                <li>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Content -->
+        <div id="content" class="p-4">
+            <div class="container">
+                <h2 class="mb-4"><i class="fas fa-store me-2"></i>Tipos de Comercios</h2>
+                
+                <div class="row">
+                    {{#each tiposComercio}}
+                    <div class="col-md-4 mb-4">
+                        <a href="/cliente/comercios/{{id}}" class="tipo-comercio-card">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <img src="{{icono}}" alt="{{nombre}}" class="tipo-comercio-icon mb-3">
+                                    <h5 class="card-title">{{nombre}}</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {{else}}
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            No hay tipos de comercios disponibles.
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/index.js"></script>
+</body>
+</html>

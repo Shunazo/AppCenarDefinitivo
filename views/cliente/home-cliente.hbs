@@ -10,17 +10,14 @@
 </head>
 <body>
     <div class="d-flex">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <img src="https://via.placeholder.com/200x80/FF0F65/FFFFFF?text=AppCenar" alt="AppCenar Logo" class="logo">
-                <div class="user-info">
-        <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
-    <span>{{usuario.nombre}}</span>
-</div>
-
-
-        </div>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="user-info">
+                        <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
+                        <span>{{usuario.nombre}}</span>
+                    </div>
+                </div>
             <div class="sidebar-menu">
                 <a href="/cliente/home" class="menu-item active">
                     <i class="fas fa-home"></i>
@@ -79,33 +76,6 @@
             </div>
         </section>
 
-
-            <!-- Featured Stores -->
-            <section class="featured-section">
-                <h2>Comercios Destacados</h2>
-                <div class="row g-4">
-                    {{#each comerciosDestacados}}
-                    <div class="col-md-6 col-lg-4">
-                        <div class="store-card">
-                            <div class="store-header">
-                                <img src="{{this.imagen}}" alt="{{this.nombre}}">
-                                <button class="favorite-btn">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            </div>
-                            <div class="store-body">
-                                <h4>{{this.nombre}}</h4>
-                                <div class="store-info">
-                                    <span><i class="fas fa-star"></i> {{this.rating}}</span>
-                                    <span><i class="fas fa-clock"></i> {{this.tiempoEntrega}} min</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{/each}}
-                </div>
-            </section>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
