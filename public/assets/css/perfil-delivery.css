@@ -14,21 +14,41 @@
     transition: all 0.3s;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
 }
+  .sidebar-header {
+      padding: 25px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
 
-.sidebar-header {
-    padding: 25px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+  /* Main Layout */
+  .wrapper {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+  }
 
-/* Profile Card */
-.profile-card {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-    overflow: hidden;
-    animation: slideIn 0.5s ease-out;
-}
+  #content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+  }
+
+  .container {
+      max-width: 800px;
+      width: 100%;
+  }
+
+  /* Profile Card */
+  .profile-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      animation: slideIn 0.5s ease-out;
+      margin: 0 auto;
+  }
 
 .card-header {
     background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);

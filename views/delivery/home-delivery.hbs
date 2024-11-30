@@ -13,19 +13,18 @@
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar" class="bg-dark text-white">
-    <div class="sidebar-header">
-        <div class="delivery-avatar">
-            <i class="fas fa-user-circle fa-4x"></i>
-            <h4>{{usuario.nombreUsuario}}</h4>
-            <span class="badge 
-            {{#ifEquals delivery.estado 'ocupado'}}bg-warning{{/ifEquals}}
-            {{#ifEquals delivery.estado 'disponible'}}bg-success{{/ifEquals}}">
-            {{#ifEquals delivery.estado 'disponible'}}Disponible{{else}}Ocupado{{/ifEquals}}
-            {{estado}}
-            </span>
-        </div>
-    </div>
-</nav>
+            <div class="sidebar-header">
+                <div class="delivery-avatar">
+                    <i class="fas fa-user-circle fa-4x"></i>
+                    <h4>{{usuario.nombreUsuario}}</h4>
+                    <span class="badge 
+                        {{#ifEquals delivery.estado 'ocupado'}}bg-warning{{/ifEquals}}
+                        {{#ifEquals delivery.estado 'disponible'}}bg-success{{/ifEquals}}">
+                        {{#ifEquals delivery.estado 'disponible'}}Disponible{{else}}Ocupado{{/ifEquals}}
+                    </span>
+                </div>
+            </div>
+            
             <ul class="list-unstyled components">
                 <li class="active">
                     <a href="/delivery/home"><i class="fas fa-home me-2"></i>Home</a>
@@ -34,13 +33,10 @@
                     <a href="/delivery/perfil/edit"><i class="fas fa-user me-2"></i>Mi Perfil</a>
                 </li>
                 <li>
-                    <button id="logout-btn" class="nav-link text-white logout-btn">
-                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                    </button>
+                    <a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
                 </li>
             </ul>
         </nav>
-
         <!-- Content -->
         <div id="content" class="p-4">
             <div class="container">
