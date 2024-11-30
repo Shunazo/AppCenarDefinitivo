@@ -79,6 +79,15 @@
     margin-bottom: 30px;
 }
 
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 15px;
+}
+
 .current-profile-image {
     width: 150px;
     height: 150px;
@@ -87,7 +96,6 @@
     border: 5px solid #fff;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-
 .no-photo {
     width: 150px;
     height: 150px;
@@ -256,4 +264,24 @@ input[type="file"].form-control::file-selector-button:hover {
 
 .logout-btn:focus {
     outline: none; 
+}
+
+.badge {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bg-warning {
+    background: linear-gradient(45deg, #f7971e, #ffd200) !important;
+}
+
+.bg-info {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed) !important;
+}
+
+.bg-success {
+    background: linear-gradient(45deg, #11998e, #38ef7d) !important;
 }
