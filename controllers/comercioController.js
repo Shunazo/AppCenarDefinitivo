@@ -106,7 +106,8 @@ exports.pedidoDetalle = async (req, res) => {
 
         res.render('comercio/pedido-detalle', {
             pageTitle: 'Detalles del Pedido',
-            pedido: pedido.dataValues
+            pedido: pedido.dataValues,
+            comercio: pedido.comercio.dataValues
         });
     } catch (error) {
         console.error(error);
@@ -205,6 +206,9 @@ exports.editperfil = async (req, res) => {
 
 exports.categorias = async (req, res) => {
     try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
+            include: [{ model: Usuario, as: "usuario" }]
+        });
         const categorias = await Categoria.findAll({ 
             where: { comercioId: req.session.comercioId },
             include: [{
@@ -220,7 +224,9 @@ exports.categorias = async (req, res) => {
 
         res.render("comercio/mantenimiento-Categorias", { 
             pageTitle: "Categorias",
-            categorias: categoriasData
+            categorias: categoriasData,
+            comercio: comercioRecord.dataValues,
+            usuario: comercioRecord.usuario.dataValues,
         });
     } 
     catch (error) {
@@ -231,8 +237,13 @@ exports.categorias = async (req, res) => {
 
 exports.createcategoriaForm = async (req, res) => {
     try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
+            include: [{ model: Usuario, as: "usuario" }]
+        })
         res.render("comercio/crear-categoria", { 
-            pageTitle: "Crear Categoria" });
+            pageTitle: "Crear Categoria",
+            comercio: comercioRecord.dataValues,
+            usuario: comercioRecord.usuario.dataValues,});
     } 
     catch (error) {
         console.log(error);
@@ -250,7 +261,7 @@ exports.createcategoria = async (req, res) => {
             descripcion
         });
 
-        res.redirect("/comercio/mantenimiento-Categorias");
+        res.redirect("/comercio/categorias");
     } 
     catch (error) {
         console.log(error);
@@ -260,6 +271,9 @@ exports.createcategoria = async (req, res) => {
 
 exports.editcategoriaForm = async (req, res) => {
     try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
+            include: [{ model: Usuario, as: "usuario" }]
+        })
         const categoriaRecord = await Categoria.findByPk(req.params.id);
 
         if (!categoriaRecord) {
@@ -268,7 +282,9 @@ exports.editcategoriaForm = async (req, res) => {
 
         res.render("comercio/editar-categoria", { 
             pageTitle: "Editar Categoria",
-            categoria: categoriaRecord.dataValues
+            categoria: categoriaRecord.dataValues,
+            comercio: comercioRecord.dataValues,
+            usuario: comercioRecord.usuario.dataValues,
         });
     } 
     catch (error) {
@@ -292,7 +308,7 @@ exports.editcategoria = async (req, res) => {
             descripcion
         });
 
-        res.redirect("/comercio/mantenimiento-Categorias");
+        res.redirect("/comercio/categorias");
     } 
     catch (error) {
         console.log(error);
@@ -310,7 +326,7 @@ exports.deletecategoria = async (req, res) => {
 
         await categoriaRecord.destroy();
 
-        res.redirect("/comercio/mantenimiento-Categorias");
+        res.redirect("/comercio/categorias");
     } 
     catch (error) {
         console.log(error);
@@ -320,6 +336,9 @@ exports.deletecategoria = async (req, res) => {
 
 exports.productos = async (req, res) => {
     try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
+            include: [{ model: Usuario, as: "usuario" }]
+        })
         const productos = await Producto.findAll({ 
             where: { comercioId: req.session.comercioId },
             include: [{
@@ -331,7 +350,9 @@ exports.productos = async (req, res) => {
 
         res.render("comercio/mantenimiento-productos", { 
             pageTitle: "Mantenimiento de Productos",
-            productos: productos.map(p => p.dataValues)
+            productos: productos.map(p => p.dataValues),
+            comercio: comercioRecord.dataValues,
+            usuario: comercioRecord.usuario.dataValues
         });
     } 
     catch (error) {
@@ -342,13 +363,18 @@ exports.productos = async (req, res) => {
 
 exports.createproductoForm = async (req, res) => {
     try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
+            include: [{ model: Usuario, as: "usuario" }]
+        })
         const categorias = await Categoria.findAll({ 
             where: { comercioId: req.session.comercioId }
         });
 
         res.render("comercio/crear-producto", { 
             pageTitle: "Crear Producto",
-            categorias: categorias.map(c => c.dataValues)
+            categorias: categorias.map(c => c.dataValues),
+            comercio: comercioRecord.dataValues,
+            usuario: comercioRecord.usuario.dataValues
         });
     } 
     catch (error) {
@@ -381,7 +407,7 @@ exports.createproducto = async (req, res) => {
             categoriaId
         });
 
-        res.redirect("/comercio/mantenimiento-productos");
+        res.redirect("/comercio/productos");
     } 
     catch (error) {
         console.log(error);
@@ -391,6 +417,9 @@ exports.createproducto = async (req, res) => {
 
 exports.editproductoForm = async (req, res) => {
     try {
+        const comercioRecord = await Comercio.findByPk(req.session.comercioId, {
+            include: [{ model: Usuario, as: "usuario" }]
+        })
         const productoRecord = await Producto.findByPk(req.params.id);
 
         if (!productoRecord) {
@@ -408,7 +437,9 @@ exports.editproductoForm = async (req, res) => {
         res.render("comercio/editar-producto", {
             pageTitle: "Editar Producto",
             producto: productoRecord.dataValues,
-            categorias: categorias.map(c => c.dataValues)
+            categorias: categorias.map(c => c.dataValues),
+            comercio: comercioRecord.dataValues,
+            usuario: comercioRecord.usuario.dataValues
         });
     } 
     catch (error) {
@@ -441,7 +472,7 @@ exports.editproducto = async (req, res) => {
             categoriaId
         });
 
-        res.redirect("/comercio/mantenimiento-productos");
+        res.redirect("/comercio/productos");
     } 
     catch (error) {
         console.log(error);
@@ -459,7 +490,7 @@ exports.deleteproducto = async (req, res) => {
 
         await productoRecord.destroy();
 
-        res.redirect("/comercio/mantenimiento-productos");
+        res.redirect("/comercio/productos");
     } 
     catch (error) {
         console.log(error);

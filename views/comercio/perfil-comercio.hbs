@@ -9,8 +9,8 @@
     <link href="/assets/css/perfil-comercio.css" rel="stylesheet">
 </head>
 <body>
-    <div class="wrapper">
-         <!-- Sidebar Navigation -->
+    <div class="wrapper d-flex">
+        <!-- Sidebar Navigation -->
         <nav id="sidebar" class="bg-dark text-white">
             <div class="sidebar-header">
                 <img src="{{comercio.logo}}" alt="Logo Comercio" class="rounded-circle mb-3" style="width: 80px; height: 80px;">
@@ -34,23 +34,20 @@
                     </a>
                 </li>
                 <li>
-<<<<<<< HEAD
                     <a href="/comercio/productos" class="nav-link text-white">
                         <i class="fas fa-box me-2"></i>Productos
                     </a>
                 </li>
                 <li>
-=======
->>>>>>> fc26ad39df0915d1a6037eda3d465701f9106c00
                     <button id="logout-btn" class="nav-link text-white logout-btn">
                     <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
                     </button>
                 </li>
             </ul>
-            
+        </nav>
 
         <!-- Content -->
-        <div id="content" class="p-4">
+        <div id="content" class="p-4 flex-grow-1">
             <div class="container">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">

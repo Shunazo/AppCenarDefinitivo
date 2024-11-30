@@ -13,25 +13,31 @@
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar" class="bg-dark text-white">
-            <div class="sidebar-header">
-                <div class="delivery-avatar">
-                    <i class="fas fa-user-circle fa-4x"></i>
-                    <h4>{{delivery.nombre}}</h4>
-                    <span class="badge {{#if delivery.disponible}}bg-success{{else}}bg-warning{{/if}}">
-                        {{#if delivery.disponible}}Disponible{{else}}Ocupado{{/if}}
-                    </span>
-                </div>
-            </div>
+    <div class="sidebar-header">
+        <div class="delivery-avatar">
+            <i class="fas fa-user-circle fa-4x"></i>
+            <h4>{{usuario.nombre}}</h4>
+            <span class="badge 
+            {{#if estado 'ocupado'}}bg-warning{{/if}}
+            {{#if estado 'disponible'}}bg-success{{/if}}">
+            {{estado}}
+            </span>
+        </div>
+    </div>
+</nav>
+
             
             <ul class="list-unstyled components">
                 <li class="active">
                     <a href="/delivery/home"><i class="fas fa-home me-2"></i>Home</a>
                 </li>
                 <li>
-                    <a href="/delivery/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                    <a href="/delivery/perfil/edit"><i class="fas fa-user me-2"></i>Mi Perfil</a>
                 </li>
                 <li>
-                    <a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
                 </li>
             </ul>
         </nav>
@@ -48,14 +54,14 @@
                             <a href="/delivery/pedidos/{{id}}" class="pedido-link">
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
-                                        <img src="{{comercio.logo}}" alt="{{comercio.nombre}}" class="comercio-logo">
+                                        <img src="{{comercio.logo}}" alt="{{comercio.nombreComercio}}" class="comercio-logo">
                                     </div>
                                     <div class="col-md-3">
                                         <h5 class="comercio-nombre">{{comercio.nombre}}</h5>
                                         <span class="badge 
-                                            {{#if (eq estado 'pendiente')}}bg-warning{{/if}}
-                                            {{#if (eq estado 'en_proceso')}}bg-info{{/if}}
-                                            {{#if (eq estado 'completado')}}bg-success{{/if}}">
+                                            {{#if estado 'pendiente'}}bg-warning{{/if}}
+                                            {{#if estado 'en_proceso'}}bg-info{{/if}}
+                                            {{#if estado 'completado'}}bg-success{{/if}}">
                                             {{estado}}
                                         </span>
                                     </div>
@@ -90,5 +96,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>

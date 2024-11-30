@@ -32,7 +32,9 @@
                     <a href="/delivery/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
                 </li>
                 <li>
-                    <a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
                 </li>
             </ul>
         </nav>
@@ -139,22 +141,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Form validation
-        (function() {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>

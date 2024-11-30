@@ -8,26 +8,46 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="/assets/css/mantenimiento-productos.css" rel="stylesheet">
     <link href="/assets/css/mantenimiento-categorias.css" rel="stylesheet">
+    
 
 </head>
 <body>
-    <div class="wrapper">
+    <div class="wrapper d-flex">
         <!-- Sidebar -->
         <nav id="sidebar" class="bg-dark text-white">
             <div class="sidebar-header">
-                <img src="{{comercio.logo}}" alt="Logo" class="logo-img mb-3">
-                <h4>{{comercio.nombreComercio}}</h4>
+                <img src="{{comercio.logo}}" alt="Logo Comercio" class="rounded-circle mb-3" style="width: 80px; height: 80px;">
+                <h4 class="text-white">{{comercio.nombreComercio}}</h4>
             </div>
             
             <ul class="list-unstyled components">
-                <li><a href="/comercio/home"><i class="fas fa-home me-2"></i>Home</a></li>
-                <li><a href="/comercio/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
-                <li><a href="/comercio/categorias"><i class="fas fa-tags me-2"></i>Categorías</a></li>
                 <li class="active">
-                    <a href="/comercio/productos"><i class="fas fa-box me-2"></i>Productos</a>
+                    <a href="/comercio/home" class="nav-link text-white">
+                        <i class="fas fa-home me-2"></i>Home
+                    </a>
                 </li>
-                <li><a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                <li>
+                    <a href="/comercio/perfil/edit" class="nav-link text-white">
+                        <i class="fas fa-user me-2"></i>Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="/comercio/categorias" class="nav-link text-white">
+                        <i class="fas fa-tags me-2"></i>Categorías
+                    </a>
+                </li>
+                <li>
+                    <a href="/comercio/productos" class="nav-link text-white">
+                        <i class="fas fa-box me-2"></i>Productos
+                    </a>
+                </li>
+                <li>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
+                </li>
             </ul>
+            
         </nav>
 
         <!-- Content -->
@@ -109,5 +129,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>
