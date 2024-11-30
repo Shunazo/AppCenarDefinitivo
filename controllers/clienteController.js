@@ -5,6 +5,12 @@ const Direccion = require("../models/direccion");
 const Favorito = require("../models/favorito");
 const tipoComercio = require("../models/tipocomercio");
 const Comercio = require("../models/comercio");
+const Producto = require("../models/producto");
+const ProductoPedido = require("../models/productopedido");
+const Delivery = require("../models/delivery");
+const Configuracion = require("../models/configuracion");
+const Categoria = require("../models/categoria");
+const { productos } = require("./comercioController");
 
 exports.home = async (req, res) => {
     try {
@@ -236,10 +242,19 @@ exports.tipoComercio = async (req, res) => {
       }
   
       const cart = req.session.cart || [];
+
+      const categorias = comercio.categorías.map(categoria => {
+        console.log(categoria);
+        return {
+          ...categoria.dataValues,
+          productos: categoria.productos.map(producto => producto.dataValues) 
+        };
+      });
   
       res.render("cliente/catalogo-comercio", {
         pageTitle: `Catálogo de ${comercio.nombreComercio}`,
-        comercio,
+        comercio: comercio.dataValues,
+        categorias: categorias,
         cart,
         itbis: await Configuracion.findOne() 
       });
@@ -251,64 +266,62 @@ exports.tipoComercio = async (req, res) => {
   
   exports.addToCart = async (req, res) => {
     try {
-      const productoId = req.params.productoId;
-      const producto = await Producto.findByPk(productoId);
-  
-      if (!producto) {
-        return res.status(404).json({ error: "Producto no encontrado" });
-      }
-  
-   
-      if (!req.session.cart) {
-        req.session.cart = [];
-      }
-  
-      
-      const existingProduct = req.session.cart.find(item => item.id === producto.id);
-  
-      if (existingProduct) {
-       
-        return res.redirect(`/catalogo/${req.params.comercioId}`);
-      } else {
-        
-        req.session.cart.push({
-          id: producto.id,
-          nombre: producto.nombre,
-          precio: producto.precio,
-          cantidad: 1,
-        });
-      }
-  
-      
-      res.redirect(`/catalogo/${req.params.comercioId}`);
-    } catch (error) {
-      console.log(error);
-      res.render("404", { pageTitle: "Error al agregar al carrito. Intente más tarde." });
-    }
-  };
+        const productoId = req.params.productoId;
+        const comercioId = req.params.comercioId;
+        const producto = await Producto.findByPk(productoId);
 
-  exports.renderCart = async (req, res) => {
-    try {
-        const cart = req.session.cart || [];
-        const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);  
-        const itbisConfig = await Configuracion.findOne();
-        const itbisRate = itbisConfig ? itbisConfig.itbis : 18;  
-        const itbisTotal = total * itbisRate / 100;  
-        const grandTotal = total + itbisTotal;  
+        if (!producto) {
+            return res.status(404).json({ error: "Producto no encontrado" });
+        }
 
-        res.render("cliente/miCarrito", {
-            pageTitle: "Mi Carrito",
-            cart,
-            total,
-            itbisRate,
-            itbisTotal,
-            grandTotal,
-        });
+        if (!req.session.cart) {
+            req.session.cart = [];
+        }
+
+        // Check if the product is already in the cart
+        const existingProduct = req.session.cart.find(item => item.id === producto.id);
+
+        if (!existingProduct) {
+            req.session.cart.push({
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                cantidad: 1,
+            });
+        }
+
+        // Redirect back to the catalog page
+        res.redirect(`/cliente/catalogo/${comercioId}`);
     } catch (error) {
         console.log(error);
-        res.render("404", { pageTitle: "Error al cargar el carrito. Intente más tarde." });
+        res.render("404", { pageTitle: "Error al agregar al carrito. Intente más tarde." });
     }
 };
+
+
+exports.renderCart = async (req, res) => {
+  try {
+      const cart = req.session.cart || [];
+      const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+      const itbisConfig = await Configuracion.findOne();
+      const itbisRate = itbisConfig ? itbisConfig.itbis : 18;
+      const itbisTotal = total * itbisRate / 100;
+      const grandTotal = total + itbisTotal;
+
+      res.render("cliente/miCarrito", {
+          pageTitle: "Mi Carrito",
+          cart,
+          total,
+          itbisRate,
+          itbisTotal,
+          grandTotal,
+      });
+  } catch (error) {
+      console.log(error);
+      res.render("404", { pageTitle: "Error al cargar el carrito. Intente más tarde." });
+  }
+};
+
 
 exports.removeFromCart = (req, res) => {
     try {

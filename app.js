@@ -43,7 +43,21 @@ app.engine("hbs", engine({
     helpers: {
         ifEquals: function (arg1, arg2, options) {
             return (arg1 === arg2) ? options.fn(this) : options.inverse(this);
-        }
+        },
+        json: function (context) {
+            return JSON.stringify(context);
+        },
+        inCart: function(id, options) {
+            // Access cart from session
+            const cart = this.cart || [];
+            const found = cart.some(item => item.id === id);
+
+            if (found) {
+                return options.fn(this);  // Render 'in cart' content
+            } else {
+                return options.inverse(this);  // Render 'add to cart' content
+            }
+        },
     }
 }));
 
