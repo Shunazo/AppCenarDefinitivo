@@ -1,0 +1,264 @@
+/* Main Layout */
+.d-flex {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+}
+
+/* User Info */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.profile-icon {
+    font-size: 80px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+}
+
+.user-name {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+    color: #fff;
+}
+
+.menu-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+}
+
+.menu-item i {
+    width: 20px;
+    margin-right: 10px;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Header Section */
+.header-section {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.header-section h2 {
+    color: #2a5298;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 15px;
+    display: inline-block;
+}
+
+.header-section h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: #2a5298;
+    border-radius: 2px;
+}
+
+/* Favorites Cards */
+.favorito-card {
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.comercio-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.favorito-card .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.favorito-card:hover .card {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.comercio-logo {
+    text-align: center;
+    padding: 20px;
+}
+
+.comercio-logo img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.comercio-nombre {
+    text-align: center;
+    color: #2a5298;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+/* Remove Favorite Button */
+.btn-remove-favorite {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #dc3545;
+    color: white;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+}
+
+.btn-remove-favorite:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.btn-remove-favorite i {
+    margin-right: 8px;
+}
+
+/* Alert Styling */
+.alert-info {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed);
+    color: white;
+    border: none;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.favorito-card {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+    
+    .col-md-6 {
+        padding: 10px;
+    }
+}
+
+.logout {
+    margin-top: auto;
+    background: rgba(220, 53, 69, 0.1);
+    border: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 25px;
+    transition: all 0.3s ease;
+}
+
+.logout:hover {
+    background: rgba(220, 53, 69, 0.2);
+    padding-left: 30px;
+}
+
+.logout i {
+    font-size: 1.2rem;
+}
+
+.logout-text {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
