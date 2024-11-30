@@ -254,11 +254,5 @@ input[type="time"] {
 }
 
 .logout-btn:focus {
-<<<<<<< HEAD
     outline: none 
 }
-
-=======
-    outline: none; 
-}
->>>>>>> fc26ad39df0915d1a6037eda3d465701f9106c00
