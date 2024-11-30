@@ -59,6 +59,48 @@
     </div>
 </div>
 
+
+
+            <!-- Carrito -->
+            <div class="carrito-section" id="carrito">
+                <div class="carrito-container">
+                    <h2><i class="fas fa-shopping-cart"></i> Mi Pedido</h2>
+                    
+                    <div class="productos-seleccionados" id="productos-seleccionados">
+                        {{#if carrito.productos.length}}
+                            {{#each carrito.productos}}
+                                <div class="producto-seleccionado" id="producto-{{id}}">
+                                    <div class="producto-info">
+                                        <h4>{{nombre}}</h4>
+                                        <span class="precio">${{precio}}</span>
+                                    </div>
+                                    <button class="btn-remove" onclick="quitarDelCarrito('{{id}}')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            {{/each}}
+                            
+                            <div class="carrito-total">
+                                <span>Subtotal:</span>
+                                <span class="total-amount">${{carrito.subtotal}}</span>
+                            </div>
+                            
+                            <button class="btn-continuar" onclick="continuarPedido()">
+                                Continuar <i class="fas fa-arrow-right"></i>
+                            </button>
+                        {{else}}
+                            <div class="carrito-vacio">
+                                <i class="fas fa-shopping-basket"></i>
+                                <p>Tu carrito está vacío</p>
+                                <span>Agrega productos para comenzar</span>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/catalogo.js"></script>
 </body>
