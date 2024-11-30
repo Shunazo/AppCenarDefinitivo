@@ -13,16 +13,12 @@
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="user-info">
-                    {{#if usuario.fotoPerfil}}
+                <div class="sidebar-header">
+                    <div class="user-info">
                         <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
-                    {{else}}
-                        <i class="fas fa-user-circle fa-4x profile-icon"></i>
-                    {{/if}}
-                    <h4 class="user-name">{{usuario.nombre}}</h4>
+                        <span>{{usuario.nombre}}</span>
+                    </div>
                 </div>
-            </div>
 
             <div class="sidebar-menu">
                 <a href="/cliente/home" class="menu-item">

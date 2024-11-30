@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Pedido - AppCenar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/pedido-detalle.css" rel="stylesheet">
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="/assets/img/logo-appcenar.png" alt="AppCenar Logo" class="logo">
+                <div class="user-info">
+                    {{#if usuario.fotoPerfil}}
+                        <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
+                    {{else}}
+                        <i class="fas fa-user-circle fa-4x profile-icon"></i>
+                    {{/if}}
+                    <h4 class="user-name">{{usuario.nombre}}</h4>
+                </div>
+            </div>
+
+            <div class="sidebar-menu">
+                <a href="/cliente/home" class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <a href="/cliente/perfil/edit" class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mi Perfil</span>
+                </a>
+                <a href="/cliente/pedidos" class="menu-item active">
+                    <i class="fas fa-receipt"></i>
+                    <span>Mis Pedidos</span>
+                </a>
+                <a href="/cliente/direcciones" class="menu-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Mis Direcciones</span>
+                </a>
+                <a href="/cliente/favoritos" class="menu-item">
+                    <i class="fas fa-heart"></i>
+                    <span>Favoritos</span>
+                </a>
+                <button id="logout-btn" class="menu-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <div class="logout-text">Salir</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container">
+                <div class="header-section">
+                    <h2><i class="fas fa-receipt me-2"></i>Detalle del Pedido</h2>
+                </div>
+
+                <div class="pedido-info-card">
+                    <div class="comercio-info">
+                        <img src="{{pedido.comercio.logo}}" alt="{{pedido.comercio.nombre}}" class="comercio-logo">
+                        <h3>{{pedido.comercio.nombre}}</h3>
+                    </div>
+                    
+                    <div class="pedido-status">
+                        <span class="badge 
+                            {{#if (equals pedido.estado 'pendiente')}}bg-warning{{/if}}
+                            {{#if (equals pedido.estado 'en proceso')}}bg-info{{/if}}
+                            {{#if (equals pedido.estado 'completado')}}bg-success{{/if}}">
+                            {{pedido.estado}}
+                        </span>
+                        <p class="fecha-pedido">
+                            <i class="far fa-calendar-alt me-2"></i>
+                            {{formatDate pedido.fecha}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="productos-list">
+                    <h4>Productos del Pedido</h4>
+                    {{#each pedido.productos}}
+                        <div class="producto-card">
+                            <div class="producto-imagen">
+                                <img src="{{imagen}}" alt="{{nombre}}">
+                            </div>
+                            <div class="producto-info">
+                                <h5>{{nombre}}</h5>
+                                <p class="cantidad">Cantidad: {{cantidad}}</p>
+                                <p class="precio">${{precio}}</p>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+
+                <div class="total-section">
+                    <div class="total-info">
+                        <span>Total del Pedido:</span>
+                        <span class="total-amount">${{pedido.total}}</span>
+                    </div>
+                </div>
+
+                <div class="button-section">
+                    <a href="/cliente/pedidos" class="btn btn-back">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a Mis Pedidos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/index.js"></script>
+</body>
+</html>

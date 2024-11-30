@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{comercio.nombre}} - Catálogo - AppCenar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/catalogo-comercio.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <header class="comercio-header">
+            <div class="comercio-info">
+                <img src="{{comercio.logo}}" alt="{{comercio.nombre}}" class="comercio-logo">
+                <h1>{{comercio.nombre}}</h1>
+            </div>
+            <a href="/cliente/home" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <!-- Catálogo -->
+            <div class="catalogo-section">
+                {{#each categorias}}
+                    <div class="categoria-container">
+                        <h2 class="categoria-titulo">{{nombre}}</h2>
+                        <div class="productos-grid">
+                            {{#each productos}}
+                                <div class="producto-card">
+                                    <div class="producto-imagen">
+                                        <img src="{{imagen}}" alt="{{nombre}}">
+                                    </div>
+                                    <div class="producto-info">
+                                        <h3>{{nombre}}</h3>
+                                        <p class="descripcion">{{descripcion}}</p>
+                                        <div class="precio-action">
+                                            <span class="precio">${{precio}}</span>
+                                            {{#unless (inCart id)}}
+                                                <button class="btn-agregar" onclick="agregarAlCarrito({{json this}})">
+                                                    <i class="fas fa-plus"></i> Agregar
+                                                </button>
+                                            {{else}}
+                                                <span class="agregado">
+                                                    <i class="fas fa-check"></i> En el carrito
+                                                </span>
+                                            {{/unless}}
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+
+            <!-- Carrito -->
+            <div class="carrito-section" id="carrito">
+                <div class="carrito-container">
+                    <h2><i class="fas fa-shopping-cart"></i> Mi Pedido</h2>
+                    
+                    <div class="productos-seleccionados" id="productos-seleccionados">
+                        {{#if carrito.productos.length}}
+                            {{#each carrito.productos}}
+                                <div class="producto-seleccionado" id="producto-{{id}}">
+                                    <div class="producto-info">
+                                        <h4>{{nombre}}</h4>
+                                        <span class="precio">${{precio}}</span>
+                                    </div>
+                                    <button class="btn-remove" onclick="quitarDelCarrito('{{id}}')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            {{/each}}
+                            
+                            <div class="carrito-total">
+                                <span>Subtotal:</span>
+                                <span class="total-amount">${{carrito.subtotal}}</span>
+                            </div>
+                            
+                            <button class="btn-continuar" onclick="continuarPedido()">
+                                Continuar <i class="fas fa-arrow-right"></i>
+                            </button>
+                        {{else}}
+                            <div class="carrito-vacio">
+                                <i class="fas fa-shopping-basket"></i>
+                                <p>Tu carrito está vacío</p>
+                                <span>Agrega productos para comenzar</span>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/catalogo.js"></script>
+</body>
+</html>
