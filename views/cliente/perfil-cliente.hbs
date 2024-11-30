@@ -16,34 +16,34 @@
 <body>
     <div class="profile-container">
         <div class="container mt-4">
-            <h2>Mi Perfil</h2>
+            <h2 class="text-center"><i class="fas fa-user-circle me-2"></i>Mi Perfil</h2>
             <form action="/cliente/perfil/edit" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
+                    <label for="nombre" class="form-label"><i class="fas fa-user me-2"></i>Nombre</label>
                     <input type="text" class="form-control" id="nombre" name="nombre" value="{{usuario.nombre}}" required>
                 </div>
                 
                 <div class="mb-3">
-                    <label for="apellido" class="form-label">Apellido</label>
+                    <label for="apellido" class="form-label"><i class="fas fa-user me-2"></i>Apellido</label>
                     <input type="text" class="form-control" id="apellido" name="apellido" value="{{usuario.apellido}}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="telefono" class="form-label">Teléfono</label>
+                    <label for="telefono" class="form-label"><i class="fas fa-phone me-2"></i>Teléfono</label>
                     <input type="tel" class="form-control" id="telefono" name="telefono" value="{{usuario.telefono}}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="fotoPerfil" class="form-label">Foto de Perfil</label>
+                    <label for="fotoPerfil" class="form-label"><i class="fas fa-camera me-2"></i>Foto de Perfil</label>
                     <input type="file" class="form-control" id="fotoPerfil" name="fotoPerfil" accept="image/*">
                     {{#if usuario.fotoPerfil}}
-                        <img id="previewImage"src="{{usuario.fotoPerfil}}" alt="Foto actual" class="mt-2 current-photo">
+                        <img id="previewImage" src="{{usuario.fotoPerfil}}" alt="Foto actual" class="mt-2 current-photo">
                     {{/if}}
                 </div>
 
                 <div class="button-group">
-                    <a href="/cliente/home" class="btn btn-back">Volver</a>
-                    <button type="submit" class="btn btn-save">Guardar Cambios</button>
+                    <a href="/cliente/home" class="btn btn-back"><i class="fas fa-arrow-left me-2"></i>Volver</a>
+                    <button type="submit" class="btn btn-save"><i class="fas fa-save me-2"></i>Guardar Cambios</button>
                 </div>
             </form>
         </div>

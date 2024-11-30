@@ -1,125 +1,142 @@
-/* Main Container Styles */
+/* Main Container */
 .profile-container {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 40px 0;
+}
+
+.container {
     max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Styles */
-.profile-header {
+/* Headings */
+h2 {
     text-align: center;
-    margin-bottom: 40px;
-}
-
-.profile-header h2 {
-    color: #2c3e50;
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-/* Form Styles */
-.profile-form {
-    padding: 20px;
-}
-
-.form-group {
-    margin-bottom: 25px;
-}
-
-.form-label {
+    color: #2a5298;
     font-weight: 600;
-    color: #34495e;
-    font-size: 16px;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: #2a5298;
+    border-radius: 2px;
+}
+
+/* Form Elements */
+.form-label {
+    color: #495057;
+    font-weight: 500;
     margin-bottom: 8px;
-    display: block;
+}
+
+.form-label i {
+    color: #2a5298;
+    width: 20px;
 }
 
 .form-control {
-    height: 50px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 10px 15px;
-    font-size: 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 12px 15px;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+    border-color: #2a5298;
+    box-shadow: 0 0 0 0.2rem rgba(42, 82, 152, 0.15);
 }
 
-/* Photo Upload Section */
-.photo-upload-container {
-    position: relative;
-    margin-bottom: 30px;
-}
-
+/* Profile Image */
 .current-photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 20px;
-    display: block;
-    border: 4px solid #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 150px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.file-input-wrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
+#fotoPerfil {
+    padding: 10px;
 }
 
-.file-input {
-    cursor: pointer;
-    padding: 12px;
-    background: #f8f9fa;
-    border: 2px dashed #dee2e6;
-    border-radius: 8px;
-    width: 100%;
-}
-
-/* Button Styles */
+/* Button Group */
 .button-group {
     display: flex;
     gap: 15px;
     margin-top: 30px;
-    justify-content: center;
 }
 
 .btn {
-    padding: 12px 30px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 8px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .btn-back {
-    background-color: #95a5a6;
+    background: #6c757d;
     color: white;
     border: none;
 }
 
 .btn-back:hover {
-    background-color: #7f8c8d;
+    background: #5a6268;
     transform: translateY(-2px);
+    color: white;
 }
 
 .btn-save {
-    background-color: #2ecc71;
+    background: #2a5298;
     color: white;
     border: none;
 }
 
 .btn-save:hover {
-    background-color: #27ae60;
+    background: #1e3c72;
     transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 15px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
 }
 
 /* Validation Styles */
@@ -135,30 +152,4 @@
     color: #e74c3c;
     font-size: 14px;
     margin-top: 5px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .profile-container {
-        margin: 20px;
-        padding: 20px;
-    }
-
-    .button-group {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-    }
-}
-
-/* Animation Effects */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.profile-container {
-    animation: fadeIn 0.5s ease-out;
 }
