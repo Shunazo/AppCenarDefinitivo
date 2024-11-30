@@ -15,15 +15,15 @@ const { Op } = require("sequelize");
 exports.home = async (req, res) => {
     try {
         const usuarioRecord = await Usuario.findOne({ where: { id: req.session.userId } });
-        const delivery = await Delivery.findOne({ where: { usuarioId: req.session.userId } });
+        const deliveryRecord = await Delivery.findOne({ where: { usuarioId: req.session.userId } });
 
-        if (!delivery) {
+        if (!deliveryRecord) {
             return res.redirect("/");
         }
         
         const pedidos = await Pedido.findAll({
             where: { 
-                deliveryId: delivery.id, 
+                deliveryId: deliveryRecord.id, 
                 estado: { [Op.in]: ['en proceso', 'completado']}
             },  
             include: [
@@ -50,6 +50,7 @@ exports.home = async (req, res) => {
         res.render("delivery/home-delivery", {
             pageTitle: "Home",
             usuario: usuarioRecord.dataValues,
+            delivery: deliveryRecord.dataValues,
             pedidos: pedidos.map(p => p.dataValues),
         });
     } catch (error) {
