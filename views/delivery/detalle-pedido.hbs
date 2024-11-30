@@ -47,10 +47,13 @@
                         <div class="status-badge">
                             <span class="badge 
                             
-                                {{#if 'pendiente')}}bg-warning{{/if}}
-                                {{#if 'en_proceso')}}bg-info{{/if}}
-                                {{#if ('completado')}}bg-success{{/if}}">
-                                {{pedido.estado}}
+                                {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
+                                {{#ifEquals pedido.estado 'en_proceso'}}bg-info{{/ifEquals}}
+                                {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
+                                {{#ifEquals pedido.estado 'pendiente'}}Pendiente{{/ifEquals}}
+                                {{#ifEquals pedido.estado 'en_proceso'}}En Proceso{{/ifEquals}}
+                                {{#ifEquals pedido.estado 'completado'}}Completado{{/ifEquals}}
+                                {{estado}}
                             </span>
                         </div>
 
@@ -61,12 +64,14 @@
                             <span>{{formatTime pedido.fechaHora}}</span>
                         </div>
 
-                        {{#unless (eq pedido.estado 'completado')}}
+                        {{#ifEquals pedido.estado 'completado'}}
+                            <!-- Do nothing -->
+                        {{else}}
                             <div class="direccion-entrega">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <p>{{pedido.Direccion.direccion}}</p>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>{{pedido.Direccion.direccion}}</p>
                             </div>
-                        {{/unless}}
+                    {{/ifEquals}}
                     </div>
 
                     <div class="productos-list">
@@ -87,14 +92,14 @@
                         <span class="total-amount">${{pedido.total}}</span>
                     </div>
 
+                    {{#ifEquals pedido.estado 'en_proceso'}}
                     <div class="actions-section">
-                        {{#if (eq pedido.estado 'en_proceso')}}
                             <button type="button" 
                                     class="btn btn-success btn-lg"
                                     id="completar-pedido">
                                 <i class="fas fa-check-circle me-2"></i>Completar Pedido
                             </button>
-                        {{/if}}
+                        {{/ifEquals}}
 
                         <a href="/delivery/home" class="btn btn-secondary btn-lg">
                             <i class="fas fa-arrow-left me-2"></i>Volver al Home
@@ -110,39 +115,3 @@
 </body>
 </html>
 
-<!--
-
-mas vainas del controlador en si (lo que deberia mostrar)
-
-
-
-<h1>{{pageTitle}}</h1>
-<h2>Pedido de: {{pedido.Comercio.nombreComercio}}</h2>
-<p>Estado: {{pedido.estado}}</p>
-<p>Fecha y Hora: {{pedido.fechaHora}}</p>
-<p>Total: ${{pedido.total}}</p>
-
-{{#if pedido.estado '===' 'en proceso'}}
-    <button id="completar-pedido">Completar Pedido</button>
-{{/if}}
-
-{{#if pedido.estado '===' 'completado'}}
-{{else}}
-    <p>Dirección de entrega: {{pedido.Direccion.direccion}}</p>
-{{/if}}
-
-<h3>Productos:</h3>
-<ul>
-    {{#each pedido.productosPedido}}
-        <li>
-            <img src="{{this.Producto.imagen}}" alt="{{this.Producto.nombre}}">
-            <p>{{this.Producto.nombre}} - ${{this.Producto.precio}} x {{this.cantidad}}</p>
-        </li>
-    {{/each}}
-</ul>
-
-
-<a href="/delivery/home">Volver al Home</a>
-
-
--->

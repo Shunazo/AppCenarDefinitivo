@@ -79,9 +79,12 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5 class="mb-1">{{comercio.nombreComercio}}</h5>
                                         <span class="badge rounded-pill 
-                                            {{#if estado 'pendiente'}}bg-warning{{/if}}
-                                            {{#if estado 'en_proceso'}}bg-info{{/if}}
-                                            {{#if estado 'completado'}}bg-success{{/if}}">
+                                            {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
+                                            {{#ifEquals pedido.estado 'en_proceso'}}bg-info{{/ifEquals}}
+                                            {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
+                                            {{#ifEquals pedido.estado 'pendiente'}}Pendiente{{/ifEquals}}
+                                            {{#ifEquals pedido.estado 'en_proceso'}}En Proceso{{/ifEquals}}
+                                            {{#ifEquals pedido.estado 'completado'}}Completado{{/ifEquals}}
                                             {{estado}}
                                         </span>
                                     </div>

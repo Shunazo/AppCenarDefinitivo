@@ -69,11 +69,11 @@
 
                     <h3><strong>Total:</strong> ${{pedido.total}}</h3>
 
-                    {{#if pedido.estado === 'pendiente'}}
+                    {{#ifEquals pedido.estado 'pendiente'}}
                     <form action="/comercio/pedidos/assign/{{pedido.id}}" method="POST">
                         <button type="submit" class="btn btn-primary">Asignar Delivery</button>
                     </form>
-                    {{/if}}
+                    {{/ifEquals}}
 
                     <a href="/comercio" class="btn btn-secondary mt-3">Volver al Home</a>
                 </div>
