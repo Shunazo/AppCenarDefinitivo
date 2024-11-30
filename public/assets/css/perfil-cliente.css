@@ -1,16 +1,121 @@
 /* Main Container */
+
+
+/* Main Layout */
+.d-flex {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+/* User Info Styling */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.user-name {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+    color: #fff;
+}
+
+.menu-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+}
+
+.menu-item i {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.logout {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+
 .profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
     background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 40px 0;
 }
 
 .container {
-    max-width: 800px;
+    width: 100%;
+    max-width: 800px; /* Adjust the max-width as needed */
     background: white;
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+    margin-right: auto; /* Center the form horizontally */
 }
 
 /* Headings */

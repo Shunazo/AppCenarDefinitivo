@@ -14,6 +14,44 @@
     
 </head>
 <body>
+
+    <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="user-info">
+                        <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
+                        <span>{{usuario.nombre}}</span>
+                    </div>
+                </div>
+            <div class="sidebar-menu">
+                <a href="/cliente/home" class="menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <a href="/cliente/perfil/edit" class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mi Perfil</span>
+                </a>
+                <a href="/cliente/pedidos" class="menu-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Mis Pedidos</span>
+                </a>
+                <a href="/cliente/direcciones" class="menu-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Mis Direcciones</span>
+                </a>
+                <a href="/cliente/favoritos" class="menu-item">
+                    <i class="fas fa-heart"></i>
+                    <span>Favoritos</span>
+                </a>
+                <button id="logout-btn" class="menu-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </div>
+
     <div class="profile-container">
         <div class="container mt-4">
             <h2 class="text-center"><i class="fas fa-user-circle me-2"></i>Mi Perfil</h2>
@@ -47,6 +85,7 @@
                 </div>
             </form>
         </div>
+    </div>
     </div>
 
     <!-- Bootstrap JS -->
