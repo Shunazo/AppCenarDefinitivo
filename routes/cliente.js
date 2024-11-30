@@ -9,12 +9,12 @@ router.get("/perfil/edit", authMiddleware, clienteController.editPerfilForm);
 router.post("/perfil/edit", authMiddleware, clienteController.editPerfil);  
 
 // Tipo Comercio (Business Category)
-router.get("/tipo-comercio/:tipoId", authMiddleware, clienteController.tipoComercio);
+router.get("/tipo-comercio/:id([0-9]+)", authMiddleware, clienteController.tipoComercio);
 router.post("/favoritos/toggle/:id([0-9]+)", authMiddleware, clienteController.toggleFavorito);
 router.get("/favoritos", authMiddleware, clienteController.favoritos);
 
 // Catalogo (Catalog)
-router.get("/catalogo/:comercioId", authMiddleware, clienteController.catalogo); 
+router.get("/catalogo/:id([0-9]+)", authMiddleware, clienteController.catalogo); 
 
 // Carrito (Cart)
 router.get("/cart/add/:productoId/:comercioId", authMiddleware, clienteController.addToCart);

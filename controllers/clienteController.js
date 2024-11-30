@@ -14,6 +14,8 @@ exports.home = async (req, res) => {
             order: [["nombre", "ASC"]]
         });
 
+        console.log(tiposComercio);
+
   
         if (!tiposComercio.length === 0) {
             return res.render("cliente/home-cliente", {
@@ -97,11 +99,11 @@ exports.editPerfil = async (req, res) => {
 
 exports.tipoComercio = async (req, res) => {
     try {
-      const tipoId = req.params.tipoId; 
+      const tipoId = req.params.id; 
       const searchQuery = req.query.search ? req.query.search.toLowerCase() : "";
       const usuarioId = req.session.userId;
   
-     
+
       const comercios = await Comercio.findAll({
         where: { tipoComercioId: tipoId },
         attributes: ["id", "nombreComercio", "logo"],
@@ -213,7 +215,7 @@ exports.tipoComercio = async (req, res) => {
   
   exports.catalogo = async (req, res) => {
     try {
-      const comercioId = req.params.comercioId;
+      const comercioId = req.params.id;
       const comercio = await Comercio.findByPk(comercioId, {
         include: [
           {
@@ -431,11 +433,19 @@ exports.pedidos = async (req, res) => {
 
 
 
-exports.direcciones = async (req, res) => {
+  exports.direcciones = async (req, res) => {
     try {
         const usuarioId = req.session.userId;
+
+        const cliente = await Cliente.findOne({ where: { usuarioId } });
+
+        if (!cliente) {
+            return res.render("404", { pageTitle: "Usuario no encontrado como cliente." });
+        }
+
+        // Now use the cliente's id to fetch the direcciones
         const direcciones = await Direccion.findAll({
-            where: { clienteId: usuarioId },
+            where: { clienteId: cliente.id },
         });
 
         res.render("cliente/misDirecciones", {
@@ -448,26 +458,35 @@ exports.direcciones = async (req, res) => {
     }
 };
 
+
 exports.createdireccionForm = (req, res) => {
     res.render("cliente/crear-direccion", { pageTitle: "Crear Dirección" });
 };
 
 exports.createdireccion = async (req, res) => {
-    try {
-        const { nombre, descripcion } = req.body;
+  try {
+      const { nombre, descripcion } = req.body;
 
-        await Direccion.create({
-            clienteId: req.session.userId,
-            nombre,
-            descripcion,
-        });
+      const cliente = await Cliente.findOne({ where: { usuarioId: req.session.userId } });
 
-        res.redirect("/cliente/misDirecciones");
-    } catch (error) {
-        console.log(error);
-        res.render("404", { pageTitle: "Error al crear la direccion. Intente más tarde." });
-    }
+      if (!cliente) {
+          return res.render("404", { pageTitle: "Usuario no encontrado como cliente." });
+      }
+
+      await Direccion.create({
+          clienteId: cliente.id,
+          nombre,
+          descripcion,
+      });
+
+      res.redirect("/cliente/direcciones");
+  } catch (error) {
+      console.log(error);
+      res.render("404", { pageTitle: "Error al crear la dirección. Intente más tarde." });
+  }
 };
+
+
 
 exports.editdireccionForm = async (req, res) => {
     try {
@@ -504,7 +523,7 @@ exports.editdireccion = async (req, res) => {
             descripcion,
         });
 
-        res.redirect("/cliente/misDirecciones");  
+        res.redirect("/cliente/direcciones");  
     } catch (error) {
         console.log(error);
         res.render("404", { pageTitle: "Error al editar la direccion. Intente más tarde." });

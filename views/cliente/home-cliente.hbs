@@ -67,88 +67,25 @@
             </header>
 
             <!-- Categories -->
-            <section class="categories-section">
-                <h2>Categorías</h2>
-                <div class="row g-4">
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/client/stores/restaurantes" class="category-card">
-                            <div class="card">
-                                <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Restaurantes">
-                                <div class="card-overlay">
+                <section class="categories-section">
+                    <h2>Categorías</h2>
+                        <div class="row g-4">
+                            {{#each tiposComercio}}
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <a href="/cliente/tipo-comercio/{{this.id}}" class="category-card">
+                                        <div class="card">
+                                                <img src="{{this.icono}}" alt="{{this.nombre}}">
+                                            <div class="card-overlay">
                                     <i class="fas fa-utensils category-icon"></i>
-                                    <h3>Restaurantes</h3>
+                                <h3>{{this.nombre}}</h3>
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/client/stores/farmacias" class="category-card">
-                            <div class="card">
-                                <img src="https://images.pexels.com/photos/4021779/pexels-photo-4021779.jpeg" alt="Farmacias">
-                                <div class="card-overlay">
-                                    <i class="fas fa-pills category-icon"></i>
-                                    <h3>Farmacias</h3>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/client/stores/supermercados" class="category-card">
-                            <div class="card">
-                                <img src="https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg" alt="Supermercados">
-                                <div class="card-overlay">
-                                    <i class="fas fa-shopping-cart category-icon"></i>
-                                    <h3>Supermercados</h3>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/client/stores/tiendas" class="category-card">
-                            <div class="card">
-                                <img src="https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg" alt="Tiendas">
-                                <div class="card-overlay">
-                                    <i class="fas fa-store category-icon"></i>
-                                    <h3>Tiendas</h3>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/client/stores/bebidas" class="category-card">
-                            <div class="card">
-                                <img src="https://images.pexels.com/photos/2789328/pexels-photo-2789328.jpeg" alt="Bebidas">
-                                <div class="card-overlay">
-                                    <i class="fas fa-glass-cheers category-icon"></i>
-                                    <h3>Bebidas</h3>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/client/stores/cafe-postres" class="category-card">
-                            <div class="card">
-                                <img src="https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg" alt="Café & Postres">
-                                <div class="card-overlay">
-                                    <i class="fas fa-coffee category-icon"></i>
-                                    <h3>Café & Postres</h3>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/client/stores/salud" class="category-card">
-                            <div class="card">
-                                <img src="https://images.pexels.com/photos/3683098/pexels-photo-3683098.jpeg" alt="Salud">
-                                <div class="card-overlay">
-                                    <i class="fas fa-heartbeat category-icon"></i>
-                                    <h3>Salud</h3>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </section>
+                {{/each}}
+            </div>
+        </section>
+
 
             <!-- Featured Stores -->
             <section class="featured-section">
