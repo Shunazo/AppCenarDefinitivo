@@ -221,48 +221,50 @@ exports.tipoComercio = async (req, res) => {
   
   exports.catalogo = async (req, res) => {
     try {
-      const comercioId = req.params.id;
-      const comercio = await Comercio.findByPk(comercioId, {
-        include: [
-          {
-            model: Categoria,
-            as: "categorías",
+        const comercioId = req.params.id;
+        const comercio = await Comercio.findByPk(comercioId, {
             include: [
-              {
-                model: Producto,
-                as: "productos",
-              }
-            ]
-          }
-        ]
-      });
-  
-      if (!comercio) {
-        return res.status(404).render("404", { pageTitle: "Comercio no encontrado" });
-      }
-  
-      const cart = req.session.cart || [];
+                {
+                    model: Categoria,
+                    as: "categorías",
+                    include: [
+                        {
+                            model: Producto,
+                            as: "productos",
+                        },
+                    ],
+                },
+            ],
+        });
 
-      const categorias = comercio.categorías.map(categoria => {
-        console.log(categoria);
-        return {
-          ...categoria.dataValues,
-          productos: categoria.productos.map(producto => producto.dataValues) 
-        };
-      });
-  
-      res.render("cliente/catalogo-comercio", {
-        pageTitle: `Catálogo de ${comercio.nombreComercio}`,
-        comercio: comercio.dataValues,
-        categorias: categorias,
-        cart,
-        itbis: await Configuracion.findOne() 
-      });
+        if (!comercio) {
+            return res.status(404).render("404", { pageTitle: "Comercio no encontrado" });
+        }
+
+        const cart = req.session.cart || [];
+        const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+
+        const categorias = comercio.categorías.map(categoria => ({
+            ...categoria.dataValues,
+            productos: categoria.productos.map(producto => producto.dataValues),
+        }));
+
+        res.render("cliente/catalogo-comercio", {
+            pageTitle: `Catálogo de ${comercio.nombreComercio}`,
+            comercioId, // Pass comercioId explicitly here
+            comercio: comercio.dataValues,
+            categorias: categorias,
+            cart,
+            subtotal,
+            itbis: await Configuracion.findOne(),
+        });
     } catch (error) {
-      console.log(error);
-      res.render("404", { pageTitle: "Error al cargar el catálogo. Intente más tarde." });
+        console.error(error);
+        res.render("404", { pageTitle: "Error al cargar el catálogo. Intente más tarde." });
     }
-  };
+};
+
+
   
   exports.addToCart = async (req, res) => {
     try {
@@ -297,10 +299,36 @@ exports.tipoComercio = async (req, res) => {
         res.render("404", { pageTitle: "Error al agregar al carrito. Intente más tarde." });
     }
 };
+exports.removeFromCart = async (req, res) => {
+  try {
+      const comercioId = req.params.comercioId;
+      const productoId = parseInt(req.params.productoId);
+
+      if (!req.session.cart) {
+          req.session.cart = [];
+      }
+
+      // Check if the product exists in the cart
+      const existingProductIndex = req.session.cart.findIndex(item => item.id === productoId);
+
+      if (existingProductIndex !== -1) {
+          // Remove the product from the cart
+          req.session.cart.splice(existingProductIndex, 1);
+      }
+
+      // Redirect back to the catalog page
+      res.redirect(`/cliente/catalogo/${comercioId}`);
+  } catch (error) {
+      console.error(error);
+      res.render("404", { pageTitle: "Error al eliminar del carrito. Intente más tarde." });
+  }
+};
+
 
 
 exports.renderCart = async (req, res) => {
   try {
+    const direcciones = await Direccion.findAll({ where: { clienteId: req.session.userId } });
       const cart = req.session.cart || [];
       const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
       const itbisConfig = await Configuracion.findOne();
@@ -310,6 +338,7 @@ exports.renderCart = async (req, res) => {
 
       res.render("cliente/miCarrito", {
           pageTitle: "Mi Carrito",
+          direcciones: direcciones.map(direccion => direccion.dataValues),
           cart,
           total,
           itbisRate,
@@ -323,20 +352,6 @@ exports.renderCart = async (req, res) => {
 };
 
 
-exports.removeFromCart = (req, res) => {
-    try {
-        const { productoId } = req.params;
-        let cart = req.session.cart || [];
-
-        cart = cart.filter(item => item.id !== parseInt(productoId));
-
-        req.session.cart = cart;  
-        res.redirect("cliente/miCarrito");  
-    } catch (error) {
-        console.log(error);
-        res.render("404", { pageTitle: "Error al eliminar del carrito. Intente más tarde." });
-    }
-};
 
 
   exports.checkout = async (req, res) => {

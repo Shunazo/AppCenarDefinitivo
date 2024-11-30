@@ -17,9 +17,9 @@ router.get("/favoritos", authMiddleware, clienteController.favoritos);
 router.get("/catalogo/:id([0-9]+)", authMiddleware, clienteController.catalogo); 
 
 // Carrito (Cart)
-router.get("/cart/add/:productoId/:comercioId", authMiddleware, clienteController.addToCart);
+router.post("/cart/add/:productoId/:comercioId", authMiddleware, clienteController.addToCart);
+router.post("/cart/remove/:productoId/:comercioId", authMiddleware, clienteController.removeFromCart);
 router.get("/cart", authMiddleware, clienteController.renderCart);  
-router.get("/cart/remove/:productoId", authMiddleware, clienteController.removeFromCart);
 router.post("/checkout", authMiddleware, clienteController.checkout);
 
 // Orders (Pedidos)
