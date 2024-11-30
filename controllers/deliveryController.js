@@ -61,6 +61,11 @@ exports.home = async (req, res) => {
 
 exports.editperfilForm = async (req, res) => {
     try {
+        const deliveryRecord = await Delivery.findOne({ where: { usuarioId: req.session.userId } });
+
+        if (!deliveryRecord) {
+            return res.status(404).json({ error: "Delivery no encontrado." });
+        }
         const usuarioRecord = await Usuario.findByPk(req.session.userId);
         
         if (!usuarioRecord) {
@@ -70,6 +75,7 @@ exports.editperfilForm = async (req, res) => {
         res.render("delivery/perfil-delivery", {
             pageTitle: "Editar Perfil",
             usuario: usuarioRecord.dataValues,
+            delivery: deliveryRecord.dataValues,
             currentImage: usuarioRecord.fotoPerfil || null 
         });
     } catch (error) {
@@ -105,7 +111,7 @@ exports.editPerfil = async (req, res) => {
             fotoPerfil,
         });
   
-        res.redirect("/cliente/home");
+        res.redirect("/delivery/home");
   
     } catch (error) {
         console.log(error);

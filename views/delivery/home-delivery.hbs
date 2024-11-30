@@ -15,7 +15,11 @@
         <nav id="sidebar" class="bg-dark text-white">
             <div class="sidebar-header">
                 <div class="delivery-avatar">
-                    <i class="fas fa-user-circle fa-4x"></i>
+                    {{#if usuario.fotoPerfil}}
+                        <img src="{{usuario.fotoPerfil}}" alt="Foto de perfil" class="profile-image">
+                    {{else}}
+                        <i class="fas fa-user-circle fa-4x"></i>
+                    {{/if}}
                     <h4>{{usuario.nombreUsuario}}</h4>
                     <span class="badge 
                         {{#ifEquals delivery.estado 'ocupado'}}bg-warning{{/ifEquals}}
@@ -33,7 +37,9 @@
                     <a href="/delivery/perfil/edit"><i class="fas fa-user me-2"></i>Mi Perfil</a>
                 </li>
                 <li>
-                    <a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
                 </li>
             </ul>
         </nav>

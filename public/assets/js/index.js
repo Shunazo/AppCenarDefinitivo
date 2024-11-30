@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     ids.forEach(id => {
         const fileInput = document.getElementById(id);
-        const previewImage = document.getElementById('previewImage'); // Ensure previewImage applies correctly for each case
+        const previewImage = document.getElementById('previewImage'); 
         
         if (fileInput && previewImage) {
             fileInput.addEventListener('change', function (event) {

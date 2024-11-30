@@ -15,12 +15,17 @@
         <nav id="sidebar" class="bg-dark text-white">
             <div class="sidebar-header">
                 <div class="delivery-avatar">
-                    {{#if delivery.foto}}
-                        <img src="{{delivery.foto}}" alt="Foto de perfil" class="profile-image">
+                    {{#if usuario.fotoPerfil}}
+                        <img src="{{usuario.fotoPerfil}}" alt="Foto de perfil" class="profile-image">
                     {{else}}
                         <i class="fas fa-user-circle fa-4x"></i>
                     {{/if}}
-                    <h4>{{delivery.nombre}} {{delivery.apellido}}</h4>
+                    <h4>{{usuario.nombreUsuario}}</h4>
+                    <span class="badge 
+                        {{#ifEquals delivery.estado 'ocupado'}}bg-warning{{/ifEquals}}
+                        {{#ifEquals delivery.estado 'disponible'}}bg-success{{/ifEquals}}">
+                        {{#ifEquals delivery.estado 'disponible'}}Disponible{{else}}Ocupado{{/ifEquals}}
+                    </span>
                 </div>
             </div>
             
@@ -52,10 +57,10 @@
                             <div class="alert alert-danger">{{error}}</div>
                         {{/if}}
 
-                        <form action="/delivery/perfil/update" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="/delivery/perfil/edit" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             <div class="current-photo mb-4">
-                                {{#if delivery.foto}}
-                                    <img src="{{delivery.foto}}" alt="Foto actual" class="current-profile-image">
+                                {{#if usuario.fotoPerfil}}
+                                    <img src="{{usuario.fotoPerfil}}" alt="Foto actual" class="current-profile-image" id="previewImage">
                                 {{else}}
                                     <div class="no-photo">
                                         <i class="fas fa-user"></i>
@@ -73,7 +78,7 @@
                                            class="form-control" 
                                            id="nombre" 
                                            name="nombre" 
-                                           value="{{delivery.nombre}}"
+                                           value="{{usuario.nombre}}"
                                            required>
                                     <div class="invalid-feedback">
                                         El nombre es requerido
@@ -88,7 +93,7 @@
                                            class="form-control" 
                                            id="apellido" 
                                            name="apellido" 
-                                           value="{{delivery.apellido}}"
+                                           value="{{usuario.apellido}}"
                                            required>
                                     <div class="invalid-feedback">
                                         El apellido es requerido
@@ -104,7 +109,7 @@
                                        class="form-control" 
                                        id="telefono" 
                                        name="telefono" 
-                                       value="{{delivery.telefono}}"
+                                       value="{{usuario.telefono}}"
                                        required>
                                 <div class="invalid-feedback">
                                     El teléfono es requerido
@@ -117,8 +122,8 @@
                                 </label>
                                 <input type="file" 
                                        class="form-control" 
-                                       id="foto" 
-                                       name="foto" 
+                                       id="fotoPerfil" 
+                                       name="fotoPerfil" 
                                        accept="image/*">
                                 <div class="form-text">
                                     La foto de perfil es opcional
