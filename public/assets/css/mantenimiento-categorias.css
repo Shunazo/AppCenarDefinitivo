@@ -1,8 +1,7 @@
-/* Main Layout */
+/* Layout Structure */
 .wrapper {
     display: flex;
     min-height: 100vh;
-    background-color: #f8f9fa;
 }
 
 /* Sidebar Styling */
@@ -27,6 +26,7 @@
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Table Styling */
@@ -79,12 +79,16 @@
 
 /* Buttons */
 .btn {
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 12px 24px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.btn-lg {
+    padding: 15px 30px;
 }
 
 .btn-primary {
@@ -221,3 +225,27 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #2a5298;
 }
+
+
+.logout-btn {
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 1.1em;
+    background: none; 
+    border: none;     
+    width: 100%;      
+    text-align: left; 
+    cursor: pointer;  
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;  
+}
+
+.logout-btn:focus {
+    outline: none; 
+}
+

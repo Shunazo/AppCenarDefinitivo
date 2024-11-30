@@ -30,6 +30,7 @@ exports.home = async (req, res) => {
                 {
                     model: Comercio,
                     attributes: ['logo', 'nombreComercio'],
+                    as: 'comercio',
                 },
                 {
                     model: ProductoPedido,
@@ -38,6 +39,7 @@ exports.home = async (req, res) => {
                     include: [{
                         model: Producto,
                         attributes: ['nombre', 'precio', 'imagen'],
+                        as: 'producto',
                     }]
                 }
             ],

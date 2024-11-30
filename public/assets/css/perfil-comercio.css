@@ -253,6 +253,7 @@ input[type="time"] {
     padding-left: 30px;  
 }
 
-.logout-btn:focus {
-    outline: none 
+
+.logout-btn:focus{
+    outline: none;
 }

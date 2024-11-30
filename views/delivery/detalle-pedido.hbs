@@ -27,7 +27,9 @@
                     <a href="/delivery/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
                 </li>
                 <li>
-                    <a href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
+                    <button id="logout-btn" class="nav-link text-white logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
                 </li>
             </ul>
         </nav>
@@ -44,9 +46,10 @@
                     <div class="pedido-info">
                         <div class="status-badge">
                             <span class="badge 
-                                {{#if (eq pedido.estado 'pendiente')}}bg-warning{{/if}}
-                                {{#if (eq pedido.estado 'en_proceso')}}bg-info{{/if}}
-                                {{#if (eq pedido.estado 'completado')}}bg-success{{/if}}">
+                            
+                                {{#if 'pendiente')}}bg-warning{{/if}}
+                                {{#if 'en_proceso')}}bg-info{{/if}}
+                                {{#if ('completado')}}bg-success{{/if}}">
                                 {{pedido.estado}}
                             </span>
                         </div>
@@ -103,20 +106,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('completar-pedido')?.addEventListener('click', async () => {
-            try {
-                const response = await fetch(`/delivery/pedidos/{{pedido.id}}/completar`, {
-                    method: 'POST'
-                });
-                if (response.ok) {
-                    window.location.href = '/delivery/home';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    </script>
+    <script src="../../assets/js/index.js"></script>
 </body>
 </html>
 
