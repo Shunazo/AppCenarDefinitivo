@@ -1,0 +1,210 @@
+/* Main Layout */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    padding: 25px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Edit Card */
+.edit-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    animation: slideIn 0.5s ease-out;
+}
+
+.card-header {
+    background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 25px;
+    border-bottom: none;
+}
+
+.card-body {
+    padding: 40px;
+}
+
+/* Current Product/Category Image */
+.current-image {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+}
+
+.producto-imagen,
+.categoria-imagen {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #1e3c72;
+    box-shadow: 0 0 0 0.2rem rgba(30, 60, 114, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #2a5298;
+    margin-bottom: 10px;
+}
+
+/* File Input Styling */
+input[type="file"].form-control {
+    padding: 8px;
+}
+
+input[type="file"].form-control::file-selector-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    margin-right: 15px;
+    transition: all 0.3s ease;
+}
+
+input[type="file"].form-control::file-selector-button:hover {
+    background: linear-gradient(45deg, #2a5298 0%, #1e3c72 100%);
+}
+
+/* Number Input Styling */
+input[type="number"].form-control::-webkit-inner-spin-button,
+input[type="number"].form-control::-webkit-outer-spin-button {
+    opacity: 1;
+    height: 30px;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);
+    border: none;
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Navigation Menu */
+.components li a {
+    padding: 15px 25px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.components li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+}
+
+.components li.active a {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+}
+
+/* Alert Styling */
+.alert-danger {
+    background: linear-gradient(45deg, #ff6b6b, #f53844);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 10px;
+}
+
+/* Form Text Helper */
+.form-text {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    
+    #sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .d-flex {
+        flex-direction: column;
+    }
+}
