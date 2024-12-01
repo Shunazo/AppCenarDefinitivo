@@ -194,14 +194,15 @@ exports.tipoComercio = async (req, res) => {
 
   exports.favoritos = async (req, res) => {
     try {
-      const usuarioId = req.session.userId; 
       const usuarioRecord = await Usuario.findByPk(req.session.userId);
+      const usuarioId = req.session.userId; 
       const favoritos = await Favorito.findAll({
         where: { usuarioId },
         include: { model: Comercio, as: "comercio" }, 
       });
   
-     console.log(usuarioRecord);
+  
+
       if (favoritos.length === 0) {
         return res.render("cliente/misFavoritos", {
           pageTitle: "Mis Favoritos",

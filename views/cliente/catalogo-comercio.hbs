@@ -28,40 +28,42 @@
 <div class="content-wrapper">
     <div class="catalogo-section">
         {{#each categorias}}
-            <div class="categoria-container">
-                <h2 class="categoria-titulo">{{nombre}}</h2>
-                <div class="productos-grid">
-                    {{#each productos}}
-                        <div class="producto-card">
-                            <div class="producto-imagen">
-                                <img src="{{imagen}}" alt="{{nombre}}">
-                            </div>
-                            <div class="producto-info">
-                                <h3>{{nombre}}</h3>
-                                <p class="descripcion">{{descripcion}}</p>
-                                <div class="precio-action">
-                                    <span class="precio">${{precio}}</span>
-                                    {{#inCart id}}
-                                        <span class="agregado">
-                                            <i class="fas fa-check"></i> En el carrito
-                                        </span>
-                                    {{else}}
-                                        <form action="/cliente/cart/add/{{id}}/{{../comercioId}}" method="POST" class="form-agregar">
-                                            <button type="submit" class="btn-agregar">
-                                                <i class="fas fa-plus"></i> Agregar
-                                            </button>
-                                        </form>
-                                    {{/inCart}}
+            {{#if productos.length}} <!-- Only show category if it has products -->
+                <div class="categoria-container">
+                    <h2 class="categoria-titulo">{{nombre}}</h2>
+                    <div class="productos-grid">
+                        {{#each productos}}
+                            <div class="producto-card">
+                                <div class="producto-imagen">
+                                    <img src="{{imagen}}" alt="{{nombre}}">
+                                </div>
+                                <div class="producto-info">
+                                    <h3>{{nombre}}</h3>
+                                    <p class="descripcion">{{descripcion}}</p>
+                                    <div class="precio-action">
+                                        <span class="precio">${{precio}}</span>
+                                        {{#inCart id}}
+                                            <span class="agregado">
+                                                <i class="fas fa-check"></i> En el carrito
+                                            </span>
+                                        {{else}}
+                                            <form action="/cliente/cart/add/{{id}}/{{../comercioId}}" method="POST" class="form-agregar">
+                                                <button type="submit" class="btn-agregar">
+                                                    <i class="fas fa-plus"></i> Agregar
+                                                </button>
+                                            </form>
+                                        {{/inCart}}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {{/each}}
+                        {{/each}}
+                    </div>
                 </div>
-            </div>
+            {{/if}} <!-- End check for products in category -->
         {{/each}}
     </div>
 
-    <!-- Carrito -->
+    <!-- Carrito (remains in its position on the right) -->
     <div class="carrito-section" id="carrito">
         <div class="carrito-container">
             <h2><i class="fas fa-shopping-cart"></i> Mi Pedido</h2>
