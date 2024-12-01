@@ -97,129 +97,124 @@ exports.editPerfil = async (req, res) => {
   }
 };
 
-
-
-
 exports.tipoComercio = async (req, res) => {
-    try {
-      const tipoId = req.params.id; 
+  try {
+      const tipoId = req.query.tipoComercioId || req.params.id; 
       const searchQuery = req.query.search ? req.query.search.toLowerCase() : "";
       const usuarioId = req.session.userId;
       const usuarioRecord = await Usuario.findByPk(req.session.userId);
   
-
       const comercios = await Comercio.findAll({
-        where: { tipoComercioId: tipoId },
-        attributes: ["id", "nombreComercio", "logo"],
-        order: [["nombreComercio", "ASC"]],
+          where: { tipoComercioId: tipoId },
+          attributes: ["id", "nombreComercio", "logo"],
+          order: [["nombreComercio", "ASC"]],
       });
   
-      
       const favoritos = await Favorito.findAll({
-        where: { usuarioId },
-        attributes: ["comercioId"], 
+          where: { usuarioId },
+          attributes: ["comercioId"], 
       });
       
       const favoritosSet = new Set(favoritos.map(fav => fav.comercioId));
   
       const filteredComercios = searchQuery
-        ? comercios.filter((comercio) =>
-            comercio.nombreComercio.toLowerCase().includes(searchQuery)
-          )
-        : comercios;
+          ? comercios.filter((comercio) =>
+              comercio.nombreComercio.toLowerCase().includes(searchQuery)
+            )
+          : comercios;
   
       const tipocomercioRecord = await tipoComercio.findByPk(tipoId, {
-        attributes: ["nombre"],
+          attributes: ["nombre"],
       });
   
       if (!tipocomercioRecord) {
-        return res.status(404).render("404", { pageTitle: "Tipo de Comercio no encontrado" });
+          return res.status(404).render("404", { pageTitle: "Tipo de Comercio no encontrado" });
       }
   
       const comerciosWithFavoritoStatus = filteredComercios.map((comercio) => {
-        return {
-          ...comercio.dataValues,
-          isFavorito: favoritosSet.has(comercio.id),
-          catalogoUrl: `/catalogo/${comercio.id}`, 
-        };
+          return {
+              ...comercio.dataValues,
+              isFavorito: favoritosSet.has(comercio.id),
+              catalogoUrl: `/catalogo/${comercio.id}`, 
+          };
       });
   
       res.render("cliente/tipo-comercio", {
-        pageTitle: `Comercios de tipo ${tipoComercio.nombre}`,
-        usuario: usuarioRecord.dataValues,
-        tipoNombre: tipocomercioRecord.nombre,
-        comercios: comerciosWithFavoritoStatus, 
-        cantidad: filteredComercios.length,
-        search: req.query.search,
+          pageTitle: `Comercios de tipo ${tipocomercioRecord.nombre}`,
+          usuario: usuarioRecord.dataValues,
+          tipoNombre: tipocomercioRecord.nombre,
+          comercios: comerciosWithFavoritoStatus, 
+          cantidad: filteredComercios.length,
+          search: req.query.search,
       });
-    } catch (error) {
+  } catch (error) {
       console.log(error);
       res.render("404", { pageTitle: "Error al cargar el tipo de comercio. Intente más tarde." });
+  }
+};
+exports.toggleFavorito = async (req, res) => {
+  try {
+    const comercioId = req.params.id;
+    const usuarioId = req.session.userId;
+    const tipoId = req.params.tipoId; 
+
+   
+    const favorito = await Favorito.findOne({
+      where: { usuarioId, comercioId },
+    });
+
+   
+    if (favorito) {
+      await favorito.destroy();
+    } else {
+      await Favorito.create({ usuarioId, comercioId });
     }
+
+    
+      res.redirect("/cliente/favoritos");
+    
+  } catch (error) {
+    console.log(error);
+    res.render("404", { pageTitle: "Error al procesar solicitud. Intente más tarde." });
+  }
 };
 
-  
-  exports.toggleFavorito = async (req, res) => {
-    try {
-      const comercioId = req.params.id;
-      const usuarioId = req.session.userId;
-      const tipoId = req.params.tipoId; 
-  
-     
-      const favorito = await Favorito.findOne({
-        where: { usuarioId, comercioId },
-      });
-  
-     
-      if (favorito) {
-        await favorito.destroy();
-      } else {
-        await Favorito.create({ usuarioId, comercioId });
-      }
-  
-      if (tipoId) {
-        res.redirect(`/cliente/tipo-comercio/${tipoId}`);
-      } else {
-        res.redirect("/cliente/favoritos");
-      }
-    } catch (error) {
-      console.log(error);
-      res.render("404", { pageTitle: "Error al procesar solicitud. Intente más tarde." });
-    }
-  };
-  
+exports.favoritos = async (req, res) => {
+  try {
+    const usuarioId = req.session.userId; 
+    const usuarioRecord = await Usuario.findByPk(usuarioId);
+    const favoritos = await Favorito.findAll({
+      where: { usuarioId },
+      include: { model: Comercio, as: "comercio" },
+    });
 
-  exports.favoritos = async (req, res) => {
-    try {
-      const usuarioRecord = await Usuario.findByPk(req.session.userId);
-      const usuarioId = req.session.userId; 
-      const favoritos = await Favorito.findAll({
-        where: { usuarioId },
-        include: { model: Comercio, as: "comercio" }, 
-      });
   
-  
-
-      if (favoritos.length === 0) {
-        return res.render("cliente/misFavoritos", {
-          pageTitle: "Mis Favoritos",
-          favoritos: [],
-          message: "No tienes comercios favoritos.",
-        });
-      }
-  
-     
-      res.render("cliente/misFavoritos", {
+    if (favoritos.length === 0) {
+      return res.render("cliente/misFavoritos", {
         pageTitle: "Mis Favoritos",
-        favoritos: favoritos.map(fav => fav.comercio),
         usuario: usuarioRecord.dataValues,
+        favoritos: [],
+        message: "No tienes comercios favoritos.",
       });
-    } catch (error) {
-      console.log(error);
-      res.render("404", { pageTitle: "Error al cargar los favoritos. Intente más tarde." });
     }
-  };
+
+    const comerciosFavoritos = favoritos.map(fav => fav.comercio.dataValues);
+
+    res.render("cliente/misFavoritos", {
+      pageTitle: "Mis Favoritos",
+      usuario: usuarioRecord.dataValues,
+      favoritos: comerciosFavoritos,  
+    });
+  } catch (error) {
+    console.log(error);
+    res.render("404", { pageTitle: "Error al cargar los favoritos. Intente más tarde." });
+  }
+};
+
+
   
+
+
   exports.catalogo = async (req, res) => {
     try {
       const usuarioRecord = await Usuario.findByPk(req.session.userId);
@@ -442,51 +437,135 @@ exports.renderCart = async (req, res) => {
   };
   
 
-exports.pedidos = async (req, res) => {
+  exports.pedidos = async (req, res) => {
     try {
-      const usuarioRecord = await Usuario.findByPk(req.session.userId);
-      const pedidos = await Pedido.findAll({ where: { clienteId: req.session.clienteId } });
-  
-      res.render("cliente/misPedidos", {
-        pageTitle: "Mis Pedidos",
-        pedidos: pedidos.map(pedido => pedido.dataValues),
-        usuario: usuarioRecord.dataValues,
-      });
+        const usuarioRecord = await Usuario.findByPk(req.session.userId);
+        const clienteId = req.session.clienteId;
+
+        // Fetch the pedidos for the logged-in cliente (user)
+        const pedidos = await Pedido.findAll({
+            where: { clienteId },
+            include: [
+                {
+                    model: ProductoPedido,  // Include the intermediary table ProductoPedido
+                    as: "productosPedido",
+                    include: [
+                        {
+                            model: Producto,  // Include related Producto data
+                            as: "producto",
+                        },
+                    ],
+                },
+                {
+                    model: Comercio,  // Include related Comercio data for logo and name
+                    as: "comercio",
+                },
+            ],
+        });
+
+        // Map over the pedidos to calculate the total products, add comercio details, and format fechaHora
+        const pedidosWithDetails = pedidos.map((pedido) => {
+            const totalProductos = pedido.productosPedido.reduce(
+                (acc, productoPedido) => acc + productoPedido.cantidad,
+                0
+            );
+
+            // Format fechaHora to a readable format
+            const formattedFechaHora = pedido.fechaHora.toLocaleString();
+
+            // Get the dataValues for all instances
+            const pedidoData = pedido.dataValues;
+            const comercioData = pedidoData.comercio ? pedidoData.comercio.dataValues : {};
+            const productos = pedidoData.productosPedido.map((productoPedido) => ({
+                productoId: productoPedido.productoId,
+                nombre: productoPedido.producto.dataValues.nombre,
+                cantidad: productoPedido.cantidad,
+                precio: productoPedido.precio,
+            }));
+
+            // Return the modified object with all dataValues
+            return {
+                ...pedidoData,  // Include original pedido data
+                totalProductos,  // Add total count of products in the order
+                fechaHora: formattedFechaHora,  // Formatted fechaHora
+                comercio: comercioData,  // Comercio data in dataValues
+                productos,  // List of products in the pedido
+            };
+        });
+
+        res.render("cliente/misPedidos", {
+            pageTitle: "Mis Pedidos",
+            pedidos: pedidosWithDetails,  // Pass the orders with product details
+            usuario: usuarioRecord.dataValues,  // Make sure usuario is passed in dataValues
+        });
     } catch (error) {
-      console.log(error);
-      res.render("404", { pageTitle: "Error al cargar los pedidos. Intente más tarde." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al cargar los pedidos. Intente más tarde." });
     }
-  };
+};
+
   
   exports.pedidoDetalle = async (req, res) => {
     try {
-      const usuarioRecord = await Usuario.findByPk(req.session.userId);
-      const pedidoId = req.params.id;
-      const pedidoRecord = await Pedido.findByPk(pedidoId, {
-        include: [
-          {
-            model: Producto,
-            as: "productos",
-            through: { attributes: ["cantidad", "precio"] },
-          },
-        ],
-      });
-  
-      if (!pedidoRecord) {
-        return res.status(404).render("404", { pageTitle: "Pedido no encontrado" });
-      }
-  
-      res.render("cliente/pedido-detalle", {
-        pageTitle: `Detalles del Pedido ${pedidoId}`,
-        pedido: pedidoRecord.dataValues,
-        usuario: usuarioRecord.dataValues,
-      });
+        const usuarioRecord = await Usuario.findByPk(req.session.userId);
+        const pedidoId = req.params.id;
+
+        // Fetch the pedido along with its productos and comercio information
+        const pedidoRecord = await Pedido.findByPk(pedidoId, {
+            include: [
+                {
+                    model: ProductoPedido,  // Include the intermediary table ProductoPedido
+                    as: "productosPedido",
+                    include: [
+                        {
+                            model: Producto,  // Include related Producto data
+                            as: "producto",
+                        },
+                    ],
+                },
+                {
+                    model: Comercio,  // Include related Comercio data for name and logo
+                    as: "comercio",
+                },
+            ],
+        });
+
+        if (!pedidoRecord) {
+            return res.status(404).render("404", { pageTitle: "Pedido no encontrado" });
+        }
+
+        // Access dataValues to get the actual data
+        const pedidoData = pedidoRecord.dataValues;
+
+        // Format the fechaHora
+        const formattedFechaHora = pedidoData.fechaHora.toLocaleString();
+
+        const productos = pedidoData.productosPedido.map((productoPedido) => ({
+            imagen: productoPedido.producto.dataValues.imagen,
+            nombre: productoPedido.producto.dataValues.nombre,
+            precio: productoPedido.precio,
+            cantidad: productoPedido.cantidad,
+        }));
+
+        const comercioData = pedidoData.comercio.dataValues;
+
+        res.render("cliente/pedido-detalle", {
+            pageTitle: `Detalles del Pedido ${pedidoId}`,
+            pedido: {
+                ...pedidoData,
+                fechaHora: formattedFechaHora, // Pass the formatted fechaHora
+            },
+            productos,          // Pass the list of products
+            comercio: comercioData, // Pass the comercio data
+            usuario: usuarioRecord.dataValues,
+        });
     } catch (error) {
-      console.log(error);
-      res.render("404", { pageTitle: "Error al cargar el detalle del pedido. Intente más tarde." });
+        console.log(error);
+        res.render("404", { pageTitle: "Error al cargar el detalle del pedido. Intente más tarde." });
     }
-  };
-  
+};
+
+
 
 
 
@@ -501,7 +580,6 @@ exports.pedidos = async (req, res) => {
             return res.render("404", { pageTitle: "Usuario no encontrado como cliente." });
         }
 
-        // Now use the cliente's id to fetch the direcciones
         const direcciones = await Direccion.findAll({
             where: { clienteId: cliente.id },
         });

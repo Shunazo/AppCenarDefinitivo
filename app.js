@@ -58,13 +58,11 @@ app.engine("hbs", engine({
             }
         },
         formatDate: function(date, format) {
-            // Check if the date is valid
             if (!date) return '';
 
             const d = new Date(date);
             const options = { year: 'numeric', month: 'short', day: 'numeric' };
             
-            // Default format example: 'Mon, Dec 1, 2024'
             return d.toLocaleDateString('en-US', options);
         }
     }

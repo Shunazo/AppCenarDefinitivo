@@ -38,11 +38,23 @@
 
 <div id="content" class="p-4">
     <div class="container">
+
+
         <h2 class="mb-4"><i class="fas fa-store me-2"></i>Comercios - {{tipoNombre}}</h2>
-        
         {{#if comercios.length}}
             <div class="row g-4">
                 {{#each comercios}}
+
+            <form action ="/cliente/tipo-comercio/{{id}}" method="GET">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search"placeholder="¿Qué te gustaría comer hoy?" class="form-control">
+                    <button type="submit" class="btn btn-general">
+                   <i class="bi bi-search"></i> Buscar
+                   </button>
+                </div>
+            </form>
+
                 <div class="col-6 col-md-4 col-lg-3">
                     <a href="/cliente{{catalogoUrl}}" class="comercio-card">
                         <div class="card">
@@ -53,9 +65,9 @@
                             </div>
 
                             <!-- Heart icon to toggle favorito -->
-                            <form action="/favoritos/toggle/{{id}}" method="POST" class="position-absolute top-0 end-0 m-2">
+                            <form action="/cliente/favoritos/toggle/{{id}}" method="POST" class="position-absolute top-0 end-0 m-2">
                                 <button class="btn p-0" type="submit">
-                                    <i class="fas {{#if isFavorito}}fa-heart{{else}}fa-heart text-muted{{/if}} fa-lg"></i>
+                                    <i class="fas {{#if isFavorito}}fa-heart text-danger{{else}}fa-heart text-muted{{/if}} fa-lg"></i>
                                 </button>
                             </form>
                         </div>
@@ -64,10 +76,14 @@
                 {{/each}}
             </div>
         {{else}}
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i>
-                No hay comercios disponibles en este tipo.
-            </div>
+
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        No hay comercios disponibles en este tipo.
+    </div>
+
+    <a href="/cliente/home" class="btn btn-primary">Volver a la lista</a>
+
         {{/if}}
     </div>
 </div>

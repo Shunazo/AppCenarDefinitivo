@@ -100,8 +100,6 @@ exports.register = async (req, res) => {
         const { nombre, apellido, correo, telefono, nombreUsuario, password, confirmar, rol } = req.body;
         const fotoPerfil = "/images/" + req.files.fotoPerfil[0].filename;
 
-        console.log("datos,", req.body);
-
         if (!req.files || !req.files.fotoPerfil) {
             return res.render("404", { pageTitle: "La imagen es obligatoria." });
         }
@@ -151,7 +149,7 @@ exports.register = async (req, res) => {
             await Delivery.create({ usuarioId: user.id });
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '1m' });
+        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '5m' });
 
         transporter.sendMail(
             {
@@ -172,11 +170,9 @@ exports.register = async (req, res) => {
             }
         );
 
-        console.log("Enlace de activación:", `${process.env.APP_URL}/auth/activate/${token}`);
-
         res.render("auth/registro-general", {
             pageTitle: "Registro de Usuario",
-            success: "Registro exitoso. Revisa tu correo para activar tu cuenta.",
+            success: "Registro exitoso. Revisa tu correo para activar tu cuenta, tiene 5 minutos.",
         });
     } catch (error) {
         console.error(error);
@@ -191,8 +187,6 @@ exports.registerComercioForm = async (req, res) => {
     }
     try {
         const tipoComercios = await TipoComercio.findAll(); 
-
-        console.log("Tipo Comercios:", tipoComercios);
 
         res.render("auth/registro-comercio", {
             pageTitle: "Registro de Comercio",
@@ -211,7 +205,6 @@ exports.registerComercio = async (req, res) => {
         const { nombreComercio, telefono, correo, password, confirmar, tipoComercioId, horaApertura, horaCierre } = req.body;
         const logo = "/images/" + req.files.logo[0].filename;
         
-        // Check if the logo is uploaded
         if (!req.files || !req.files.logo) {
             return res.render("auth/registro-comercio", {
                 pageTitle: "Registro de Comercio",
@@ -288,11 +281,9 @@ exports.registerComercio = async (req, res) => {
             }
         );
 
-        console.log("Enlace de activación:", `${process.env.APP_URL}/auth/activate/${token}`);
-
         res.render("auth/registro-comercio", {
             pageTitle: "Registro de Comercio",
-            success: "Registro exitoso. Revisa tu correo para activar tu cuenta.",
+            success: "Registro exitoso. Revisa tu correo para activar tu cuenta, tiene 5 minutos.",
         });
     } catch (error) {
         console.error(error);

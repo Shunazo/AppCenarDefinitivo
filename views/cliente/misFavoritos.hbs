@@ -54,41 +54,45 @@
                 <div class="header-section">
                     <h2><i class="fas fa-heart me-2"></i>Mis Favoritos</h2>
                 </div>
-
-                <div class="favoritos-list">
-                    {{#if favoritos.length}}
-                        <div class="row g-4">
-                            {{#each favoritos}}
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="favorito-card">
-                                        <a href="/cliente/comercio/{{comercio.id}}" class="comercio-link">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="comercio-logo">
-                                                        <img src="{{comercio.logo}}" alt="{{comercio.nombreComercio}}">
+                    <div class="favoritos-list">
+                        {{#if favoritos.length}}
+                            <div class="row g-4">
+                                {{#each favoritos}}
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="favorito-card">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        
+                                                            <div class="comercio-logo">
+                                                                <a href="/cliente{{catalogoUrl}}" class="comercio-card">
+                                                                <img src="{{this.logo}}" alt="{{this.nombreComercio}}">
+                                                                </a>
+                                                            </div>
+                                                        
+                                                        <h5 class="comercio-nombre">{{this.nombreComercio}}</h5>
+                                                        <div class="favorito-actions">
+                                                            <form action="/cliente/favoritos/toggle/{{this.id}}" method="POST" style="display:inline;">
+                                                                <button type="submit" class="btn btn-outline-danger">
+                                                                    <i class="fas fa-heart-broken"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </div>
-                                                    <h5 class="comercio-nombre">{{comercio.nombreComercio}}</h5>
-                                                    <button class="btn-remove-favorite" data-id="{{id}}">
-                                                        <i class="fas fa-heart-broken"></i>
-                                                        Eliminar de favoritos
-                                                    </button>
                                                 </div>
                                             </div>
-                                        </a>
-                                    </div>
+                                        </div>
+                                    {{/each}}
                                 </div>
-                            {{/each}}
+                            {{else}}
+                                <div class="alert alert-info text-center">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    No tienes comercios favoritos. ¡Explora y agrega tus comercios preferidos!
+                                </div>
+                            {{/if}}
                         </div>
-                    {{else}}
-                        <div class="alert alert-info text-center">
-                            <i class="fas fa-info-circle me-2"></i>
-                            No tienes comercios favoritos. ¡Explora y agrega tus comercios preferidos!
-                        </div>
-                    {{/if}}
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/index.js"></script>

@@ -48,17 +48,10 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Header -->
-            <header class="content-header">
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="¿Qué te gustaría comer hoy?">
-                </div>
-            </header>
-
             <!-- Categories -->
                 <section class="categories-section">
-                    <h2>Categorías</h2>
+                    <h2>Tipos de Comercio</h2>
+                    {{#if tiposComercio.length}}
                         <div class="row g-4">
                             {{#each tiposComercio}}
                                 <div class="col-6 col-md-4 col-lg-3">
@@ -74,8 +67,13 @@
                     </div>
                 {{/each}}
             </div>
+            {{else}}
+                <div class="alert alert-info text-center">
+                              <i class="fas fa-info-circle me-2"></i>
+                              No hay tipos de comercio disponibles. 
+                          </div>
+            {{/if}}
         </section>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

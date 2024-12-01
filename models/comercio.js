@@ -55,6 +55,11 @@ Comercio.associate = (models) => {
         onDelete: "CASCADE", 
         as: "productos" 
     });
+    Comercio.hasMany(models.Favorito, { 
+        foreignKey: "comercioId", 
+        onDelete: "CASCADE", 
+        as: "favoritos" 
+    });
 };
 
 module.exports = Comercio;
