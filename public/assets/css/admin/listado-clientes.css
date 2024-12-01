@@ -1,0 +1,213 @@
+/* Layout & Structure */
+.d-flex {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background: #f8f9fa;
+}
+
+/* Table Styling */
+.table-responsive {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+    color: white;
+}
+
+.table th {
+    padding: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+}
+
+.table td {
+    padding: 15px;
+    vertical-align: middle;
+    border-color: #e3e6f0;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-badge.active {
+    background: linear-gradient(45deg, #1cc88a 0%, #13855c 100%);
+    color: white;
+}
+
+.status-badge.inactive {
+    background: linear-gradient(45deg, #858796 0%, #60616f 100%);
+    color: white;
+}
+
+/* Action Buttons */
+.btn-sm {
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-sm:hover {
+    transform: translateY(-2px);
+}
+
+/* Header Section */
+.header-section {
+    margin-bottom: 30px;
+}
+
+.header-section h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 1.8em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.table-responsive {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+}
+
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #3498db;
+}
+
+.menu-item i {
+    width: 20px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.menu-item span {
+    font-size: 1.1em;
+}
+
+.logout {
+    margin-top: auto;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.logout:hover {
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.components {
+    padding: 0;
+    margin: 0;
+}
+
+.components li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.components li a {
+    padding: 15px 25px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 1.1em;
+}
+
+.components li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+}
+
+.components li.active a {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #3498db;
+}

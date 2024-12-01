@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Administradores - AppCenar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/admin/mantenimiento-administrador.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>AppCenar</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li><a href="/administrador/home"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+                <li><a href="/administrador/clientes"><i class="fas fa-users me-2"></i>Clientes</a></li>
+                <li><a href="/administrador/deliveries"><i class="fas fa-motorcycle me-2"></i>Delivery</a></li>
+                <li><a href="/administrador/comercios"><i class="fas fa-store me-2"></i>Comercios</a></li>
+                <li><a href="/administrador/config"><i class="fas fa-cogs me-2"></i>Configuración</a></li>
+                <li class="active"><a href="/administrador/administradores"><i class="fas fa-user-tie me-2"></i>Administradores</a></li>
+                <li><a href="/administrador/tipo-comercio"><i class="fas fa-store-alt me-2"></i>Tipos de Comercio</a></li>
+            </ul>
+
+            <button class="btn-sidebar" id="logout-btn">
+                <i class="fas fa-sign-out-alt me-2"></i>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- Content -->
+        <div id="content">
+            <div class="container-fluid">
+                <div class="header-section">
+                    <h1><i class="fas fa-user-tie me-2"></i>Gestión de Administradores</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAdminModal">
+                        <i class="fas fa-plus me-2"></i>Nuevo Administrador
+                    </button>
+                </div>
+
+                <!-- Listado de Administradores -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Usuario</th>
+                                <th>Cédula</th>
+                                <th>Correo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each administradores}}
+                            <tr>
+                                <td>{{nombre}}</td>
+                                <td>{{apellido}}</td>
+                                <td>{{usuario}}</td>
+                                <td>{{cedula}}</td>
+                                <td>{{correo}}</td>
+                                <td>
+                                    <span class="status-badge {{#if activo}}active{{else}}inactive{{/if}}">
+                                        {{#if activo}}Activo{{else}}Inactivo{{/if}}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{#unless isCurrentUser}}
+                                        <button class="btn btn-info btn-sm me-2" onclick="editarAdmin('{{id}}')" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        {{#if activo}}
+                                            <button class="btn btn-danger btn-sm" onclick="confirmarInactivar('{{id}}')" title="Inactivar">
+                                                <i class="fas fa-user-slash"></i>
+                                            </button>
+                                        {{else}}
+                                            <button class="btn btn-success btn-sm" onclick="confirmarActivar('{{id}}')" title="Activar">
+                                                <i class="fas fa-user-check"></i>
+                                            </button>
+                                        {{/if}}
+                                    {{/unless}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Crear Administrador -->
+    <div class="modal fade" id="createAdminModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Administrador</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createAdminForm" action="/administrador/crear" method="POST">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cedula" class="form-label">Cédula</label>
+                            <input type="text" class="form-control" id="cedula" name="cedula" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo</label>
+                            <input type="email" class="form-control" id="correo" name="correo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" name="usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Crear Administrador</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Administrador -->
+    <div class="modal fade" id="editAdminModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Administrador</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAdminForm" action="/administrador/editar" method="POST">
+                        <input type="hidden" id="editId" name="id">
+                        <div class="mb-3">
+                            <label for="editNombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="editNombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editApellido" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="editApellido" name="apellido" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCedula" class="form-label">Cédula</label>
+                            <input type="text" class="form-control" id="editCedula" name="cedula" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCorreo" class="form-label">Correo</label>
+                            <input type="email" class="form-control" id="editCorreo" name="correo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUsuario" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="editUsuario" name="usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPassword" class="form-label">Nueva Contraseña (dejar en blanco si no desea cambiarla)</label>
+                            <input type="password" class="form-control" id="editPassword" name="password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editConfirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="editConfirmPassword" name="confirmPassword">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/mantenimiento-administrador.js"></script>
+</body>
+</html>

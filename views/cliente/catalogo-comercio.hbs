@@ -7,7 +7,7 @@
     <title>{{comercio.nombre}} - Catálogo - AppCenar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/catalogo-comercio.css" rel="stylesheet">
+    <link href="/assets/css/cliente/catalogo-comercio.css" rel="stylesheet">
 </head>
 <body>
     <div class="main-container">
@@ -17,7 +17,7 @@
                 <img src="{{comercio.logo}}" alt="{{comercio.nombreComercio}}" class="comercio-logo">
                 <h1>{{comercio.nombreComercio}}</h1>
             </div>
-            <a href="/cliente/tipo-comercio{{tipoId}}" class="btn-back">
+            <a href="/cliente/home" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
         </header>
@@ -28,42 +28,40 @@
 <div class="content-wrapper">
     <div class="catalogo-section">
         {{#each categorias}}
-            {{#if productos.length}} <!-- Only show category if it has products -->
-                <div class="categoria-container">
-                    <h2 class="categoria-titulo">{{nombre}}</h2>
-                    <div class="productos-grid">
-                        {{#each productos}}
-                            <div class="producto-card">
-                                <div class="producto-imagen">
-                                    <img src="{{imagen}}" alt="{{nombre}}">
-                                </div>
-                                <div class="producto-info">
-                                    <h3>{{nombre}}</h3>
-                                    <p class="descripcion">{{descripcion}}</p>
-                                    <div class="precio-action">
-                                        <span class="precio">${{precio}}</span>
-                                        {{#inCart id}}
-                                            <span class="agregado">
-                                                <i class="fas fa-check"></i> En el carrito
-                                            </span>
-                                        {{else}}
-                                            <form action="/cliente/cart/add/{{id}}/{{../comercioId}}" method="POST" class="form-agregar">
-                                                <button type="submit" class="btn-agregar">
-                                                    <i class="fas fa-plus"></i> Agregar
-                                                </button>
-                                            </form>
-                                        {{/inCart}}
-                                    </div>
+            <div class="categoria-container">
+                <h2 class="categoria-titulo">{{nombre}}</h2>
+                <div class="productos-grid">
+                    {{#each productos}}
+                        <div class="producto-card">
+                            <div class="producto-imagen">
+                                <img src="{{imagen}}" alt="{{nombre}}">
+                            </div>
+                            <div class="producto-info">
+                                <h3>{{nombre}}</h3>
+                                <p class="descripcion">{{descripcion}}</p>
+                                <div class="precio-action">
+                                    <span class="precio">${{precio}}</span>
+                                    {{#inCart id}}
+                                        <span class="agregado">
+                                            <i class="fas fa-check"></i> En el carrito
+                                        </span>
+                                    {{else}}
+                                        <form action="/cliente/cart/add/{{id}}/{{../comercioId}}" method="POST" class="form-agregar">
+                                            <button type="submit" class="btn-agregar">
+                                                <i class="fas fa-plus"></i> Agregar
+                                            </button>
+                                        </form>
+                                    {{/inCart}}
                                 </div>
                             </div>
-                        {{/each}}
-                    </div>
+                        </div>
+                    {{/each}}
                 </div>
-            {{/if}} <!-- End check for products in category -->
+            </div>
         {{/each}}
     </div>
 
-    <!-- Carrito (remains in its position on the right) -->
+    <!-- Carrito -->
     <div class="carrito-section" id="carrito">
         <div class="carrito-container">
             <h2><i class="fas fa-shopping-cart"></i> Mi Pedido</h2>
