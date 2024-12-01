@@ -8,17 +8,26 @@
 /* Main Content */
 .main-content {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     padding: 30px;
-    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
 .profile-container {
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
     background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    align-self: flex-start;
+}
+
+.container {
+    width: 100%;
+    padding: 0;
 }
 
 /* Sidebar Styling */
