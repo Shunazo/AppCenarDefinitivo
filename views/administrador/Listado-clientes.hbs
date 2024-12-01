@@ -14,7 +14,6 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <img src="/assets/img/logo-appcenar.png" alt="AppCenar Logo" class="logo">
                 <div class="user-info">
                     {{#if usuario.fotoPerfil}}
                         <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
@@ -24,30 +23,22 @@
                     <h4 class="user-name">{{usuario.nombre}}</h4>
                 </div>
             </div>
-
-            <div class="sidebar-menu">
-                <a href="/administrador/home" class="menu-item">
-                    <i class="fas fa-home"></i>
-                    <span>Inicio</span>
-                </a>
-                <a href="/administrador/perfil/edit" class="menu-item">
-                    <i class="fas fa-user"></i>
-                    <span>Mi Perfil</span>
-                </a>
-                <a href="/administrador/clientes" class="menu-item active">
-                    <i class="fas fa-users"></i>
-                    <span>Clientes</span>
-                </a>
-                <a href="/administrador/comercios" class="menu-item">
-                    <i class="fas fa-store"></i>
-                    <span>Comercios</span>
-                </a>
-                <button id="logout-btn" class="menu-item logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Cerrar Sesión</span>
-                </button>
-            </div>
-        </div>
+              <div class="sidebar-menu">
+                  <ul class="list-unstyled components">
+                      <li><a href="/administrador/home"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+                      <li class="active"><a href="/administrador/clientes"><i class="fas fa-users me-2"></i>Clientes</a></li>
+                      <li><a href="/administrador/deliveries"><i class="fas fa-motorcycle me-2"></i>Delivery</a></li>
+                      <li><a href="/administrador/comercios"><i class="fas fa-store me-2"></i>Comercios</a></li>
+                      <li><a href="/administrador/config"><i class="fas fa-cogs me-2"></i>Configuración</a></li>
+                      <li><a href="/administrador/administradores"><i class="fas fa-user-tie me-2"></i>Administradores</a></li>
+                      <li><a href="/administrador/tipo-comercio"><i class="fas fa-store-alt me-2"></i>Tipos de Comercio</a></li>
+                  </ul>
+                  <button id="logout-btn" class="menu-item logout">
+                      <i class="fas fa-sign-out-alt"></i>
+                      <span>Cerrar Sesión</span>
+                  </button>
+              </div>
+          </div>
 
         <!-- Main Content -->
         <div class="main-content">
