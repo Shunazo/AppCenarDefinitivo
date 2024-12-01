@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -86,6 +86,102 @@
             </form>
         </div>
     </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/index.js"></script>
+</body>
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - AppCenar</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/assets/css/perfil-cliente.css" rel="stylesheet">
+    
+</head>
+<body>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <img src="{{usuario.fotoPerfil}}" alt="Profile" class="user-avatar">
+                    <span>{{usuario.nombre}}</span>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <a href="/cliente/home" class="menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <a href="/cliente/perfil/edit" class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Mi Perfil</span>
+                </a>
+                <a href="/cliente/pedidos" class="menu-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Mis Pedidos</span>
+                </a>
+                <a href="/cliente/direcciones" class="menu-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Mis Direcciones</span>
+                </a>
+                <a href="/cliente/favoritos" class="menu-item">
+                    <i class="fas fa-heart"></i>
+                    <span>Favoritos</span>
+                </a>
+                <button id="logout-btn" class="menu-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-container">
+            <div class="container mt-4">
+                <h2 class="text-center"><i class="fas fa-user-circle me-2"></i>Mi Perfil</h2>
+                <form action="/cliente/perfil/edit" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label"><i class="fas fa-user me-2"></i>Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{usuario.nombre}}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label"><i class="fas fa-user me-2"></i>Apellido</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" value="{{usuario.apellido}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label"><i class="fas fa-phone me-2"></i>Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" value="{{usuario.telefono}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fotoPerfil" class="form-label"><i class="fas fa-camera me-2"></i>Foto de Perfil</label>
+                        <input type="file" class="form-control" id="fotoPerfil" name="fotoPerfil" accept="image/*">
+                        {{#if usuario.fotoPerfil}}
+                            <img id="previewImage" src="{{usuario.fotoPerfil}}" alt="Foto actual" class="mt-2 current-photo">
+                        {{/if}}
+                    </div>
+
+                    <div class="button-group">
+                        <a href="/cliente/home" class="btn btn-secondary btn-back"><i class="fas fa-arrow-left me-2"></i>Volver</a>
+                        <button type="submit" class="btn btn-primary btn-save"><i class="fas fa-save me-2"></i>Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
