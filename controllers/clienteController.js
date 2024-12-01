@@ -20,9 +20,6 @@ exports.home = async (req, res) => {
             order: [["nombre", "ASC"]]
         });
 
-        console.log(tiposComercio);
-
-  
         if (!tiposComercio.length === 0) {
             return res.render("cliente/home-cliente", {
               pageTitle: "Home",
@@ -227,6 +224,13 @@ exports.tipoComercio = async (req, res) => {
     try {
       const usuarioRecord = await Usuario.findByPk(req.session.userId);
         const comercioId = req.params.id;
+
+        if (req.session.comercioId && req.session.comercioId !== comercioId) {
+          req.session.cart = [];
+      }
+
+      req.session.comercioId = comercioId;
+
         const comercio = await Comercio.findByPk(comercioId, {
             include: [
                 {
@@ -245,6 +249,7 @@ exports.tipoComercio = async (req, res) => {
         if (!comercio) {
             return res.status(404).render("404", { pageTitle: "Comercio no encontrado" });
         }
+        
 
         const cart = req.session.cart || [];
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
@@ -257,7 +262,7 @@ exports.tipoComercio = async (req, res) => {
         res.render("cliente/catalogo-comercio", {
             pageTitle: `Catálogo de ${comercio.nombreComercio}`,
             usuario: usuarioRecord.dataValues,
-            comercioId, // Pass comercioId explicitly here
+            comercioId, 
             comercio: comercio.dataValues,
             categorias: categorias,
             cart,
@@ -334,8 +339,17 @@ exports.removeFromCart = async (req, res) => {
 
 exports.renderCart = async (req, res) => {
   try {
-    const usuarioRecord = await Usuario.findByPk(req.session.userId);
-    const direcciones = await Direccion.findAll({ where: { clienteId: req.session.userId } });
+      // Retrieve comercioId from session
+      const comercioId = req.session.comercioId;
+      
+      if (!comercioId) {
+          return res.status(404).render("404", { pageTitle: "Comercio no seleccionado" });
+      }
+
+      const comercioRecord = await Comercio.findByPk(comercioId);  
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
+      const cliente = await Cliente.findOne({ where: { usuarioId: req.session.userId } });
+      const direcciones = await Direccion.findAll({ where: { ClienteId: cliente.id } });
       const cart = req.session.cart || [];
       const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
       const itbisConfig = await Configuracion.findOne();
@@ -343,10 +357,16 @@ exports.renderCart = async (req, res) => {
       const itbisTotal = total * itbisRate / 100;
       const grandTotal = total + itbisTotal;
 
+      // Ensure comercioRecord exists
+      if (!comercioRecord) {
+          return res.status(404).render("404", { pageTitle: "Comercio no encontrado" });
+      }
+
       res.render("cliente/miCarrito", {
           pageTitle: "Mi Carrito",
           usuario: usuarioRecord.dataValues,
-          direcciones: direcciones.map(direccion => direccion.dataValues),
+          comercio: comercioRecord.dataValues,
+          direcciones: direcciones.map(d => d.dataValues),
           cart,
           total,
           itbisRate,
@@ -359,11 +379,9 @@ exports.renderCart = async (req, res) => {
   }
 };
 
-
-
-
   exports.checkout = async (req, res) => {
     try {
+      console.log(req.body);
       const { direccionId } = req.body;  
       const cart = req.session.cart || [];
   
@@ -390,14 +408,14 @@ exports.renderCart = async (req, res) => {
       const total = subtotal + (subtotal * itbisRate / 100);
   
     
-      const pedido = await Pedido.create({
+      const pedidoRecord = await Pedido.create({
         estado: "pendiente",  
         subtotal,
         itbis: (subtotal * itbisRate / 100),
         total,
         fechaHora: new Date(),  
-        clienteId: req.session.userId, 
-        comercioId: req.params.comercioId,  
+        clienteId: req.session.clienteId, 
+        comercioId: req.session.comercioId,  
         direccionId,  
       });
   
@@ -406,7 +424,7 @@ exports.renderCart = async (req, res) => {
         await ProductoPedido.create({
           cantidad: item.cantidad,  
           precio: item.precio,  
-          pedidoId: pedido.id,  
+          pedidoId: pedidoRecord.id,  
           productoId: item.id,  
         });
       }
@@ -415,7 +433,7 @@ exports.renderCart = async (req, res) => {
       req.session.cart = [];
   
      
-      res.redirect("cliente/home-cliente");
+      res.redirect("/cliente/home");
   
     } catch (error) {
       console.log(error);

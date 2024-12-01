@@ -48,14 +48,13 @@ app.engine("hbs", engine({
             return JSON.stringify(context);
         },
         inCart: function(id, options) {
-            // Access cart from session
-            const cart = this.cart || [];
+            const cart = options.data.root.cart || [];
             const found = cart.some(item => item.id === id);
-
+        
             if (found) {
-                return options.fn(this);  // Render 'in cart' content
+                return options.fn(this);  
             } else {
-                return options.inverse(this);  // Render 'add to cart' content
+                return options.inverse(this); 
             }
         },
     }
@@ -64,7 +63,7 @@ app.engine("hbs", engine({
 app.set("view engine", "hbs");
 app.set("views", "views");
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));

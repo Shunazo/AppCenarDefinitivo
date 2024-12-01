@@ -52,79 +52,64 @@
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="container">
-                <div class="header-section">
-                    <h2><i class="fas fa-shopping-cart me-2"></i>Mi Carrito</h2>
+ <div class="main-content">
+    <div class="container">
+        <div class="header-section">
+            <h2><i class="fas fa-shopping-cart me-2"></i>Mi Carrito</h2>
+        </div>
+
+        {{#if cart.length}}
+            <div class="comercio-info">
+                <img src="{{comercio.logo}}" alt="{{comercio.nombreComercio}}" class="comercio-logo">
+                <h3>{{comercio.nombreComercio}}</h3>
+                <a href="/cliente/catalogo/{{comercio.id}}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+            </div>
+
+            <div class="resumen-pedido">
+                <h4>Resumen del Pedido</h4>
+                <div class="total-info">
+                    <span>Subtotal:</span>
+                    <span class="total-amount">${{total}}</span>
+                </div>
+                <div class="total-info">
+                    <span>ITBIS:</span>
+                    <span class="total-amount">({{itbisRate}}%)</span>
+                </div>
+                <div class="total-info">
+                    <span>Total:</span>
+                    <span class="total-amount">${{grandTotal}}</span>
                 </div>
 
-                {{#if carrito.productos.length}}
-                    <div class="comercio-info">
-                        <img src="{{carrito.comercio.logo}}" alt="{{carrito.comercio.nombre}}" class="comercio-logo">
-                        <h3>{{carrito.comercio.nombre}}</h3>
-                    </div>
-
-                    <div class="productos-list">
-                        {{#each carrito.productos}}
-                            <div class="producto-card">
-                                <div class="producto-imagen">
-                                    <img src="{{imagen}}" alt="{{nombre}}">
-                                </div>
-                                <div class="producto-info">
-                                    <h5>{{nombre}}</h5>
-                                    <p class="precio">${{precio}}</p>
-                                </div>
-                                <div class="cantidad-control">
-                                    <button class="btn-cantidad" onclick="actualizarCantidad('{{id}}', -1)">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <span class="cantidad">{{cantidad}}</span>
-                                    <button class="btn-cantidad" onclick="actualizarCantidad('{{id}}', 1)">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                                <div class="subtotal">
-                                    ${{multiply precio cantidad}}
-                                </div>
-                                <button class="btn-remove" onclick="eliminarProducto('{{id}}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        {{/each}}
-                    </div>
-
-                    <div class="resumen-pedido">
-                        <h4>Resumen del Pedido</h4>
-                        <div class="total-info">
-                            <span>Total:</span>
-                            <span class="total-amount">${{carrito.total}}</span>
-                        </div>
-                        <div class="direccion-select">
-                            <label for="direccion">Selecciona la dirección de entrega:</label>
-                            <select id="direccion" class="form-select" required>
-                                {{#each direcciones}}
-                                    <option value="{{id}}">{{nombre}} - {{descripcion}}</option>
+                <form action="/cliente/checkout" method="POST" class="form-pedido">
+                <div class="direccion-select">
+                    <label for="direccion">Selecciona la dirección de entrega:</label>
+                    <select id="direccion" class="form-select" name="direccionId" required>
+                         <option value="" disabled selected>Seleccione una direccion</option>
+                            {{#each direcciones}}
+                                <option value="{{this.id}}">{{this.nombre}}</option>
                                 {{/each}}
                             </select>
                         </div>
-                        <button class="btn-realizar-pedido" onclick="realizarPedido()">
+                        <button type="submit" class="btn-realizar-pedido">
                             <i class="fas fa-check me-2"></i>Realizar Pedido
-                        </button>
-                    </div>
-                {{else}}
-                    <div class="carrito-vacio">
-                        <i class="fas fa-shopping-cart fa-4x"></i>
-                        <h3>Tu carrito está vacío</h3>
-                        <p>¡Explora nuestros comercios y agrega productos!</p>
-                        <a href="/cliente/home" class="btn-explorar">
-                            <i class="fas fa-store me-2"></i>Explorar Comercios
-                        </a>
-                    </div>
-                {{/if}}
+                         </button>
+</form>
+
+        {{else}}
+            <div class="carrito-vacio">
+                <i class="fas fa-shopping-cart fa-4x"></i>
+                <h3>Tu carrito está vacío</h3>
+                <p>¡Explora nuestros comercios y agrega productos!</p>
+                <a href="/cliente/home" class="btn-explorar">
+                    <i class="fas fa-store me-2"></i>Explorar Comercios
+                </a>
             </div>
-        </div>
+        {{/if}}
     </div>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/carrito.js"></script>

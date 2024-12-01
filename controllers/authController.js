@@ -52,6 +52,18 @@ exports.login = async (req, res) => {
             req.session.comercioId = comercio.id;
         }
 
+        if (user.rol === 'cliente') {
+            const cliente = await Cliente.findOne({ where: { usuarioId: user.id } });
+            req.session.clienteId = cliente.id;
+        }
+
+        if (user.rol === 'delivery') {
+            const delivery = await Delivery.findOne({ where: { usuarioId: user.id } });
+            req.session.deliveryId = delivery.id;
+        }
+
+        
+
         return req.session.save((err) => {
             console.log(err);
             res.redirect(`/${user.rol}/home`);
@@ -405,6 +417,17 @@ exports.activateAccount = async (req, res) => {
             const comercio = await Comercio.findOne({ where: { usuarioId: user.id } });
             req.session.comercioId = comercio.id;
         }
+
+        if (user.rol === 'cliente') {
+            const cliente = await Cliente.findOne({ where: { usuarioId: user.id } });
+            req.session.clienteId = cliente.id;
+        }
+
+        if (user.rol === 'delivery') {
+            const delivery = await Delivery.findOne({ where: { usuarioId: user.id } });
+            req.session.deliveryId = delivery.id;
+        }
+
 
         res.render("auth/activation-success", {
             pageTitle: "Cuenta Activada",
