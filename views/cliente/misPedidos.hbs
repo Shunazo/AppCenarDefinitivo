@@ -65,15 +65,18 @@
                                         <h5 class="card-title">{{comercio.nombre}}</h5>
                                         <div class="pedido-details">
                                             <span class="badge 
-                                                {{#if (equals estado 'pendiente')}}bg-warning{{/if}}
-                                                {{#if (equals estado 'en proceso')}}bg-info{{/if}}
-                                                {{#if (equals estado 'completado')}}bg-success{{/if}}">
+                                                {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
+                                                {{#ifEquals pedido.estado 'en_proceso'}}bg-info{{/ifEquals}}
+                                                {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
+                                                {{#ifEquals pedido.estado 'pendiente'}}Pendiente{{/ifEquals}}
+                                                {{#ifEquals pedido.estado 'en_proceso'}}En Proceso{{/ifEquals}}
+                                                {{#ifEquals pedido.estado 'completado'}}Completado{{/ifEquals}}
                                                 {{estado}}
                                             </span>
                                             <p class="productos-count">{{cantidadProductos}} productos</p>
                                             <p class="fecha-pedido">
                                                 <i class="far fa-calendar-alt me-2"></i>
-                                                {{formatDate fecha}}
+                                                {{fechaHora}}
                                             </p>
                                         </div>
                                     </div>
@@ -81,7 +84,7 @@
                                 <div class="col-md-3 d-flex align-items-center justify-content-end pe-4">
                                     <div class="precio-total">
                                         <span class="precio-label">Total</span>
-                                        <span class="precio-valor">${{formatPrice total}}</span>
+                                        <span class="precio-valor">${{total}}</span>
                                     </div>
                                 </div>
                             </div>

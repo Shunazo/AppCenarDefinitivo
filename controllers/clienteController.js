@@ -445,8 +445,7 @@ exports.renderCart = async (req, res) => {
 exports.pedidos = async (req, res) => {
     try {
       const usuarioRecord = await Usuario.findByPk(req.session.userId);
-      const usuarioId = req.session.userId;
-      const pedidos = await Pedido.findAll({ where: { clienteId: usuarioId } });
+      const pedidos = await Pedido.findAll({ where: { clienteId: req.session.clienteId } });
   
       res.render("cliente/misPedidos", {
         pageTitle: "Mis Pedidos",
