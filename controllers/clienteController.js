@@ -201,7 +201,7 @@ exports.tipoComercio = async (req, res) => {
         include: { model: Comercio, as: "comercio" }, 
       });
   
-     
+     console.log(usuarioRecord);
       if (favoritos.length === 0) {
         return res.render("cliente/misFavoritos", {
           pageTitle: "Mis Favoritos",
@@ -213,8 +213,8 @@ exports.tipoComercio = async (req, res) => {
      
       res.render("cliente/misFavoritos", {
         pageTitle: "Mis Favoritos",
-        usuario: usuarioRecord.dataValues,
         favoritos: favoritos.map(fav => fav.comercio),
+        usuario: usuarioRecord.dataValues,
       });
     } catch (error) {
       console.log(error);
