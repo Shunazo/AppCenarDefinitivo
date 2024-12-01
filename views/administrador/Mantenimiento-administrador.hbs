@@ -34,66 +34,66 @@
         </nav>
 
         <!-- Content -->
-        <div id="content">
-            <div class="container-fluid">
-                <div class="header-section">
-                    <h1><i class="fas fa-user-tie me-2"></i>Gestión de Administradores</h1>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAdminModal">
-                        <i class="fas fa-plus me-2"></i>Nuevo Administrador
-                    </button>
-                </div>
+<div id="content">
+    <div class="container-fluid">
+        <div class="header-section">
+            <h1><i class="fas fa-user-tie me-2"></i>Gestión de Administradores</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAdminModal">
+                <i class="fas fa-plus me-2"></i>Nuevo Administrador
+            </button>
+        </div>
 
-                <!-- Listado de Administradores -->
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Usuario</th>
-                                <th>Cédula</th>
-                                <th>Correo</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each administradores}}
-                            <tr>
-                                <td>{{nombre}}</td>
-                                <td>{{apellido}}</td>
-                                <td>{{usuario}}</td>
-                                <td>{{cedula}}</td>
-                                <td>{{correo}}</td>
-                                <td>
-                                    <span class="status-badge {{#if activo}}active{{else}}inactive{{/if}}">
-                                        {{#if activo}}Activo{{else}}Inactivo{{/if}}
-                                    </span>
-                                </td>
-                                <td>
-                                    {{#unless isCurrentUser}}
-                                        <button class="btn btn-info btn-sm me-2" onclick="editarAdmin('{{id}}')" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        {{#if activo}}
-                                            <button class="btn btn-danger btn-sm" onclick="confirmarInactivar('{{id}}')" title="Inactivar">
-                                                <i class="fas fa-user-slash"></i>
-                                            </button>
-                                        {{else}}
-                                            <button class="btn btn-success btn-sm" onclick="confirmarActivar('{{id}}')" title="Activar">
-                                                <i class="fas fa-user-check"></i>
-                                            </button>
-                                        {{/if}}
-                                    {{/unless}}
-                                </td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- Listado de Administradores -->
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Usuario</th>
+                        <th>Cédula</th>
+                        <th>Correo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each admins}} <!-- Iterating over the 'admins' array -->
+                    <tr>
+                        <td>{{nombre}}</td>
+                        <td>{{apellido}}</td>
+                        <td>{{usuario}}</td>
+                        <td>{{cedula}}</td>
+                        <td>{{correo}}</td>
+                        <td>
+                            <span class="status-badge {{#if activo}}active{{else}}inactive{{/if}}">
+                                {{#if activo}}Activo{{else}}Inactivo{{/if}}
+                            </span>
+                        </td>
+                        <td>
+                            {{#unless isCurrentUser}} <!-- Prevent editing the current user -->
+                                <button class="btn btn-info btn-sm me-2" onclick="editarAdmin('{{id}}')" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                {{#if activo}}
+                                    <button class="btn btn-danger btn-sm" onclick="confirmarInactivar('{{id}}')" title="Inactivar">
+                                        <i class="fas fa-user-slash"></i>
+                                    </button>
+                                {{else}}
+                                    <button class="btn btn-success btn-sm" onclick="confirmarActivar('{{id}}')" title="Activar">
+                                        <i class="fas fa-user-check"></i>
+                                    </button>
+                                {{/if}}
+                            {{/unless}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+
 
     <!-- Modal Crear Administrador -->
     <div class="modal fade" id="createAdminModal" tabindex="-1">

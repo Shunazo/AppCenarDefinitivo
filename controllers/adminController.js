@@ -404,9 +404,19 @@ exports.administradores = async (req, res) => {
             include: [{ model: Administrador, as: "administrador" }]
         });
 
-        res.render("administrador/Listado-administrador", {
+        const adminList = admins.map(a => {
+            const usuarioData = a.dataValues;
+            const administradorData = usuarioData.administrador ? usuarioData.administrador.dataValues : {};
+            return {
+                ...usuarioData,
+                ...administradorData
+            };
+        });
+
+
+        res.render("administrador/Mantenimiento-administrador", {
             pageTitle: "Listado de Administradores",
-            admins: admins.map(a => a.dataValues)
+            admins: adminList
         });
 
     } 
