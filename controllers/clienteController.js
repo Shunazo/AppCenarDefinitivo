@@ -108,6 +108,7 @@ exports.tipoComercio = async (req, res) => {
       const tipoId = req.params.id; 
       const searchQuery = req.query.search ? req.query.search.toLowerCase() : "";
       const usuarioId = req.session.userId;
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
   
 
       const comercios = await Comercio.findAll({
@@ -148,6 +149,7 @@ exports.tipoComercio = async (req, res) => {
   
       res.render("cliente/tipo-comercio", {
         pageTitle: `Comercios de tipo ${tipoComercio.nombre}`,
+        usuario: usuarioRecord.dataValues,
         tipoNombre: tipocomercioRecord.nombre,
         comercios: comerciosWithFavoritoStatus, 
         cantidad: filteredComercios.length,
@@ -193,7 +195,7 @@ exports.tipoComercio = async (req, res) => {
   exports.favoritos = async (req, res) => {
     try {
       const usuarioId = req.session.userId; 
-      
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
       const favoritos = await Favorito.findAll({
         where: { usuarioId },
         include: { model: Comercio, as: "comercio" }, 
@@ -211,6 +213,7 @@ exports.tipoComercio = async (req, res) => {
      
       res.render("cliente/misFavoritos", {
         pageTitle: "Mis Favoritos",
+        usuario: usuarioRecord.dataValues,
         favoritos: favoritos.map(fav => fav.comercio),
       });
     } catch (error) {
@@ -221,6 +224,7 @@ exports.tipoComercio = async (req, res) => {
   
   exports.catalogo = async (req, res) => {
     try {
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
         const comercioId = req.params.id;
         const comercio = await Comercio.findByPk(comercioId, {
             include: [
@@ -251,6 +255,7 @@ exports.tipoComercio = async (req, res) => {
 
         res.render("cliente/catalogo-comercio", {
             pageTitle: `Catálogo de ${comercio.nombreComercio}`,
+            usuario: usuarioRecord.dataValues,
             comercioId, // Pass comercioId explicitly here
             comercio: comercio.dataValues,
             categorias: categorias,
@@ -328,6 +333,7 @@ exports.removeFromCart = async (req, res) => {
 
 exports.renderCart = async (req, res) => {
   try {
+    const usuarioRecord = await Usuario.findByPk(req.session.userId);
     const direcciones = await Direccion.findAll({ where: { clienteId: req.session.userId } });
       const cart = req.session.cart || [];
       const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
@@ -338,6 +344,7 @@ exports.renderCart = async (req, res) => {
 
       res.render("cliente/miCarrito", {
           pageTitle: "Mi Carrito",
+          usuario: usuarioRecord.dataValues,
           direcciones: direcciones.map(direccion => direccion.dataValues),
           cart,
           total,
@@ -418,12 +425,14 @@ exports.renderCart = async (req, res) => {
 
 exports.pedidos = async (req, res) => {
     try {
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
       const usuarioId = req.session.userId;
       const pedidos = await Pedido.findAll({ where: { clienteId: usuarioId } });
   
       res.render("cliente/misPedidos", {
         pageTitle: "Mis Pedidos",
         pedidos: pedidos.map(pedido => pedido.dataValues),
+        usuario: usuarioRecord.dataValues,
       });
     } catch (error) {
       console.log(error);
@@ -433,6 +442,7 @@ exports.pedidos = async (req, res) => {
   
   exports.pedidoDetalle = async (req, res) => {
     try {
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
       const pedidoId = req.params.id;
       const pedidoRecord = await Pedido.findByPk(pedidoId, {
         include: [
@@ -451,6 +461,7 @@ exports.pedidos = async (req, res) => {
       res.render("cliente/pedido-detalle", {
         pageTitle: `Detalles del Pedido ${pedidoId}`,
         pedido: pedidoRecord.dataValues,
+        usuario: usuarioRecord.dataValues,
       });
     } catch (error) {
       console.log(error);
@@ -463,6 +474,7 @@ exports.pedidos = async (req, res) => {
 
   exports.direcciones = async (req, res) => {
     try {
+      const usuarioRecord = await Usuario.findByPk(req.session.userId);
         const usuarioId = req.session.userId;
 
         const cliente = await Cliente.findOne({ where: { usuarioId } });
@@ -479,6 +491,7 @@ exports.pedidos = async (req, res) => {
         res.render("cliente/misDirecciones", {
             pageTitle: "Mis Direcciones",
             direcciones: direcciones.map(direccion => direccion.dataValues),
+            usuario: usuarioRecord.dataValues,
         });
     } catch (error) {
         console.log(error);
