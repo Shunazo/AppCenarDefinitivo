@@ -49,10 +49,10 @@ const Usuario = connection.define("usuario", {
 });
 
 Usuario.associate = (models) => {
-    Usuario.hasOne(models.Cliente, { foreignKey: "usuarioId", as: "cliente" });
-    Usuario.hasOne(models.Comercio, { foreignKey: "usuarioId", as: "comercio" });
-    Usuario.hasOne(models.Delivery, { foreignKey: "usuarioId", as: "delivery" });
-    Usuario.hasOne(models.Administrador, { foreignKey: "usuarioId", as: "administrador" });
+    Usuario.hasOne(models.Cliente, { foreignKey: "usuarioId", onDelete: "CASCADE", as: "cliente" });
+    Usuario.hasOne(models.Comercio, { foreignKey: "usuarioId", onDelete: "CASCADE",  as: "comercio" });
+    Usuario.hasOne(models.Delivery, { foreignKey: "usuarioId", onDelete: "CASCADE", as: "delivery" });
+    Usuario.hasOne(models.Administrador, { foreignKey: "usuarioId", onDelete: "CASCADE", as: "administrador" });
 };
 
 module.exports = Usuario;

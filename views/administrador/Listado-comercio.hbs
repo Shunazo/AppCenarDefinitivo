@@ -4,62 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Clientes - AppCenar</title>
+    <title>Listado de Comercios - AppCenar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/admin/listado-clientes.css" rel="stylesheet">
+    <link href="/assets/css/admin/listado-comercios.css" rel="stylesheet">
 </head>
 <body>
-    <div class="d-flex">
+    <div class="wrapper">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <nav id="sidebar">
             <div class="sidebar-header">
                 <h3><i class="fas fa-user-shield me-2"></i>Panel Admin</h3>
             </div>
-              <div class="sidebar-menu">
-                  <ul class="list-unstyled components">
-                      <li><a href="/administrador/home"><i class="fas fa-home me-2"></i>Dashboard</a></li>
-                      <li class="active"><a href="/administrador/clientes"><i class="fas fa-users me-2"></i>Clientes</a></li>
-                      <li><a href="/administrador/deliveries"><i class="fas fa-motorcycle me-2"></i>Delivery</a></li>
-                      <li><a href="/administrador/comercios"><i class="fas fa-store me-2"></i>Comercios</a></li>
-                      <li><a href="/administrador/config"><i class="fas fa-cogs me-2"></i>Configuración</a></li>
-                      <li><a href="/administrador/administradores"><i class="fas fa-user-tie me-2"></i>Administradores</a></li>
-                      <li><a href="/administrador/tipo-comercio"><i class="fas fa-store-alt me-2"></i>Tipos de Comercio</a></li>
-                  </ul>
-                  <button id="logout-btn" class="menu-item logout">
-                      <i class="fas fa-sign-out-alt"></i>
-                      <span>Cerrar Sesión</span>
-                  </button>
-              </div>
-          </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="container">
-                <div class="header-section">
-                    <h2><i class="fas fa-users me-2"></i>Listado de Clientes</h2>
-                </div>
+            <ul class="list-unstyled components">
+                <li><a href="/administrador/home"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+                <li><a href="/administrador/clientes"><i class="fas fa-users me-2"></i>Clientes</a></li>
+                <li><a href="/administrador/deliveries"><i class="fas fa-motorcycle me-2"></i>Delivery</a></li>
+                <li class="active"><a href="/administrador/comercios"><i class="fas fa-store me-2"></i>Comercios</a></li>
+                <li><a href="/administrador/config"><i class="fas fa-cogs me-2"></i>Configuración</a></li>
+                <li><a href="/administrador/administradores"><i class="fas fa-user-tie me-2"></i>Administradores</a></li>
+                <li><a href="/administrador/tipo-comercio"><i class="fas fa-store-alt me-2"></i>Tipos de Comercio</a></li>
+            </ul>
+
+            <button class="btn-sidebar" id="logout-btn">
+                <i class="fas fa-sign-out-alt me-2"></i>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- Content -->
+        <div id="content">
+            <div class="container-fluid">
+                <h1><i class="fas fa-store me-2"></i>Listado de Comercios</h1>
 
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table">
                         <thead>
                             <tr>
+                                <th>Logo</th>
                                 <th>Nombre</th>
-                                <th>Apellido</th>
                                 <th>Teléfono</th>
                                 <th>Correo</th>
-                                <th>Pedidos Realizados</th>
+                                <th>Horario</th>
+                                <th>Pedidos</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each clientes}}
+                            {{#each comercios}}
                             <tr>
+                                <td>
+                                    <img src="{{logo}}" alt="Logo {{nombre}}" class="comercio-logo">
+                                </td>
                                 <td>{{nombre}}</td>
-                                <td>{{apellido}}</td>
                                 <td>{{telefono}}</td>
                                 <td>{{correo}}</td>
+                                <td>{{horaApertura}} - {{horaCierre}}</td>
                                 <td class="text-center">{{pedidos.length}}</td>
                                 <td>
                                     <span class="status-badge {{#if activo}}active{{else}}inactive{{/if}}">
@@ -69,21 +71,21 @@
                                 <td>
                                     {{#if activo}}
                                         <!-- Form to Deactivate -->
-                                            <form action="/administrador/clientes/deactivate/{{id}}" method="POST" style="display:inline;">
+                                            <form action="/administrador/comercios/deactivate/{{id}}" method="POST" style="display:inline;">
                                                 <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-user-slash me-1"></i> Inactivar
+                                                    <i class="fas fa-store-slash me-1"></i> Inactivar
                                                 </button>
                                             </form>
                                         {{else}}
                                         <!-- Form to Activate -->
-                                            <form action="/administrador/clientes/activate/{{id}}" method="POST" style="display:inline;">
+                                            <form action="/administrador/comercios/activate/{{id}}" method="POST" style="display:inline;">
                                                 <button type="submit" class="btn btn-success btn-sm">
-                                                    <i class="fas fa-user-alt me-1"></i> Activar
+                                                    <i class="fas fa-store-alt me-1"></i> Activar
                                                 </button>
                                             </form>
                                         {{/if}}
                                     </td>
-                            </tr>
+                                </tr>
                             {{/each}}
                         </tbody>
                     </table>
@@ -93,6 +95,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/listado-clientes.js"></script>
+    <script src="/assets/js/listado-comercios.js"></script>
 </body>
 </html>

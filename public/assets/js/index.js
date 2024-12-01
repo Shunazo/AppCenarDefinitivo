@@ -35,15 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-function confirmDelete(button) {
-    const form = button.closest("form");
+function confirmDelete(event, button) {
+    event.preventDefault();  // Prevent the form from submitting immediately
     
-    const cardTitle = button.closest(".card").querySelector(".card-title");
-    const entityName = cardTitle ? cardTitle.innerText : button.closest("form").getAttribute("data-entity-name");
+    // Logging to ensure the event is being triggered
+    console.log("Delete event triggered");
 
-    const entityType = button.closest("form").getAttribute("data-entity-type") || "Elemento";
+    const form = button.closest("form");
+    const card = button.closest(".card");
 
+    // Check if the card exists and then query for .card-title
+    const cardTitle = card ? card.querySelector(".card-title") : null;
+    const entityName = cardTitle ? cardTitle.innerText : form.getAttribute("data-entity-name");
+    const entityType = form.getAttribute("data-entity-type") || "Elemento";
     const confirmationMessage = `¿Estás seguro de que deseas borrar ${entityType}: "${entityName}"?`;
+
+    console.log("Confirmation message: ", confirmationMessage); // Check message
 
     Swal.fire({
         title: 'Confirmación',
@@ -54,6 +61,8 @@ function confirmDelete(button) {
         cancelButtonText: 'Cancelar',
         reverseButtons: true
     }).then((result) => {
+        console.log("SweetAlert result: ", result);  // Check result of Swal
+
         if (result.isConfirmed) {
             Swal.fire({
                 title: '¡Eliminado!',
@@ -61,11 +70,15 @@ function confirmDelete(button) {
                 icon: 'success',
                 confirmButtonText: 'OK'
             }).then(() => {
-                form.submit(); 
+                form.submit(); // Submit the form after the confirmation
             });
+        } else {
+            console.log("Deletion was cancelled.");
         }
     });
 }
+
+
 
   /*
   function confirmCreateOrEdit(button, event) {

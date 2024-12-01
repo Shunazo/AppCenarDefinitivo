@@ -104,6 +104,7 @@ exports.home = async (req, res) => {
 
 exports.clientes = async (req, res) => {
     try {
+        
         const clientes = await Cliente.findAll({
             include: [{
                 model: Usuario,
@@ -116,29 +117,39 @@ exports.clientes = async (req, res) => {
             }]
         });
 
-        const clientesData = clientes.map(c => ({
-            ...c.dataValues,
-            pedidosCount: c.pedidos ? c.pedidos.length : 0,
-            isActivo: c.usuario.activo
-        }));
-
-        res.render("administrador/Listado-clientes", {
-             pageTitle: "Listado de Clientes",
-             clientes: clientesData      
+        
+        const clientesData = clientes.map(c => {
+            const clienteData = c.dataValues;
+            const usuarioData = clienteData.usuario ? clienteData.usuario.dataValues : {};
+            return {
+                ...clienteData,
+                ...usuarioData,
+                pedidosCount: clienteData.pedidos ? clienteData.pedidos.length : 0,
+                isActivo: usuarioData.activo
+            }
         });
-    } 
-    catch (error) {
+
+        
+        res.render("administrador/Listado-clientes", {
+            pageTitle: "Listado de Clientes",
+            clientes: clientesData
+        });
+    } catch (error) {
         console.log(error);
-        res.render("administrador/Listado-clientes", { pageTitle: "Error al cargar el listado de clientes. Intente más tarde." });
+        res.render("administrador/Listado-clientes", {
+            pageTitle: "Error al cargar el listado de clientes. Intente más tarde."
+        });
     }
 };
 
+
 exports.activateCliente = async (req, res) => {
     try {
-        const clienteRecord = await Cliente.findByPk(req.params.id, 
-            {
-            include: [{ model: Usuario,
-                as : "usuario",
+      
+        const clienteRecord = await Cliente.findByPk(req.params.id, {
+            include: [{
+                model: Usuario,
+                as: "usuario",
             }]
         });
 
@@ -146,10 +157,12 @@ exports.activateCliente = async (req, res) => {
             return res.status(404).send("Cliente no encontrado");
         }
 
-        await clienteRecord.usuario.update({ activo: true });
+        const usuarioRecord = clienteRecord.usuario;
 
-      
-        res.redirect("/administrador/Listado-clientes");
+       
+        await usuarioRecord.update({ activo: true });
+
+        res.redirect("/administrador/clientes");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error activating client");
@@ -159,18 +172,22 @@ exports.activateCliente = async (req, res) => {
 exports.deactivateCliente = async (req, res) => {
     try {
         const clienteRecord = await Cliente.findByPk(req.params.id, {
-            include: [{ model: Usuario,
-                as : "usuario",
-             }]
+            include: [{
+                model: Usuario,
+                as: "usuario",
+            }]
         });
 
         if (!clienteRecord) {
             return res.status(404).send("Cliente no encontrado");
         }
 
-        await clienteRecord.usuario.update({ activo: false });
-    
-        res.redirect("/administrador/Listado-clientes");
+        const usuarioRecord = clienteRecord.usuario;
+
+
+        await usuarioRecord.update({ activo: false });
+
+        res.redirect("/administrador/clientes");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error deactivating client");
@@ -194,11 +211,16 @@ exports.deliveries = async (req, res) => {
             }]
         });
 
-        const deliveriesData = deliveries.map(d => ({
-            ...d.dataValues,
-            pedidosCount: d.pedidos ? d.pedidos.length : 0,
-            isActivo: d.usuario.activo
-        }));
+        const deliveriesData = deliveries.map(d => {
+            const deliveryData = d.dataValues;
+            const usuarioData = deliveryData.usuario ? deliveryData.usuario.dataValues : {};
+            return {
+                ...deliveryData,
+                ...usuarioData,
+                pedidosCount: deliveryData.pedidos ? deliveryData.pedidos.length : 0,
+                isActivo: usuarioData.activo
+            }
+        });
 
         res.render("administrador/Listado-delivery", { 
             pageTitle: "Listado de Deliveries",
@@ -226,7 +248,7 @@ exports.activateDelivery = async (req, res) => {
 
         await deliveryRecord.usuario.update({ activo: true });
         
-        res.redirect("/administrador/Listado-delivery")
+        res.redirect("/administrador/deliveries")
     } catch (error) {
         console.log(error);
         res.status(500).send("Error activating delivery");
@@ -249,7 +271,7 @@ exports.deactivateDelivery = async (req, res) => {
         await deliveryRecord.usuario.update({ activo: false });
         
 
-        res.redirect("/administrador/Listado-delivery");
+        res.redirect("/administrador/deliveries");
 
     } catch (error) {
         console.log(error);
@@ -261,80 +283,108 @@ exports.deactivateDelivery = async (req, res) => {
 exports.comercios = async (req, res) => {
     try {
         const comercios = await Comercio.findAll({
-            include: [{
+            include: [
+              {
                 model: Usuario,
-                attributes: ['nombre', 'logo', 'telefono', 'horaApertura', 'horaCierre', 'correo', 'activo'],
-                as: "usuario"
-            },
-            {
+                as: 'usuario',
+                attributes: ['id', 'nombre', 'telefono', 'correo', 'activo'] 
+              },
+              {
                 model: Pedido,
-                as: "pedidos",
-                required: false
-            }]  
+                as: 'pedidos'
+              }
+            ],
+            attributes: ['id', 'nombreComercio', 'logo', 'horaApertura', 'horaCierre', 'tipoComercioId']
+          })
+
+        const comerciosData = comercios.map(c => {
+            const comercioData = c.dataValues;
+            const usuarioData = comercioData.usuario ? comercioData.usuario.dataValues : {};  
+            return {
+                ...comercioData,
+                ...usuarioData, 
+                pedidosCount: comercioData.pedidos ? comercioData.pedidos.length : 0,
+                isActivo: usuarioData.activo  
+            };
         });
+        
 
-        const comerciosData = comercios.map(c => ({
-            ...c.dataValues,
-            pedidosCount: c.pedidos ? c.pedidos.length : 0,
-            isActivo: c.usuario.activo
-        }));
-
-        res.render("administrador/Listado-comercios", { 
+        res.render("administrador/Listado-comercio", { 
             pageTitle: "Listado de Comercios", 
             comercios: comerciosData
         });
     } 
     catch (error) {
         console.log(error);
-        res.render("/administrador/Listado-comercios", { pageTitle: "Error al cargar el listado de comercios. Intente más tarde." });
+        res.render("administrador/Listado-comercio", { pageTitle: "Error al cargar el listado de comercios. Intente más tarde." });
     }
 };
-
+// Activate the Usuario through Comercio
 exports.activateComercio = async (req, res) => {
     try {
-        const comercioRecord = await Comercio.findByPk(req.params.id,
-            {
-                include: [{ model: Usuario,
-                    as : "usuario",
-                }]
-            });
+        // Find the Comercio based on the Usuario ID (coming from the URL)
+        const comercioRecord = await Comercio.findOne({
+            where: { 
+                '$usuario.id$': req.params.id  // Find the Comercio that has this Usuario ID
+            },
+            include: [
+                {
+                    model: Usuario,
+                    as: 'usuario',
+                }
+            ]
+        });
 
         if (!comercioRecord) {
-            return res.status(404).send("Comercio no encontrado");
+            return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
         }
 
-        await comercioRecord.usuario.update({ activo: true });
+        // Now, update the 'activo' status of the Usuario associated with that Comercio
+        const usuarioRecord = comercioRecord.usuario;
         
+        // Update the 'activo' status of the Usuario to 'true'
+        await usuarioRecord.update({ activo: true });
 
-        res.redirect("/administrador/Listado-comercios");
+        res.redirect("/administrador/comercios");
     } catch (error) {
         console.log(error);
-        res.status(500).send("Error activating comercio");
+        res.status(500).send("Error activating usuario through comercio");
     }
 };
 
+// Deactivate the Usuario through Comercio
 exports.deactivateComercio = async (req, res) => {
     try {
-        const comercioRecord = await Comercio.findByPk(req.params.id,
-            {
-                include: [{ model: Usuario,
-                    as : "usuario",
-                }]
-            });
+        // Find the Comercio based on the Usuario ID (coming from the URL)
+        const comercioRecord = await Comercio.findOne({
+            where: { 
+                '$usuario.id$': req.params.id  // Find the Comercio that has this Usuario ID
+            },
+            include: [
+                {
+                    model: Usuario,
+                    as: 'usuario',
+                }
+            ]
+        });
 
         if (!comercioRecord) {
-            return res.status(404).send("Comercio no encontrado");
+            return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
         }
 
-        await comercioRecord.usuario.update({ activo: false });
+        // Now, update the 'activo' status of the Usuario associated with that Comercio
+        const usuarioRecord = comercioRecord.usuario;
+        
+        // Update the 'activo' status of the Usuario to 'false'
+        await usuarioRecord.update({ activo: false });
 
-
-        res.redirect("/administrador/Listado-comercios");
+        res.redirect("/administrador/comercios");
     } catch (error) {
         console.log(error);
-        res.status(500).send("Error deactivating comercio");
+        res.status(500).send("Error deactivating usuario through comercio");
     }
 };
+
 
 exports.config = async (req, res) => {
     try {
@@ -348,13 +398,13 @@ exports.config = async (req, res) => {
             ...c.dataValues,
         }));
 
-        res.render("administrador/Mantenimiento-configuracion", {
+        res.render("administrador/Listado-configuracion", {
              config: configData
             });
 
     } catch (error) {
         console.log(error);
-        res.render("administrador/Mantenimiento-configuracion", 
+        res.render("administrador/Listado-configuracion", 
             { pageTitle: "Error al cargar la configuración. Intente más tarde." });
     }
 }
@@ -388,7 +438,7 @@ exports.editconfig = async (req, res) => {
         const { itbis } = req.body;
         await configRecord.update({ itbis });
 
-        res.redirect("/administrador/Mantenimiento-configuracion");
+        res.redirect("/administrador/config");
     } catch (error) {
         console.log(error);
         res.render("administrador/editar-configuracion", 
@@ -414,7 +464,7 @@ exports.administradores = async (req, res) => {
         });
 
 
-        res.render("administrador/Mantenimiento-administrador", {
+        res.render("administrador/Listado-administrador", {
             pageTitle: "Listado de Administradores",
             admins: adminList
         });
@@ -422,7 +472,7 @@ exports.administradores = async (req, res) => {
     } 
     catch (error) {
         console.log(error);
-        res.render("administrador/home-administrador", { 
+        res.render("administrador/Listado-administrador", { 
             pageTitle: "Error al cargar el listado de administradores. Intente más tarde." });
     }
 };
@@ -456,7 +506,7 @@ exports.createAdmin = async (req, res) => {
             cedula
         });
 
-        res.redirect("/administrador/Listado-administrador");
+        res.redirect("/administrador/administradores");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al crear el administrador");
@@ -522,7 +572,7 @@ exports.editAdmin = async (req, res) => {
             cedula 
         });
 
-        res.redirect("/administrador/Listado-administrador");
+        res.redirect("/administrador/administradores");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al actualizar el administrador");
@@ -541,7 +591,7 @@ exports.activateAdmin = async (req, res) => {
 
         await adminRecord.update({ activo: true });
 
-        res.redirect("/administrador/Listado-administrador");
+        res.redirect("/administrador/administradores");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al activar el administrador");
@@ -559,7 +609,7 @@ exports.deactivateAdmin = async (req, res) => {
 
         await adminRecord.update({ activo: false });
 
-        res.redirect("/administrador/Listado-administrador");
+        res.redirect("/administrador/administradores");
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al desactivar el administrador");
@@ -569,24 +619,28 @@ exports.deactivateAdmin = async (req, res) => {
 
 exports.tipoComercio = async (req, res) => {
     try {
-        const tipocomercios = await tipoComercio.findAll({
-            attributes: ["id", "nombre", "icono", "descripcion"],
+        const tipos = await tipoComercio.findAll({
             include: [
                 {
                     model: Comercio,
                     as: "comercios",
                 }
-            ]
+            ],
+            attributes: ["id", "nombre", "icono", "descripcion"],
         });
 
-        const tipocomerciosData =  tipocomercios.map(c => ({
-            ...c.dataValues,
-            comerciosCount: c.comercios ? c.comercios.length : 0,
-        }));
+        const tipocomerciosData = tipos.map(t => {
+            const tipocomercioData = t.dataValues;
+            const comerciosData = tipocomercioData.comercios ? tipocomercioData.comercios.map(c => c.dataValues) : [];
+            return {
+                ...tipocomercioData,
+                comerciosCount: comerciosData.length,
+            };
+        });
 
         res.render("administrador/Listado-tipo", {
             pageTitle: "Listado de Tipos de Comercio",
-            tipocomercios: tipocomerciosData
+            tipos: tipocomerciosData
         });
     } catch (error) {
         console.log(error);

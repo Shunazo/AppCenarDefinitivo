@@ -123,7 +123,7 @@ app.use(errorController.get404);
 
 
 connection
-    .sync({  })
+    .sync({})
     .then(() => {
         console.log(`App is running on port ${PORT}`);
         app.listen(PORT);

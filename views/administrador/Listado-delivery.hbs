@@ -14,7 +14,7 @@
         <!-- Sidebar -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>AppCenar</h3>
+                <h3><i class="fas fa-user-shield me-2"></i>Panel Admin</h3>
             </div>
 
             <ul class="list-unstyled components">
@@ -58,7 +58,7 @@
                                 <td>{{apellido}}</td>
                                 <td>{{telefono}}</td>
                                 <td>{{correo}}</td>
-                                <td class="text-center">{{pedidosEntregados}}</td>
+                                <td class="text-center">{{pedidos.length}}</td>
                                 <td>
                                     <span class="status-badge {{#if activo}}active{{else}}inactive{{/if}}">
                                         {{#if activo}}Activo{{else}}Inactivo{{/if}}
@@ -66,15 +66,21 @@
                                 </td>
                                 <td>
                                     {{#if activo}}
-                                        <button class="btn btn-danger btn-sm" onclick="cambiarEstado('{{id}}', false)">
-                                            <i class="fas fa-user-slash me-1"></i> Inactivar
-                                        </button>
-                                    {{else}}
-                                        <button class="btn btn-success btn-sm" onclick="cambiarEstado('{{id}}', true)">
-                                            <i class="fas fa-user-check me-1"></i> Activar
-                                        </button>
-                                    {{/if}}
-                                </td>
+                                        <!-- Form to Deactivate -->
+                                            <form action="/administrador/deliveries/deactivate/{{id}}" method="POST" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-user-slash me-1"></i> Inactivar
+                                                </button>
+                                            </form>
+                                        {{else}}
+                                        <!-- Form to Activate -->
+                                            <form action="/administrador/deliveries/activate/{{id}}" method="POST" style="display:inline;">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-user-alt me-1"></i> Activar
+                                                </button>
+                                            </form>
+                                        {{/if}}
+                                    </td>
                             </tr>
                             {{/each}}
                         </tbody>

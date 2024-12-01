@@ -1,4 +1,7 @@
 <!-- Modal Crear Administrador -->
+
+<link href="/assets/css/admin/home-admin.css" rel="stylesheet">
+<link href="/assets/css/auth/forms.css" rel="stylesheet">
     <div class="modal fade" id="createAdminModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -7,7 +10,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="createAdminForm" action="/administrador/crear" method="POST">
+                    <form id="createAdminForm" action="/administrador/create" method="POST">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required>
