@@ -346,11 +346,12 @@ exports.renderCart = async (req, res) => {
       const cliente = await Cliente.findOne({ where: { usuarioId: req.session.userId } });
       const direcciones = await Direccion.findAll({ where: { ClienteId: cliente.id } });
       const cart = req.session.cart || [];
-      const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+      
+      const total = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0).toFixed(2); // Round total to 2 decimals
       const itbisConfig = await Configuracion.findOne();
       const itbisRate = itbisConfig ? itbisConfig.itbis : 18;
-      const itbisTotal = total * itbisRate / 100;
-      const grandTotal = total + itbisTotal;
+      const itbisTotal = (total * itbisRate / 100).toFixed(2);  // Round ITBIS to 2 decimals
+      const grandTotal = (parseFloat(total) + parseFloat(itbisTotal)).toFixed(2); // Round grand total to 2 decimals
 
       // Ensure comercioRecord exists
       if (!comercioRecord) {
@@ -374,67 +375,63 @@ exports.renderCart = async (req, res) => {
   }
 };
 
-  exports.checkout = async (req, res) => {
-    try {
-      console.log(req.body);
-      const { direccionId } = req.body;  
-      const cart = req.session.cart || [];
-  
-     
-      if (!direccionId) {
-        return res.status(400).json({ error: "Debe seleccionar una dirección." });
-      }
-  
-     
-      if (cart.length === 0) {
-        return res.status(400).json({ error: "El carrito está vacío." });
-      }
-  
-      
-      const itbisConfig = await Configuracion.findOne();
-      if (!itbisConfig) {
-        return res.status(500).json({ error: "Configuración de ITBIS no encontrada." });
-      }
-      
-      const itbisRate = itbisConfig.itbis || 18;  
-      
-      const subtotal = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-  
-      const total = subtotal + (subtotal * itbisRate / 100);
-  
-    
-      const pedidoRecord = await Pedido.create({
-        estado: "pendiente",  
-        subtotal,
-        itbis: (subtotal * itbisRate / 100),
-        total,
-        fechaHora: new Date(),  
-        clienteId: req.session.clienteId, 
-        comercioId: req.session.comercioId,  
-        direccionId,  
-      });
-  
-    
-      for (const item of cart) {
-        await ProductoPedido.create({
-          cantidad: item.cantidad,  
-          precio: item.precio,  
-          pedidoId: pedidoRecord.id,  
-          productoId: item.id,  
-        });
-      }
-  
-     
-      req.session.cart = [];
-  
-     
-      res.redirect("/cliente/home");
-  
-    } catch (error) {
-      console.log(error);
-      res.render("404", { pageTitle: "Error al realizar el pedido. Intente más tarde." });
+
+exports.checkout = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { direccionId } = req.body;
+    const cart = req.session.cart || [];
+
+    if (!direccionId) {
+      return res.status(400).json({ error: "Debe seleccionar una dirección." });
     }
-  };
+
+    if (cart.length === 0) {
+      return res.status(400).json({ error: "El carrito está vacío." });
+    }
+
+    const itbisConfig = await Configuracion.findOne();
+    if (!itbisConfig) {
+      return res.status(500).json({ error: "Configuración de ITBIS no encontrada." });
+    }
+
+    const itbisRate = itbisConfig.itbis || 18;  // ITBIS rate, default to 18%
+
+    const subtotal = cart.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+    
+    const itbisAmount = (subtotal * itbisRate / 100).toFixed(2);  // ITBIS amount, rounded to 2 decimal places
+    const total = (parseFloat(subtotal) + parseFloat(itbisAmount)).toFixed(2);  // Total, rounded to 2 decimal places
+
+    const pedidoRecord = await Pedido.create({
+      estado: "pendiente",  
+      subtotal: parseFloat(subtotal.toFixed(2)),  // Round subtotal to 2 decimal places
+      itbis: parseFloat(itbisAmount),  // Round ITBIS to 2 decimal places
+      total: parseFloat(total),  // Round total to 2 decimal places
+      fechaHora: new Date(),  
+      clienteId: req.session.clienteId, 
+      comercioId: req.session.comercioId,  
+      direccionId,  
+    });
+
+    for (const item of cart) {
+      await ProductoPedido.create({
+        cantidad: item.cantidad,  
+        precio: item.precio,  
+        pedidoId: pedidoRecord.id,  
+        productoId: item.id,  
+      });
+    }
+
+    req.session.cart = [];
+
+    res.redirect("/cliente/home");
+
+  } catch (error) {
+    console.log(error);
+    res.render("404", { pageTitle: "Error al realizar el pedido. Intente más tarde." });
+  }
+};
+
   
 
   exports.pedidos = async (req, res) => {
