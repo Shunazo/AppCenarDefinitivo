@@ -57,6 +57,7 @@
     margin-bottom: 20px;
     transition: all 0.3s ease;
     overflow: hidden;
+    width: 600px;
 }
 
 .pedido-card:hover {

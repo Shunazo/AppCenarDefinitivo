@@ -47,7 +47,6 @@
         <div id="content" class="p-4">
             <div class="container">
                 <h2 class="mb-4"><i class="fas fa-motorcycle me-2"></i>Mis Pedidos</h2>
-
                 {{#if pedidos.length}}
                     <div class="pedidos-list">
                         {{#each pedidos}}
@@ -60,28 +59,17 @@
                                     <div class="col-md-3">
                                         <h5 class="comercio-nombre">{{comercio.nombreComercio}}</h5>
                                         <span class="badge 
-                                            {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'en_proceso'}}bg-info{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'pendiente'}}Pendiente{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'en_proceso'}}En Proceso{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'completado'}}Completado{{/ifEquals}}">
+                                            {{#ifEquals estado 'pendiente'}}bg-warning{{/ifEquals}}
+                                            {{#ifEquals estado 'en proceso'}}bg-info{{/ifEquals}}
+                                            {{#ifEquals estado 'completado'}}bg-success{{/ifEquals}}">
                                             {{estado}}
                                         </span>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="pedido-info">
-                                            <p><i class="fas fa-box me-2"></i>{{productos.length}} productos</p>
-                                            <p><i class="fas fa-dollar-sign me-2"></i>Total: ${{total}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="pedido-fecha">
-                                            <i class="far fa-calendar-alt me-2"></i>
-                                            {{formatDate fecha}}
-                                            <br>
-                                            <i class="far fa-clock me-2"></i>
-                                            {{formatTime fecha}}
+                                            <p><i class="fas fa-clock me-2"></i>{{formatDate fechaHora}}</p>
+                                            <p><i class="fas fa-box me-2"></i>{{productosPedido.length}} productos</p>
+                                            <p><i class="fas fa-dollar-sign me-2"></i>Total: RD${{total}}</p>
                                         </div>
                                     </div>
                                 </div>

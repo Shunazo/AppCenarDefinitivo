@@ -59,7 +59,7 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="?estado=todos">Todos los pedidos</a></li>
                     <li><a class="dropdown-item" href="?estado=pendiente">Pendientes</a></li>
-                    <li><a class="dropdown-item" href="?estado=en_proceso">En Proceso</a></li>
+                    <li><a class="dropdown-item" href="?estado=en proceso">En Proceso</a></li>
                     <li><a class="dropdown-item" href="?estado=completado">Completados</a></li>
                 </ul>
             </div>
@@ -80,10 +80,10 @@
                                 <h5 class="mb-1">{{comercio.nombreComercio}}</h5>
                                 <span class="badge rounded-pill 
                                     {{#ifEquals estado 'pendiente'}}bg-warning{{/ifEquals}}
-                                    {{#ifEquals estado 'en_proceso'}}bg-info{{/ifEquals}}
+                                    {{#ifEquals estado 'en proceso'}}bg-info{{/ifEquals}}
                                     {{#ifEquals estado 'completado'}}bg-success{{/ifEquals}}">
                                     {{#ifEquals estado 'pendiente'}}Pendiente{{/ifEquals}}
-                                    {{#ifEquals estado 'en_proceso'}}En Proceso{{/ifEquals}}
+                                    {{#ifEquals estado 'en proceso'}}En Proceso{{/ifEquals}}
                                     {{#ifEquals estado 'completado'}}Completado{{/ifEquals}}
                                 </span>
                             </div>

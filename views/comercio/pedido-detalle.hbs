@@ -43,67 +43,69 @@
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="container">
-                <div class="header-section">
-                    <h2><i class="fas fa-receipt me-2"></i>Detalle del Pedido</h2>
-                </div>
+       <!-- Main Content -->
+<div class="main-content">
+    <div class="container">
+        <div class="header-section">
+            <h2><i class="fas fa-receipt me-2"></i>Detalle del Pedido</h2>
+        </div>
 
-                <div class="pedido-info-card">
-                    <div class="pedido-status">
-                        <span class="badge 
-                            {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
-                            {{#ifEquals pedido.estado 'en proceso'}}bg-info{{/ifEquals}}
-                            {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
-                            {{pedido.estado}}
-                        </span>
-                        <p class="fecha-pedido">
-                            <i class="far fa-calendar-alt me-2"></i>
-                            {{pedido.fechaHora}}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="productos-list">
-                    <h4>Productos del Pedido</h4>
-                    {{#each pedido.productosPedido}}
-                        <div class="producto-card">
-                            <div class="producto-imagen">
-                                <img src="/images/{{producto.imagen}}" alt="{{producto.nombre}}">
-                            </div>
-                            <div class="producto-info">
-                                <h5>{{producto.nombre}}</h5>
-                                <p class="cantidad">Cantidad: {{cantidad}}</p>
-                                <p class="precio">RD${{producto.precio}}</p>
-                            </div>
-                        </div>
-                    {{/each}}
-                </div>
-
-                <div class="total-section">
-                    <div class="total-info">
-                        <span>Total del Pedido:</span>
-                        <span class="total-amount">RD${{pedido.total}}</span>
-                    </div>
-                </div>
-
-                <div class="button-section">
-                    {{#ifEquals pedido.estado 'pendiente'}}
-                    <form action="/comercio/pedidos/assign/{{pedido.id}}" method="POST">
-                        <button type="submit" class="btn btn-primary">Asignar Delivery</button>
-                    </form>
-                    {{/ifEquals}}
-                    
-                    <a href="/comercio" class="btn btn-back">
-                        <i class="fas fa-arrow-left me-2"></i>Volver al Home
-                    </a>
-                </div>
+        <div class="pedido-info-card">
+            <img src="{{comercio.logo}}" alt="Logo Comercio" class="comercio-logo">
+             <h3>{{comercio.nombreComercio}}</h3>
+             <p class="fecha-pedido">
+                    <i class="far fa-clock me-2"></i>
+                    {{pedido.fechaHora}}
+                </p>
+            <div class="pedido-status">
+                <span class="badge 
+                    {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
+                    {{#ifEquals pedido.estado 'en proceso'}}bg-info{{/ifEquals}}
+                    {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
+                    {{pedido.estado}}
+                </span>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/index.js"></script>
+        <div class="productos-list">
+            <h4>Productos del Pedido</h4>
+            {{#each productosPedido}}
+    <div class="producto-card">
+        <div class="producto-imagen">
+            <img src="{{this.producto.imagen}}" alt="{{this.producto.nombre}}">
+        </div>
+        <div class="producto-info">
+            <h5>{{this.producto.nombre}}</h5>
+            <p class="precio">RD${{this.precio}}</p>
+        </div>
+    </div>
+{{/each}}
+
+        </div>
+
+        <div class="total-section">
+            <div class="total-info">
+                <span>Total del Pedido:</span>
+                <span class="total-amount">RD${{pedido.total}}</span>
+            </div>
+        </div>
+
+        <div class="button-section">
+            <div class="button-section">
+            {{#ifEquals pedido.estado 'pendiente'}}
+                <button id="assignDeliveryBtn" class="btn btn-primary">Asignar Delivery</button>
+            {{/ifEquals}}
+            
+            <a href="/comercio/home" class="btn btn-back">
+                <i class="fas fa-arrow-left me-2"></i>Volver al Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../../assets/js/index.js"></script>
 </body>
 </html>
+

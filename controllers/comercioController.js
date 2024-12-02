@@ -107,21 +107,24 @@ exports.pedidoDetalle = async (req, res) => {
             return res.status(404).send('Pedido no encontrado');
         }
 
-        // Apply dataValues to every nested model
+       
         const pedidoData = pedido.dataValues;
-        const comercioData = pedido.comercio ? pedido.comercio.dataValues : null;
-        const productosPedidoData = pedido.productosPedido ? pedido.productosPedido.map(item => item.dataValues) : [];
-        const deliveryData = pedido.delivery ? pedido.delivery.dataValues : null;
+        const comercioData = pedidoData.comercio ? pedidoData.comercio.dataValues : null;
+        const productosPedidoData = pedidoData.productosPedido 
+            ? pedidoData.productosPedido.map(item => ({
+                ...item.dataValues,  
+                producto: item.producto ? item.producto.dataValues : null 
+            }))
+            : [];
+        const deliveryData = pedidoData.delivery ? pedidoData.delivery.dataValues : null;
 
-        // Format fechaHora
-        const fechaHoraFormatted = pedidoData.fechaHora.toLocaleString();
+        const fechaHoraFormatted = new Date(pedidoData.fechaHora).toLocaleString();
 
-        // Prepare the response object
         const response = {
             pageTitle: 'Detalles del Pedido',
             pedido: {
                 ...pedidoData,
-                fechaHora: fechaHoraFormatted,  // Add formatted fechaHora
+                fechaHora: fechaHoraFormatted,  
             },
             comercio: comercioData,
             productosPedido: productosPedidoData,
@@ -136,12 +139,14 @@ exports.pedidoDetalle = async (req, res) => {
 };
 
 
+
+
 exports.assignDelivery = async (req, res) => {
     try {
         const pedidoRecord = await Pedido.findByPk(req.params.id);
-        
+
         if (pedidoRecord.estado !== 'pendiente') {
-            return res.status(400).send('Este pedido ya fue asignado o completado.');
+            return res.status(400).json({ error: 'Este pedido ya fue asignado o completado.' });
         }
 
         const availableDelivery = await Delivery.findOne({
@@ -149,18 +154,22 @@ exports.assignDelivery = async (req, res) => {
         });
 
         if (!availableDelivery) {
-            return res.status(400).send('No hay delivery disponible en este momento.');
+            // No delivery available, send a response with the error
+            return res.status(400).json({ error: 'No hay delivery disponible en este momento.' });
         }
 
-       await pedidoRecord.update({ estado: 'en proceso', deliveryId: availableDelivery.id });
-       await availableDelivery.update({ estado: 'ocupado' });
+        // Assign delivery
+        await pedidoRecord.update({ estado: 'en proceso', deliveryId: availableDelivery.id });
+        await availableDelivery.update({ estado: 'ocupado' });
 
-        res.redirect(`/comercio/pedidos/${pedidoRecord.id}`);
+        // Return success response
+        res.json({ success: true, message: 'Delivery asignado exitosamente.' });
     } catch (error) {
         console.error(error);
-        res.render('404', { pageTitle: 'Error al asignar el delivery' });
+        res.status(500).json({ error: 'Error al asignar el delivery' });
     }
 };
+
 
 exports.editperfilForm = async (req, res) => {
     try {

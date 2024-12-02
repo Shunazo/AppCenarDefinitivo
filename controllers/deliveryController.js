@@ -24,7 +24,7 @@ exports.home = async (req, res) => {
         const pedidos = await Pedido.findAll({
             where: { 
                 deliveryId: deliveryRecord.id, 
-                estado: { [Op.in]: ['en proceso', 'completado']}
+                estado: { [Op.in]: ['en proceso', 'completado'] }
             },  
             include: [
                 {
@@ -41,23 +41,46 @@ exports.home = async (req, res) => {
                         attributes: ['nombre', 'precio', 'imagen'],
                         as: 'producto',
                     }]
+                },
+                {
+                    model: Direccion,  // Include the Direccion model
+                    as: 'direccion',   // Assuming this is the alias you have for the relation
+                    attributes: ['nombre']  // Only fetch the `nombre` field
                 }
             ],
             order: [['fechaHora', 'DESC']],
-            attributes: ['estado', 'fechaHora', 'total'],
+            attributes: ['id', 'estado', 'fechaHora', 'total'],
+        });
+
+        // Mapping and applying `toLocaleString()` to `fechaHora`
+        const pedidosFormatted = pedidos.map(pedido => {
+            const pedidoData = pedido.dataValues;
+            pedidoData.fechaHora = new Date(pedidoData.fechaHora).toLocaleString();
+            pedidoData.comercio = pedidoData.comercio.dataValues;
+            pedidoData.productosPedido = pedidoData.productosPedido.map(productoPedido => {
+                const productoPedidoData = productoPedido.dataValues;
+                productoPedidoData.producto = productoPedidoData.producto.dataValues;
+                return productoPedidoData;
+            });
+            if (pedidoData.direccion) {
+                pedidoData.direccion = pedidoData.direccion.dataValues.nombre; // Only fetch the `nombre` from direccion
+            }
+            return pedidoData;
         });
 
         res.render("delivery/home-delivery", {
             pageTitle: "Home",
             usuario: usuarioRecord.dataValues,
             delivery: deliveryRecord.dataValues,
-            pedidos: pedidos.map(p => p.dataValues),
+            pedidos: pedidosFormatted,
         });
     } catch (error) {
         console.error(error);
         res.render("404", { pageTitle: "Error al cargar el home. Intente más tarde." });
     }
 };
+
+
 
 exports.editperfilForm = async (req, res) => {
     try {
@@ -120,14 +143,34 @@ exports.editPerfil = async (req, res) => {
   };
   
 
-exports.pedidoDetalle = async (req, res) => {
+  exports.pedidoDetalle = async (req, res) => {
     try {
+        const usuarioRecord = await Usuario.findByPk(req.session.userId);
+
+        if (!usuarioRecord) {
+            return res.render("404", { pageTitle: "Usuario no encontrado." });
+        }
         const pedidoRecord = await Pedido.findByPk(req.params.id, {
             include: [
-                { model: Comercio, attributes: ['nombreComercio'] },
-                { model: ProductoPedido, as: 'productosPedido', 
-                    include: [{ model: Producto, attributes: ['nombre', 'precio', 'imagen'] }] },
-                { model: Direccion, attributes: ['nombre'] }  // Include Direccion here
+                { 
+                    model: Comercio, 
+                    attributes: ['nombreComercio', 'logo'], 
+                    as: 'comercio' 
+                },
+                { 
+                    model: ProductoPedido, 
+                    as: 'productosPedido', 
+                    include: [{ 
+                        model: Producto, 
+                        attributes: ['nombre', 'precio', 'imagen'], 
+                        as: 'producto' 
+                    }] 
+                },
+                { 
+                    model: Direccion, 
+                    attributes: ['nombre'], 
+                    as: 'direccion' 
+                }
             ]
         });
 
@@ -135,14 +178,26 @@ exports.pedidoDetalle = async (req, res) => {
             return res.render("404", { pageTitle: "Pedido no encontrado." });
         }
 
-        const isPedidoEnProceso = pedidoRecord.estado === 'en proceso';
-        const showAddress = pedidoRecord.estado !== 'completado';
+        // Formatear y mapear datos
+        const pedidoData = pedidoRecord.dataValues;
+        pedidoData.fechaHora = new Date(pedidoData.fechaHora).toLocaleString(); // Formato de fecha y hora local
+        pedidoData.comercio = pedidoData.comercio?.dataValues || null;
+        pedidoData.direccion = pedidoData.direccion?.dataValues || null;
+        pedidoData.productosPedido = pedidoData.productosPedido.map(productoPedido => {
+            const productoPedidoData = productoPedido.dataValues;
+            productoPedidoData.producto = productoPedidoData.producto?.dataValues || null;
+            return productoPedidoData;
+        });
+
+        const isPedidoEnProceso = pedidoData.estado === 'en proceso';
+        const showAddress = pedidoData.estado !== 'completado';
 
         res.render("delivery/detalle-pedido", {
             pageTitle: "Detalle del Pedido",
-            pedido: pedidoRecord.dataValues,
+            pedido: pedidoData,
             isPedidoEnProceso,
             showAddress,
+            usuario: usuarioRecord.dataValues
         });
     } catch (error) {
         console.error(error);
@@ -151,16 +206,23 @@ exports.pedidoDetalle = async (req, res) => {
 };
 
 
+
 exports.completarPedido = async (req, res) => {
+    const pedidoId = req.params.id;
+    console.log('Pedido ID recibido:', pedidoId); // This will help to check if the ID is being passed correctly
+
     try {
-        const pedidoRecord = await Pedido.findByPk(req.params.id);
+        // Fetch the pedido from the database
+        const pedidoRecord = await Pedido.findByPk(pedidoId);
 
         if (!pedidoRecord || pedidoRecord.estado !== 'en proceso') {
             return res.render("404", { pageTitle: "Pedido no encontrado o ya completado." });
         }
 
+        // Update the pedido's state to 'completado'
         await pedidoRecord.update({ estado: 'completado' });
 
+        // Update the delivery's state to 'disponible'
         const deliveryRecord = await Delivery.findOne({ where: { usuarioId: req.session.userId } });
         await deliveryRecord.update({ estado: 'disponible' });
 

@@ -100,6 +100,49 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+document.getElementById('assignDeliveryBtn').addEventListener('click', async function() {
+    const pedidoId = window.pedidoId; 
+
+    try {
+        const response = await fetch(`/comercio/pedidos/assign/${pedidoId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Delivery assigned successfully
+            Swal.fire({
+                icon: 'success',
+                title: 'Delivery Asignado',
+                text: data.message,
+                confirmButtonText: 'Cerrar'
+            });
+        } else {
+            // Show SweetAlert with error message
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.error,
+                confirmButtonText: 'Cerrar'
+            });
+        }
+    } catch (error) {
+        // Show SweetAlert for network error
+        Swal.fire({
+            icon: 'error',
+            title: 'No hay deliveries disponibles en este momento.',
+            confirmButtonText: 'Cerrar'
+        });
+    }
+});
+
+
+
+
 
   /*
   function confirmCreateOrEdit(button, event) {

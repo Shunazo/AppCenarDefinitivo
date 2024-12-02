@@ -81,42 +81,17 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
+
                                             <a href="/comercio/categorias/edit/{{id}}" 
                                                class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" 
-                                                    class="btn btn-danger btn-sm"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#deleteModal{{id}}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
 
-                                        <!-- Delete Modal -->
-                                        <div class="modal fade" id="deleteModal{{id}}" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Confirmar Eliminación</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>¿Está seguro que desea eliminar esta categoría?</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" 
-                                                                class="btn btn-secondary" 
-                                                                data-bs-dismiss="modal">Cancelar</button>
-                                                        <form action="/comercio/categorias/delete/{{id}}" 
-                                                              method="POST" 
-                                                              class="d-inline">
-                                                            <button type="submit" 
-                                                                    class="btn btn-danger">Eliminar</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <form action="/comercio/categorias/delete/{{id}}" method="POST" style="display:inline;" data-entity-name="{{nombre}}" data-entity-type="Categoría">
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -135,6 +110,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../assets/js/index.js"></script>
 </body>
 </html>
