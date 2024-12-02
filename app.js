@@ -87,6 +87,7 @@ const imageStorage = multer.diskStorage({
 app.use(multer({ storage: imageStorage }).fields([{ name: "logo", maxCount: 1 }, { name: "fotoPerfil", maxCount: 1 }, { name: "icono", maxCount: 1 }, { name: "imagen", maxCount: 1 }]));
 
 app.use(session({
+    name: "AppCenarCookie",
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
@@ -96,6 +97,8 @@ app.use(session({
         maxAge: 3600000
     },
 }));
+
+
 
 app.use(flash());
 

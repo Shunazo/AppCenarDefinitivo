@@ -2,9 +2,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("logout-btn").addEventListener("click", function() {
         const form = document.createElement("form");
         form.method = "POST";
-        form.action = "/cerrar-sesion"; // Your logout endpoint
+        form.action = "/cerrar-sesion"; 
 
-        // Append the form to the body and submit it
         document.body.appendChild(form);
         form.submit();
     });
