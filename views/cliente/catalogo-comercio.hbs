@@ -40,7 +40,7 @@
                                 <h3>{{nombre}}</h3>
                                 <p class="descripcion">{{descripcion}}</p>
                                 <div class="precio-action">
-                                    <span class="precio">${{precio}}</span>
+                                    <span class="precio">RD${{precio}}</span>
                                     {{#inCart id}}
                                         <span class="agregado">
                                             <i class="fas fa-check"></i> En el carrito
@@ -72,8 +72,7 @@
                         <div class="producto-seleccionado" id="producto-{{id}}">
                             <div class="producto-info">
                                 <h4>{{nombre}}</h4>
-                                <span class="precio">${{precio}}</span>
-                                <span class="cantidad">Cantidad: {{cantidad}}</span>
+                                <span class="precio">RD${{precio}}</span>
                             </div>
                             <form action="/cliente/cart/remove/{{id}}/{{../comercioId}}" method="POST" class="form-remove">
                                 <button type="submit" class="btn-remove">
@@ -85,7 +84,7 @@
 
                     <div class="carrito-total">
                         <span>Subtotal:</span>
-                        <span class="total-amount">${{subtotal}}</span>
+                        <span class="total-amount">RD${{subtotal}}</span>
                     </div>
 
                     <form action="/cliente/cart" method="GET">

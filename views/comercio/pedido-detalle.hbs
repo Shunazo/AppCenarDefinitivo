@@ -67,7 +67,7 @@
                         {{/each}}
                     </ul>
 
-                    <h3><strong>Total:</strong> ${{pedido.total}}</h3>
+                    <h3><strong>Total:</strong>RD${{pedido.total}}</h3>
 
                     {{#ifEquals pedido.estado 'pendiente'}}
                     <form action="/comercio/pedidos/assign/{{pedido.id}}" method="POST">

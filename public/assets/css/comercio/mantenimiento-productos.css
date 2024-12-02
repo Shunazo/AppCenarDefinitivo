@@ -44,7 +44,7 @@
 }
 
 .producto-imagen {
-    height: 200px;
+    height: 350px;
     object-fit: cover;
     transition: all 0.3s ease;
 }
@@ -68,7 +68,6 @@
     font-size: 0.9rem;
     color: #6c757d;
     margin-bottom: 15px;
-    height: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
