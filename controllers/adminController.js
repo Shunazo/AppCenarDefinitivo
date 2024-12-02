@@ -414,7 +414,7 @@ exports.editconfigForm = async (req, res) => {
     try {
         const configRecord = await Configuracion.findOne();
 
-        if (!config) {
+        if (!configRecord) {
             return res.status(404).send("Configuración no encontrada");
         }
 

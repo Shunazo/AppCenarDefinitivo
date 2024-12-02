@@ -39,7 +39,7 @@
                         <h1>Configuración del Sistema</h1>
                     </div>
                 </div>
-
+                {{#each config}}
                 <div class="config-card">
                     <div class="table-responsive">
                         <table class="table">
@@ -52,10 +52,10 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <span class="itbis-value">{{configuracion.itbis}}%</span>
+                                        <span class="itbis-value">{{itbis}}%</span>
                                     </td>
                                     <td>
-                                        <a href="/administrador/config/editar/{{configuracion.id}}" class="btn btn-primary">
+                                        <a href="/administrador/config/edit" class="btn btn-primary">
                                             <i class="fas fa-edit me-2"></i>Editar ITBIS
                                         </a>
                                     </td>
@@ -64,6 +64,7 @@
                         </table>
                     </div>
                 </div>
+                {{/each}}
             </div>
         </div>
     </div>
