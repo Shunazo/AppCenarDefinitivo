@@ -107,16 +107,34 @@ exports.pedidoDetalle = async (req, res) => {
             return res.status(404).send('Pedido no encontrado');
         }
 
-        res.render('comercio/pedido-detalle', {
+        // Apply dataValues to every nested model
+        const pedidoData = pedido.dataValues;
+        const comercioData = pedido.comercio ? pedido.comercio.dataValues : null;
+        const productosPedidoData = pedido.productosPedido ? pedido.productosPedido.map(item => item.dataValues) : [];
+        const deliveryData = pedido.delivery ? pedido.delivery.dataValues : null;
+
+        // Format fechaHora
+        const fechaHoraFormatted = pedidoData.fechaHora.toLocaleString();
+
+        // Prepare the response object
+        const response = {
             pageTitle: 'Detalles del Pedido',
-            pedido: pedido.dataValues,
-            comercio: pedido.comercio.dataValues
-        });
+            pedido: {
+                ...pedidoData,
+                fechaHora: fechaHoraFormatted,  // Add formatted fechaHora
+            },
+            comercio: comercioData,
+            productosPedido: productosPedidoData,
+            delivery: deliveryData
+        };
+
+        res.render('comercio/pedido-detalle', response);
     } catch (error) {
         console.error(error);
         res.render('404', { pageTitle: 'Error al cargar el detalle del pedido' });
     }
 };
+
 
 exports.assignDelivery = async (req, res) => {
     try {
