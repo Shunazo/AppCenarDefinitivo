@@ -146,6 +146,7 @@ exports.editPerfil = async (req, res) => {
   exports.pedidoDetalle = async (req, res) => {
     try {
         const usuarioRecord = await Usuario.findByPk(req.session.userId);
+        const deliveryRecord = await Delivery.findOne({ where: { usuarioId: req.session.userId } });
 
         if (!usuarioRecord) {
             return res.render("404", { pageTitle: "Usuario no encontrado." });
@@ -197,7 +198,8 @@ exports.editPerfil = async (req, res) => {
             pedido: pedidoData,
             isPedidoEnProceso,
             showAddress,
-            usuario: usuarioRecord.dataValues
+            usuario: usuarioRecord.dataValues,
+            delivery: deliveryRecord.dataValues
         });
     } catch (error) {
         console.error(error);

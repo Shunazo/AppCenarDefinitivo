@@ -107,7 +107,11 @@ exports.pedidoDetalle = async (req, res) => {
             return res.status(404).send('Pedido no encontrado');
         }
 
-       
+        // Check if there is an available delivery
+        const availableDelivery = await Delivery.findOne({
+            where: { estado: 'disponible' },
+        });
+
         const pedidoData = pedido.dataValues;
         const comercioData = pedidoData.comercio ? pedidoData.comercio.dataValues : null;
         const productosPedidoData = pedidoData.productosPedido 
@@ -128,7 +132,8 @@ exports.pedidoDetalle = async (req, res) => {
             },
             comercio: comercioData,
             productosPedido: productosPedidoData,
-            delivery: deliveryData
+            delivery: deliveryData,
+            availableDelivery: availableDelivery 
         };
 
         res.render('comercio/pedido-detalle', response);
@@ -141,11 +146,18 @@ exports.pedidoDetalle = async (req, res) => {
 
 
 
+
 exports.assignDelivery = async (req, res) => {
     try {
         const pedidoRecord = await Pedido.findByPk(req.params.id);
 
+        if (!pedidoRecord) {
+            console.log(`Pedido not found: ${req.params.id}`);
+            return res.status(404).json({ error: 'Pedido no encontrado.' });
+        }
+
         if (pedidoRecord.estado !== 'pendiente') {
+            console.log(`Pedido estado is not 'pendiente': ${pedidoRecord.estado}`);
             return res.status(400).json({ error: 'Este pedido ya fue asignado o completado.' });
         }
 
@@ -154,18 +166,16 @@ exports.assignDelivery = async (req, res) => {
         });
 
         if (!availableDelivery) {
-            // No delivery available, send a response with the error
+            console.log('No available delivery found.');
             return res.status(400).json({ error: 'No hay delivery disponible en este momento.' });
         }
 
-        // Assign delivery
         await pedidoRecord.update({ estado: 'en proceso', deliveryId: availableDelivery.id });
         await availableDelivery.update({ estado: 'ocupado' });
 
-        // Return success response
-        res.json({ success: true, message: 'Delivery asignado exitosamente.' });
+        res.redirect('/comercio/home');
     } catch (error) {
-        console.error(error);
+        console.error('Error assigning delivery:', error);
         res.status(500).json({ error: 'Error al asignar el delivery' });
     }
 };

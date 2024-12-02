@@ -17,7 +17,7 @@ exports.home = async (req, res) => {
     try {
         const usuario = await Usuario.findOne({ where: { id: req.session.userId } });
 
-        // Estadísticas
+        
         const stats = [
             {
                 title: "Pedidos",
@@ -194,7 +194,7 @@ exports.deactivateCliente = async (req, res) => {
     }
 };
 
-// **Deliveries**
+
 exports.deliveries = async (req, res) => {
     try {
         const deliveries = await Delivery.findAll({
@@ -279,7 +279,7 @@ exports.deactivateDelivery = async (req, res) => {
     }
 };
 
-// **Comercios**
+
 exports.comercios = async (req, res) => {
     try {
         const comercios = await Comercio.findAll({
@@ -319,13 +319,13 @@ exports.comercios = async (req, res) => {
         res.render("administrador/Listado-comercio", { pageTitle: "Error al cargar el listado de comercios. Intente más tarde." });
     }
 };
-// Activate the Usuario through Comercio
+
 exports.activateComercio = async (req, res) => {
     try {
-        // Find the Comercio based on the Usuario ID (coming from the URL)
+        
         const comercioRecord = await Comercio.findOne({
             where: { 
-                '$usuario.id$': req.params.id  // Find the Comercio that has this Usuario ID
+                '$usuario.id$': req.params.id  
             },
             include: [
                 {
@@ -339,10 +339,10 @@ exports.activateComercio = async (req, res) => {
             return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
         }
 
-        // Now, update the 'activo' status of the Usuario associated with that Comercio
+        
         const usuarioRecord = comercioRecord.usuario;
         
-        // Update the 'activo' status of the Usuario to 'true'
+        
         await usuarioRecord.update({ activo: true });
 
         res.redirect("/administrador/comercios");
@@ -352,13 +352,13 @@ exports.activateComercio = async (req, res) => {
     }
 };
 
-// Deactivate the Usuario through Comercio
+
 exports.deactivateComercio = async (req, res) => {
     try {
-        // Find the Comercio based on the Usuario ID (coming from the URL)
+        
         const comercioRecord = await Comercio.findOne({
             where: { 
-                '$usuario.id$': req.params.id  // Find the Comercio that has this Usuario ID
+                '$usuario.id$': req.params.id  
             },
             include: [
                 {
@@ -372,10 +372,10 @@ exports.deactivateComercio = async (req, res) => {
             return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
         }
 
-        // Now, update the 'activo' status of the Usuario associated with that Comercio
+        
         const usuarioRecord = comercioRecord.usuario;
         
-        // Update the 'activo' status of the Usuario to 'false'
+        
         await usuarioRecord.update({ activo: false });
 
         res.redirect("/administrador/comercios");
@@ -388,17 +388,17 @@ exports.deactivateComercio = async (req, res) => {
 
 exports.config = async (req, res) => {
     try {
-        const config = await Configuracion.findOne();  // Finds one configuration record
+        const config = await Configuracion.findOne();  
 
         if (!config) {
-            return res.status(404).send("Configuración no encontrada");  // If no record is found
+            return res.status(404).send("Configuración no encontrada");  
         }
 
-        // Extract dataValues directly from the config instance and wrap it in an array
-        const configData = [config.dataValues];  // This makes configData an array
+        
+        const configData = [config.dataValues];  
 
         res.render("administrador/Listado-configuracion", {
-            config: configData  // Pass the data to the view
+            config: configData  
         });
 
     } catch (error) {

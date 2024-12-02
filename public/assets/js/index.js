@@ -100,99 +100,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-document.getElementById('assignDeliveryBtn').addEventListener('click', async function() {
-    const pedidoId = window.pedidoId; 
-
-    try {
-        const response = await fetch(`/comercio/pedidos/assign/${pedidoId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            // Delivery assigned successfully
-            Swal.fire({
-                icon: 'success',
-                title: 'Delivery Asignado',
-                text: data.message,
-                confirmButtonText: 'Cerrar'
-            });
-        } else {
-            // Show SweetAlert with error message
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: data.error,
-                confirmButtonText: 'Cerrar'
-            });
-        }
-    } catch (error) {
-        // Show SweetAlert for network error
-        Swal.fire({
-            icon: 'error',
-            title: 'No hay deliveries disponibles en este momento.',
-            confirmButtonText: 'Cerrar'
-        });
-    }
-});
-
-
-
-
-
-  /*
-  function confirmCreateOrEdit(button, event) {
-    const form = button.closest("form");
-  
-    if (!validarCampos(form)) {
-        event.preventDefault(); 
-        return;  
-    }
-  
-    event.preventDefault();
-  
-    let entityType = '';
-    let actionUrl = form.action;
-    
-    if (actionUrl.includes("/libros/edit") || actionUrl.includes("/categorias/edit") || actionUrl.includes("/autores/edit") || actionUrl.includes("/editoriales/edit")) {
-        entityType = actionUrl.includes("/libros") ? 'Libro' : actionUrl.includes("/categorias") ? 'Categoría' : actionUrl.includes("/autores") ? 'Autor' : 'Editorial';
-    } else if (actionUrl.includes("/libros/create") || actionUrl.includes("/categorias/create") || actionUrl.includes("/autores/create") || actionUrl.includes("/editoriales/create")) {
-        entityType = actionUrl.includes("/libros") ? 'Libro' : actionUrl.includes("/categorias") ? 'Categoría' : actionUrl.includes("/autores") ? 'Autor' : 'Editorial';
-    }
-  
-    const isCreateAction = actionUrl.includes("/create");
-  
-    Swal.fire({
-        title: isCreateAction ? '¿Confirmar creación de ' + entityType + '?' : '¿Confirmar actualización de ' + entityType + '?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: isCreateAction ? '¡Creación exitosa!' : '¡Actualización exitosa!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                form.submit();  
-            });
-        }
-    });
-  }
-  
-  function validarCampos(form) {
-    const inputs = form.querySelectorAll('input[required], select[required]');
+function validarCampos(form) {
+    const inputs = form.querySelectorAll('input[required], textarea[required], select[required], input[type="file"][required]');
     let esValido = true;
 
+    // Loop through each required input field
     for (const input of inputs) {
-        if (input.id === 'correo') {
-            // Validate the Gmail address
+        // Clear any previous error or success styles
+        input.classList.remove('input-error', 'input-success');
+
+        // Validate specific types of fields
+        if (input.type === 'email') {
+            // Email validation
             const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
             if (!gmailPattern.test(input.value.trim())) {
                 input.classList.add('input-error');
@@ -204,24 +123,74 @@ document.getElementById('assignDeliveryBtn').addEventListener('click', async fun
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
-                return false; 
+                return false;  // Stop the validation process
             } else {
                 input.classList.add('input-success');
                 input.classList.remove('input-error');
             }
-        } else {
-            if (input.value.trim() === '') {
+        } else if (input.type === 'file') {
+            // File validation
+            if (input.files.length === 0) {
+                // No file selected
                 input.classList.add('input-error');
                 input.classList.remove('input-success');
                 esValido = false;
+                Swal.fire({
+                    title: 'Archivo requerido',
+                    text: 'Por favor, seleccione un archivo.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;  // Stop the validation process
             } else {
+                // Optional: Validate file type and size
+                const file = input.files[0];
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png']; // Only allow JPEG/JPG and PNG
+                const maxSize = 5 * 1024 * 1024; // 5MB max size
+
+                if (!validTypes.includes(file.type)) {
+                    input.classList.add('input-error');
+                    input.classList.remove('input-success');
+                    esValido = false;
+                    Swal.fire({
+                        title: 'Tipo de archivo inválido',
+                        text: 'Por favor, seleccione un archivo JPEG/JPG o PNG.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return false;  // Stop the validation process
+                }
+
+                if (file.size > maxSize) {
+                    input.classList.add('input-error');
+                    input.classList.remove('input-success');
+                    esValido = false;
+                    Swal.fire({
+                        title: 'Tamaño de archivo demasiado grande',
+                        text: 'El archivo debe ser de 5MB o menos.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return false;  // Stop the validation process
+                }
+
+                // If valid file
                 input.classList.add('input-success');
                 input.classList.remove('input-error');
             }
+        } else if (input.value.trim() === '') {
+            // Generic required field validation
+            input.classList.add('input-error');
+            input.classList.remove('input-success');
+            esValido = false;
+        } else {
+            input.classList.add('input-success');
+            input.classList.remove('input-error');
         }
     }
 
     if (!esValido) {
+        // If any field is invalid, show a SweetAlert for incomplete fields
         Swal.fire({
             title: 'Campos incompletos',
             text: 'Por favor, complete todos los campos requeridos.',
@@ -230,12 +199,10 @@ document.getElementById('assignDeliveryBtn').addEventListener('click', async fun
         });
     }
 
-    return esValido;
+    return esValido;  // Return false to prevent form submission if invalid
 }
 
 
-
-  
 
   function formatPhoneNumber(input) {
     let value = input.value.replace(/\D/g, ''); 
@@ -250,18 +217,4 @@ document.getElementById('assignDeliveryBtn').addEventListener('click', async fun
     input.value = value; 
   }
 
-
-function limitToFourDigits(inputId) {
-    const inputElement = document.getElementById(inputId);
-  
-    inputElement.addEventListener('input', function (e) {
-      const value = e.target.value;
-      if (value.length > 4) {
-        e.target.value = value.slice(0, 4);  
-      }
-    });
-  }
-  
-  limitToFourDigits('fechaPublicacion');
-  */
 

@@ -60,7 +60,7 @@
                             <div class="alert alert-danger">{{error}}</div>
                         {{/if}}
 
-                        <form action="/comercio/productos/create" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="/comercio/productos/create" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate onsubmit="return validarCampos(this)">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <label for="nombre" class="form-label">
@@ -115,7 +115,7 @@
                                         id="categoriaId" 
                                         name="categoriaId" 
                                         required>
-                                    <option value="">Seleccione una categoría</option>
+                                    <option value="" selected disabled>Seleccione una categoría</option>
                                     {{#each categorias}}
                                         <option value="{{id}}">{{nombre}}</option>
                                     {{/each}}

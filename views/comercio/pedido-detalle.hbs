@@ -62,7 +62,9 @@
                     {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
                     {{#ifEquals pedido.estado 'en proceso'}}bg-info{{/ifEquals}}
                     {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
-                    {{pedido.estado}}
+                    {{#ifEquals pedido.estado 'pendiente'}}Pendiente{{/ifEquals}}
+                    {{#ifEquals pedido.estado 'en proceso'}}En Proceso{{/ifEquals}}
+                    {{#ifEquals pedido.estado 'completado'}}Completado{{/ifEquals}}
                 </span>
             </div>
         </div>
@@ -92,9 +94,20 @@
 
         <div class="button-section">
             <div class="button-section">
-            {{#ifEquals pedido.estado 'pendiente'}}
-                <button id="assignDeliveryBtn" class="btn btn-primary">Asignar Delivery</button>
-            {{/ifEquals}}
+    {{#ifEquals pedido.estado 'pendiente'}}
+        {{#if availableDelivery}}  <!-- Check if there's an available delivery -->
+            <form action="/comercio/pedidos/assign/{{pedido.id}}" method="POST" class="entrega-form">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <i class="fas fa-check-circle me-2"></i>Asignar Pedido 
+                </button>
+            </form>
+        {{else}}
+            <!-- Display message when no deliveries are available -->
+            <p>No hay deliveries disponibles en este momento.</p>
+        {{/if}}
+    {{/ifEquals}}
+
+
             
             <a href="/comercio/home" class="btn btn-back">
                 <i class="fas fa-arrow-left me-2"></i>Volver al Home

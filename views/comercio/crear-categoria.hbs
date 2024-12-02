@@ -61,7 +61,7 @@
                             <div class="alert alert-danger">{{error}}</div>
                         {{/if}}
 
-                        <form action="/comercio/categorias/create" method="POST" class="needs-validation" novalidate>
+                        <form action="/comercio/categorias/create" method="POST" class="needs-validation" novalidate onsubmit="return validarCampos(this)">
                             <div class="mb-4">
                                 <label for="nombre" class="form-label">
                                     <i class="fas fa-tag me-2"></i>Nombre de la Categoría
@@ -71,9 +71,6 @@
                                        id="nombre" 
                                        name="nombre" 
                                        required>
-                                <div class="invalid-feedback">
-                                    El nombre de la categoría es requerido
-                                </div>
                             </div>
 
                             <div class="mb-4">
