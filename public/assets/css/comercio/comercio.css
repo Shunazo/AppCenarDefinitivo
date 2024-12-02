@@ -57,6 +57,8 @@
     flex: 1;
     padding: 30px;
     background: #f8f9fa;
+    width: calc(100% - 280px);
+    overflow-x: hidden;
 }
 
 /* Order Cards */
@@ -98,6 +100,68 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #eee;
+}
+
+/* Main Content Specific Styles */
+.pedido-detail {
+    background: white;
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.pedido-detail h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #1e3c72;
+}
+
+.pedido-detail img.comercio-logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    border: 3px solid #1e3c72;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pedido-detail ul {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+}
+
+.pedido-detail li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.pedido-detail li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.product-image {
+    border-radius: 10px;
+    margin-right: 1.5rem;
+}
+
+.btn-primary, 
+.btn-secondary {
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    margin: 0.5rem;
 }
 
 /* Typography */
@@ -150,6 +214,14 @@ h1 {
         padding: 10px 15px;
         font-size: 0.9em;
     }
+
+    #content {
+        width: calc(100% - 200px);
+    }
+    
+    .pedido-detail {
+        padding: 1.5rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -164,6 +236,7 @@ h1 {
     }
 
     #content {
+        width: 100%;
         padding: 15px;
     }
 }

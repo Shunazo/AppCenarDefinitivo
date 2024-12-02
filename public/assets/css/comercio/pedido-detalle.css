@@ -1,0 +1,272 @@
+/* Layout Base */
+body {
+    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.d-flex {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.comercio-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.comercio-name {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: white;
+}
+
+/* Menu Items */
+.sidebar-menu {
+    margin-top: 30px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.menu-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.menu-item i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.header-section {
+    margin-bottom: 30px;
+}
+
+.header-section h2 {
+    color: #333;
+    font-size: 1.8rem;
+}
+
+/* Pedido Info Card */
+.pedido-info-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pedido-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* Productos List */
+.productos-list {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.producto-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.producto-imagen img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.producto-info {
+    margin-left: 20px;
+}
+
+/* Total Section */
+.total-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.total-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Button Section */
+.button-section {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+}
+
+/* Logout Button */
+.logout {
+    margin-top: auto;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.logout:hover {
+    background-color: #dc3545;
+}
+
+
+/* Main Layout */
+.d-flex {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: brightness(0) invert(1);
+}
+
+/* User Info */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.user-name {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* Sidebar Menu */
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+    color: #fff;
+}
+
+.menu-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+}
+
+.menu-item i {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.badge {
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 15px;
+}

@@ -1,13 +1,7 @@
-
-.container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
+/* Card styling */
 .card {
+    border-radius: 15px;
     border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 }
 
@@ -15,60 +9,70 @@
     transform: translateY(-5px);
 }
 
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+    padding: 1.5rem;
+}
+
 .card-body {
-    padding: 20px;
+    padding: 2rem;
 }
 
-.btn-group {
-    display: flex;
-    gap: 10px;
-}
-
-.button-group {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-}
-
+/* Form controls */
 .form-control {
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
     padding: 12px;
+    transition: border-color 0.3s ease;
 }
 
 .form-control:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
 }
 
+/* Buttons */
 .btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-.btn-primary {
-    background-color: #3498db;
-    border: none;
+.btn-success {
+    background-color: #198754;
 }
 
-.btn-warning {
-    background-color: #f1c40f;
-    border: none;
-    color: #fff;
+.btn-success:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
 }
 
-.btn-danger {
-    background-color: #e74c3c;
-    border: none;
+.btn-secondary:hover {
+    background-color: #5c636a;
+    transform: translateY(-2px);
 }
 
+/* Icons */
+.fas {
+    transition: transform 0.3s ease;
+}
+
+.btn:hover .fas {
+    transform: scale(1.1);
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .button-group {
-        flex-direction: column;
+    .container {
+        padding: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
     }
     
     .btn {
-        width: 100%;
+        padding: 10px 20px;
     }
 }
