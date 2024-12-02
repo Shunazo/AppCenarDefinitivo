@@ -41,36 +41,39 @@ exports.home = async (req, res) => {
             ],
             attributes: ["id", 'estado', 'fechaHora', 'total']
         });
-        
+
+        // Add total products to each pedido
         const pedidosWithTotalProductos = pedidos.map(p => {
             const totalProductos = p.productosPedido.reduce((acc, prod) => acc + prod.cantidad, 0); 
             return {
                 ...p.dataValues,
                 totalProductos, 
-                fechaHora: p.fechaHora.toLocaleString()  
+                fechaHora: p.fechaHora.toLocaleString(),  
+                comercio: p.comercio.dataValues // Make sure to include comercio dataValues
             };
         });                                                                                                     
-        
+
         if (pedidosWithTotalProductos.length === 0) {
             return res.render('comercio/home-comercio', 
-                { pageTitle: 'Home', 
+                { 
+                    pageTitle: 'Home', 
                     comercio: comercioRecord.dataValues,
                     pedidos: [], 
                     message: 'No existen pedidos actualmente' 
                 });
-            }
+        }
 
         res.render('comercio/home-comercio', {
             pageTitle: 'Home',
             comercio: comercioRecord.dataValues,
             pedidos: pedidosWithTotalProductos,
         });
-    } 
-    catch (error) {
+    } catch (error) {
         console.error(error);
         res.render('404', { pageTitle: 'Error al cargar la home. Intente más tarde.' });
     }
 };
+
 
 exports.pedidoDetalle = async (req, res) => {
     try {

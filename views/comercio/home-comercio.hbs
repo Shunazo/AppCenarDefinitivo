@@ -47,75 +47,72 @@
             
         </nav>
 
-        <!-- Main Content -->
-        <div id="content" class="p-4">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1><i class="fas fa-shopping-bag me-2"></i>Pedidos</h1>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fas fa-filter me-2"></i>Filtrar
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="?estado=todos">Todos los pedidos</a></li>
-                            <li><a class="dropdown-item" href="?estado=pendiente">Pendientes</a></li>
-                            <li><a class="dropdown-item" href="?estado=en_proceso">En Proceso</a></li>
-                            <li><a class="dropdown-item" href="?estado=completado">Completados</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                {{#if pedidos.length}}
-                    <div class="list-group">
-                        {{#each pedidos}}
-                        <a href="/comercio/pedidos/{{id}}" class="list-group-item list-group-item-action border-0 shadow-sm mb-3 rounded">
-                            <div class="d-flex align-items-center">
-                                <img src="{{comercio.logo}}" 
-                                     alt="{{comercio.nombreComercio}}" 
-                                     class="rounded-circle me-3" 
-                                     style="width: 60px; height: 60px; object-fit: cover;">
-                                
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-1">{{comercio.nombreComercio}}</h5>
-                                        <span class="badge rounded-pill 
-                                            {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'en_proceso'}}bg-info{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
-                                            {{#ifEquals pedido.estado 'pendiente'}}Pendiente{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'en_proceso'}}En Proceso{{/ifEquals}}
-                                            {{#ifEquals pedido.estado 'completado'}}Completado{{/ifEquals}}
-                                            {{estado}}
-                                        </span>
-                                    </div>
-                                    
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <div>
-                                            <i class="fas fa-box me-1"></i> {{totalProductos}} productos
-                                            <span class="mx-2">|</span>
-                                            <i class="fas fa-dollar-sign me-1"></i>Total: {{total}}
-                                        </div>
-                                        <small class="text-muted">
-                                            <i class="far fa-clock me-1"></i>{{fechaHora}}
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        {{/each}}
-                    </div>
-                {{else}}
-                    <div class="text-center py-5">
-                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                        <h3 class="text-muted">No existen pedidos actualmente</h3>
-                        <p class="text-muted">Los pedidos aparecerán aquí cuando los clientes realicen compras.</p>
-                    </div>
-                {{/if}}
+<!-- Main Content -->
+<div id="content" class="p-4">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-shopping-bag me-2"></i>Pedidos</h1>
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fas fa-filter me-2"></i>Filtrar
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?estado=todos">Todos los pedidos</a></li>
+                    <li><a class="dropdown-item" href="?estado=pendiente">Pendientes</a></li>
+                    <li><a class="dropdown-item" href="?estado=en_proceso">En Proceso</a></li>
+                    <li><a class="dropdown-item" href="?estado=completado">Completados</a></li>
+                </ul>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/index.js"></script>
-</body>
-</html>
+        {{#if pedidos.length}}
+            <div class="list-group">
+                {{#each pedidos}}
+                <a href="/comercio/pedidos/{{id}}" class="list-group-item list-group-item-action border-0 shadow-sm mb-3 rounded">
+                    <div class="d-flex align-items-center">
+                        <img src="{{comercio.logo}}" 
+                             alt="{{comercio.nombreComercio}}" 
+                             class="rounded-circle me-3" 
+                             style="width: 60px; height: 60px; object-fit: cover;">
+                        
+                        <div class="w-100">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-1">{{comercio.nombreComercio}}</h5>
+                                <span class="badge rounded-pill 
+                                    {{#ifEquals estado 'pendiente'}}bg-warning{{/ifEquals}}
+                                    {{#ifEquals estado 'en_proceso'}}bg-info{{/ifEquals}}
+                                    {{#ifEquals estado 'completado'}}bg-success{{/ifEquals}}">
+                                    {{#ifEquals estado 'pendiente'}}Pendiente{{/ifEquals}}
+                                    {{#ifEquals estado 'en_proceso'}}En Proceso{{/ifEquals}}
+                                    {{#ifEquals estado 'completado'}}Completado{{/ifEquals}}
+                                </span>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div>
+                                    <i class="fas fa-box me-1"></i> {{totalProductos}} productos
+                                    <span class="mx-2">|</span>
+                                    <i class="fas fa-dollar-sign me-1"></i>Total: {{total}}
+                                </div>
+                                <small class="text-muted">
+                                    <i class="far fa-clock me-1"></i>{{fechaHora}}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {{/each}}
+            </div>
+        {{else}}
+            <div class="text-center py-5">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h3 class="text-muted">No existen pedidos actualmente</h3>
+                <p class="text-muted">Los pedidos aparecerán aquí cuando los clientes realicen compras.</p>
+            </div>
+        {{/if}}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/index.js"></script>
+
