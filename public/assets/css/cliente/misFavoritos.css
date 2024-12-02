@@ -92,21 +92,24 @@
     margin-right: 10px;
 }
 
-/* Main Content */
+/* Main Content Enhancements */
 .main-content {
     flex: 1;
-    padding: 30px;
+    padding: 40px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
-/* Header Section */
+/* Header Section Enhancement */
 .header-section {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
+    padding: 20px 0;
 }
 
 .header-section h2 {
-    color: #2a5298;
-    font-weight: 600;
+    color: #1e3c72;
+    font-weight: 700;
+    font-size: 2.2rem;
     position: relative;
     padding-bottom: 15px;
     display: inline-block;
@@ -118,86 +121,121 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 3px;
-    background: #2a5298;
-    border-radius: 2px;
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    border-radius: 4px;
 }
 
-/* Favorites Cards */
+/* Modern Favorites Cards */
 .favorito-card {
-    margin-bottom: 20px;
-    transition: transform 0.3s ease;
-}
-
-.comercio-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
+    margin-bottom: 35px;
+    perspective: 1000px;
 }
 
 .favorito-card .card {
     border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.05),
+        0 1px 3px rgba(0, 0, 0, 0.02);
     overflow: hidden;
-}
-
-.favorito-card:hover .card {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .comercio-logo {
-    text-align: center;
-    padding: 20px;
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 17px;
+}
+
+.comercio-logo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(46, 82, 152, 0.2), rgba(30, 60, 114, 0.1));
+    z-index: 1;
 }
 
 .comercio-logo img {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 220px;
     object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .comercio-nombre {
-    text-align: center;
-    color: #2a5298;
-    font-weight: 600;
-    margin: 15px 0;
-}
-
-/* Remove Favorite Button */
-.btn-remove-favorite {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background: #dc3545;
-    color: white;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    opacity: 0.9;
-}
-
-.btn-remove-favorite:hover {
-    opacity: 1;
-    transform: translateY(-2px);
-}
-
-.btn-remove-favorite i {
-    margin-right: 8px;
-}
-
-/* Alert Styling */
-.alert-info {
-    background: linear-gradient(45deg, #2193b0, #6dd5ed);
-    color: white;
-    border: none;
+    position: relative;
+    color: #2a2a2a;
+    font-size: 1.4rem;
+    font-weight: 700;
     padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
+    margin: 0;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.favorito-actions {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-outline-danger {
+    border: none;
+    background: #ff4757;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Hover Effects */
+.favorito-card:hover .card {
+    transform: translateY(-10px) rotateX(4deg);
+    box-shadow: 
+        0 30px 70px rgba(0, 0, 0, 0.08),
+        0 10px 30px rgba(46, 82, 152, 0.1);
+}
+
+.favorito-card:hover .comercio-logo img {
+    transform: scale(1.1);
+}
+
+.btn-outline-danger:hover {
+    background: #ff6b81;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+}
+
+/* Add subtle animation */
+@keyframes cardFloat {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+.favorito-card:hover {
+    animation: cardFloat 3s ease-in-out infinite;
+}
+/* Empty State Enhancement */
+.alert-info {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    border: none;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 30px;
+    font-size: 1.1rem;
+    box-shadow: 0 10px 20px rgba(46, 82, 152, 0.15);
 }
 
 /* Animations */
@@ -216,7 +254,18 @@
     animation: fadeIn 0.5s ease-out forwards;
 }
 
-/* Responsive Design */
+/* Responsive Enhancements */
+@media (max-width: 992px) {
+    .main-content {
+        padding: 30px;
+    }
+    
+    .comercio-logo img {
+        width: 120px;
+        height: 120px;
+    }
+}
+
 @media (max-width: 768px) {
     .d-flex {
         flex-direction: column;
@@ -233,6 +282,14 @@
     
     .col-md-6 {
         padding: 10px;
+    }
+
+    .header-section h2 {
+        font-size: 1.8rem;
+    }
+    
+    .favorito-card {
+        margin-bottom: 20px;
     }
 }
 
