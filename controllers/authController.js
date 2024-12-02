@@ -222,6 +222,25 @@ exports.registerComercio = async (req, res) => {
             });
         }
 
+
+        const existingCorreo = await Usuario.findOne({ where: { correo } });
+        if (existingCorreo) {
+            return res.render("auth/registro-comercio", {
+                pageTitle: "Registro de Comercio",
+                error: "Ya existe una cuenta registrada con ese correo.",
+                tipoComercios: tipoComercios.map(t => t.dataValues),
+            });
+        }
+
+        
+        if (!nombreComercio || !telefono || !correo || !password || !confirmar || !tipoComercioId || !horaApertura || !horaCierre) {
+            return res.render("auth/registro-comercio", {
+                pageTitle: "Registro de Comercio",
+                error: "Todos los campos son obligatorios.",
+                tipoComercios: tipoComercios.map(t => t.dataValues),
+            });
+        }
+
       
         let nombreUsuario = nombreComercio;
         let existingUser = await Usuario.findOne({ where: { nombreUsuario } });

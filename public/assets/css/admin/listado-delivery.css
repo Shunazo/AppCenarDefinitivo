@@ -14,7 +14,10 @@
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
-
+.input-error{
+    border-color: red;
+    border-width: medium;
+}
 .sidebar-header {
     padding: 25px;
     background: rgba(0, 0, 0, 0.2);

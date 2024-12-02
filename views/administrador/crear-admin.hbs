@@ -8,7 +8,7 @@
             <p>Complete los datos del nuevo administrador</p>
         </div>
         
-        <form id="createAdminForm" action="/administrador/create" method="POST" class="admin-form">
+        <form id="createAdminForm" action="/administrador/create" method="POST" class="admin-form" onsubmit="return validarCampos(this)">
             <div class="form-row">
                 <div class="form-group">
                     <label for="nombre">
@@ -82,4 +82,5 @@
         </form>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/assets/js/index.js"></script>

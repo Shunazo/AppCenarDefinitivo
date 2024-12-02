@@ -492,6 +492,21 @@ exports.createAdmin = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
+        if (!nombre || !apellido || !correo || !telefono || !password || !cedula) {
+            return res.render("administrador/crear-admin", {
+                pageTitle: "Crear Administrador",
+                error: "Todos los campos son obligatorios."
+            });
+        }
+
+        const existingUser = await Usuario.findOne({ where: { correo } });
+        if (existingUser) {
+            return res.render("administrador/crear-admin", {
+                pageTitle: "Crear Administrador",
+                error: "Ya existe un administrador registrado con ese correo."
+            });
+        }
+    
         const newUser = await Usuario.create({
             nombre,
             apellido,
@@ -557,6 +572,12 @@ exports.editAdmin = async (req, res) => {
        
         if (password !== confirmar) {
             return res.status(400).send("Las contraseñas no coinciden.");
+        }
+
+
+        const existingAdmin = await Usuario.findOne({ where: { correo } });
+        if (existingAdmin && existingAdmin.id !== adminRecord.id) {
+            return res.status(400).send("Ya existe una cuenta registrada con ese correo.");
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);

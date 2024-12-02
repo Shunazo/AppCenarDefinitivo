@@ -16,6 +16,11 @@
     margin-bottom: 0;
 }
 
+.input-error{
+    border-color: red;
+    border-width: medium;
+}
+
 .table thead th {
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;

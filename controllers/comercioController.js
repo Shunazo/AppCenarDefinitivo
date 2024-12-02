@@ -225,11 +225,23 @@ exports.editperfil = async (req, res) => {
             return res.render("404", { pageTitle: "Todos los campos son obligatorios." });
         }
 
+        // Check if the email is already used by another user
+        const existingUser = await Usuario.findOne({
+            where: { correo },
+        });
+
+        if (existingUser && existingUser.id !== comercioRecord.usuario.id) {
+            return res.render("404", {
+                pageTitle: "El correo ingresado ya está siendo utilizado por otro usuario.",
+            });
+        }
+
+        // Update the user and comercio records
         await comercioRecord.usuario.update({
             telefono,
             correo,
             fotoPerfil: logo
-        })
+        });
 
         await comercioRecord.update({
             horaApertura,

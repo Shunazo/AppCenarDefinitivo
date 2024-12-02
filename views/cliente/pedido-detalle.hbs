@@ -69,7 +69,9 @@
                     {{#ifEquals pedido.estado 'pendiente'}}bg-warning{{/ifEquals}}
                     {{#ifEquals pedido.estado 'en proceso'}}bg-info{{/ifEquals}}
                     {{#ifEquals pedido.estado 'completado'}}bg-success{{/ifEquals}}">
-                    {{pedido.estado}}
+                    {{#ifEquals pedido.estado 'pendiente'}}Pendiente{{/ifEquals}}
+                    {{#ifEquals pedido.estado 'en proceso'}}En Proceso{{/ifEquals}}
+                    {{#ifEquals pedido.estado 'completado'}}Completado{{/ifEquals}}
                 </span>
                 <p class="fecha-pedido">
                     <i class="far fa-calendar-alt me-2"></i>
@@ -87,7 +89,6 @@
                     </div>
                     <div class="producto-info">
                         <h5>{{nombre}}</h5>
-                        <p class="cantidad">Cantidad: {{cantidad}}</p>
                         <p class="precio">RD${{precio}}</p>
                     </div>
                 </div>

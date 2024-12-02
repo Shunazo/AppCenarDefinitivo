@@ -26,7 +26,10 @@
       min-height: 100vh;
       background-color: #f8f9fa;
   }
-
+  .input-error{
+    border-color: red;
+    border-width: medium;
+}
   #content {
       flex: 1;
       display: flex;

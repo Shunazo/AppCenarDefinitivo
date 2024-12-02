@@ -37,7 +37,10 @@
     transition: all 0.3s ease;
     overflow: hidden;
 }
-
+.input-error{
+    border-color: red;
+    border-width: medium;
+}
 .producto-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.2);

@@ -28,6 +28,11 @@
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
+.input-error{
+    border-color: red;
+    border-width: medium;
+}
+
 /* Form Styling */
 .card {
     border: none;

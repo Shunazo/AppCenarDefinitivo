@@ -7,7 +7,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editAdminForm" action="/administrador/editar" method="POST">
+                    <form id="editAdminForm" action="/administrador/editar" method="POST" class="needs-validation" novalidate onsubmit="return validarCampos(this)">
                         <input type="hidden" id="editId" name="id">
                         <div class="mb-3">
                             <label for="editNombre" class="form-label">Nombre</label>

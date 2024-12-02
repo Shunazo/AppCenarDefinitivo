@@ -57,7 +57,7 @@
                             <div class="alert alert-danger">{{error}}</div>
                         {{/if}}
 
-                        <form action="/delivery/perfil/edit" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form action="/delivery/perfil/edit" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate onsubmit="return validarCampos(this)">
                             <div class="current-photo mb-4">
                                 {{#if usuario.fotoPerfil}}
                                     <img src="{{usuario.fotoPerfil}}" alt="Foto actual" class="current-profile-image" id="previewImage">
@@ -110,7 +110,8 @@
                                        id="telefono" 
                                        name="telefono" 
                                        value="{{usuario.telefono}}"
-                                       required>
+                                       required
+                                       oninput="formatPhoneNumber(this);">
                                 <div class="invalid-feedback">
                                     El teléfono es requerido
                                 </div>

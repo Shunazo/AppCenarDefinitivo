@@ -55,7 +55,7 @@
         <div class="profile-container">
             <div class="container mt-4">
                 <h2 class="text-center"><i class="fas fa-user-circle me-2"></i>Mi Perfil</h2>
-                <form action="/cliente/perfil/edit" method="POST" enctype="multipart/form-data">
+                <form action="/cliente/perfil/edit" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate onsubmit="return validarCampos(this)">
                     <div class="mb-3">
                         <label for="nombre" class="form-label"><i class="fas fa-user me-2"></i>Nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" value="{{usuario.nombre}}" required>
@@ -68,7 +68,7 @@
 
                     <div class="mb-3">
                         <label for="telefono" class="form-label"><i class="fas fa-phone me-2"></i>Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" name="telefono" value="{{usuario.telefono}}" required>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" value="{{usuario.telefono}}" required oninput="formatPhoneNumber(this);">
                     </div>
 
                     <div class="mb-3">
@@ -90,6 +90,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../assets/js/index.js"></script>
 </body>
 </html>

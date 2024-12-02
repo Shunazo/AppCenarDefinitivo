@@ -179,3 +179,8 @@
         padding: 2rem;
     }
 }
+
+.input-error{
+    border-color: red;
+    border-width: medium;
+}

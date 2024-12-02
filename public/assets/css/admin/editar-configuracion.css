@@ -20,6 +20,11 @@
     position: relative;
 }
 
+.input-error{
+    border-color: red;
+    border-width: medium;
+}
+
 .config-edit-card::before {
     content: '';
     position: absolute;

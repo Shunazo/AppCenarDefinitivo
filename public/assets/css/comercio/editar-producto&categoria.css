@@ -20,7 +20,10 @@
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
+.input-error{
+    border-color: red;
+    border-width: medium;
+}
 .logo-img {
     width: 120px;
     height: 120px;

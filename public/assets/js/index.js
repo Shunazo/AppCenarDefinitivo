@@ -190,7 +190,6 @@ function validarCampos(form) {
     }
 
     if (!esValido) {
-        // If any field is invalid, show a SweetAlert for incomplete fields
         Swal.fire({
             title: 'Campos incompletos',
             text: 'Por favor, complete todos los campos requeridos.',
@@ -199,7 +198,7 @@ function validarCampos(form) {
         });
     }
 
-    return esValido;  // Return false to prevent form submission if invalid
+    return esValido;  
 }
 
 
