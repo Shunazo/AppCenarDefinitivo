@@ -1,8 +1,178 @@
 /* Main Layout */
-.d-flex {
-    display: flex;
-    min-height: 100vh;
+body {
     background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+}
+
+.d-flex {
+    min-height: 100%;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sidebar-menu {
+    padding-top: 20px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    gap: 15px;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgba(255,255,255,0.1);
+    color: #3498db;
+}
+
+.logout {
+    margin-top: 20px;
+    border: none;
+    background: none;
+    width: 100%;
+    color: #e74c3c;
+}
+
+/* Content Area */
+#content {
+    flex: 1;
+    background-color: #f8f9fa;
+}
+
+/* Pedidos Cards */
+.pedido-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s;
+}
+
+.pedido-card:hover {
+    transform: translateY(-3px);
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.comercio-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.pedido-details {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.badge {
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.productos-count {
+    margin: 0;
+    color: #666;
+}
+
+.fecha-pedido {
+    margin: 0;
+    color: #666;
+}
+
+.precio-total {
+    text-align: right;
+}
+
+.precio-label {
+    display: block;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.precio-valor {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .sidebar span {
+        display: none;
+    }
+    
+    .user-info span {
+        display: none;
+    }
+    
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .menu-item {
+        justify-content: center;
+        padding: 15px 0;
+    }
+    
+    .col-md-2, .col-md-7, .col-md-3 {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .precio-total {
+        text-align: center;
+        margin-top: 15px;
+    }
 }
 
 /* Sidebar Styling */
@@ -23,19 +193,25 @@
 }
 
 .logo {
-    width: 180px;
-    height: auto;
+    width: 100%;
+    max-width: 200px;
     margin-bottom: 20px;
-    filter: brightness(0) invert(1);
-    transition: transform 0.3s ease;
 }
 
-/* User Info */
+/* User Info Styling */
 .user-info {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 15px 0;
+}
+
+.user-name {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 .user-avatar {
@@ -46,20 +222,6 @@
     border: 3px solid rgba(255, 255, 255, 0.2);
     margin-bottom: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.profile-icon {
-    font-size: 80px;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 10px;
-}
-
-.user-name {
-    color: #fff;
-    font-size: 1.1rem;
-    margin-top: 10px;
-    font-weight: 500;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 /* Sidebar Menu */
@@ -100,153 +262,4 @@
     color: #fff;
     cursor: pointer;
     margin-top: auto;
-}
-
-/* Main Content */
-.main-content {
-    flex: 1;
-    padding: 30px;
-}
-
-/* Orders List */
-.pedidos-list {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.pedido-card {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.pedido-card:hover {
-    transform: translateY(-5px);
-}
-
-.pedido-card .card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-
-.comercio-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* Order Details */
-.pedido-details {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.badge {
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 500;
-}
-
-.bg-warning {
-    background-color: #ffc107 !important;
-    color: #000;
-}
-
-.bg-info {
-    background-color: #17a2b8 !important;
-    color: #fff;
-}
-
-.bg-success {
-    background-color: #28a745 !important;
-    color: #fff;
-}
-
-.productos-count {
-    color: #6c757d;
-    margin: 0;
-}
-
-.fecha-pedido {
-    color: #6c757d;
-    margin: 0;
-    font-size: 0.9rem;
-}
-
-/* Price Styling */
-.precio-total {
-    text-align: right;
-}
-
-.precio-label {
-    display: block;
-    color: #6c757d;
-    font-size: 0.9rem;
-}
-
-.precio-valor {
-    display: block;
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: #2a5298;
-}
-
-/* Alert Styling */
-.alert-info {
-    background: linear-gradient(45deg, #2193b0, #6dd5ed);
-    color: white;
-    border: none;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.pedido-card {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .d-flex {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    
-    .main-content {
-        padding: 20px;
-    }
-    
-    .precio-total {
-        text-align: left;
-        margin-top: 10px;
-        padding-left: 15px;
-    }
-    
-    .pedido-details {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
 }
