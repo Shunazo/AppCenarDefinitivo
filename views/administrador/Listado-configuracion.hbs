@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tipos de Comercio - AppCenar</title>
+    <title>Configuración - AppCenar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="/assets/css/admin/mantenimiento-comercio.css" rel="stylesheet">
@@ -32,36 +32,25 @@
         <!-- Content -->
         <div id="content">
             <div class="container-fluid">
-                <!-- Listado de Tipos de Comercio -->
+                <!-- Listado de Configuración -->
                 <div class="header-section">
-                    <h1>Configuracion</h1>
+                    <h1>Configuración</h1>
                 </div>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Icono</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Comercios Asociados</th>
+                                <th>ITBIS (%)</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each tipocomercios}}
+                            {{#each config}}
                             <tr>
+                                <td>{{itbis}}%</td>
                                 <td>
-                                    <img src="{{icono}}" alt="Icono {{nombre}}" class="tipo-icon">
-                                </td>
-                                <td>{{nombre}}</td>
-                                <td>{{descripcion}}</td>
-                                <td class="text-center">{{comercios.length}}</td>
-                                <td>
-                                    <a href="/administrador/tipo-comercio/editar/{{id}}" class="btn btn-info btn-sm me-2">
+                                    <a href="/administrador/config/edit" class="btn btn-info btn-sm me-2">
                                         <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="/administrador/tipo-comercio/eliminar/{{id}}" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>

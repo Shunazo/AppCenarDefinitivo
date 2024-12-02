@@ -388,26 +388,27 @@ exports.deactivateComercio = async (req, res) => {
 
 exports.config = async (req, res) => {
     try {
-        const config = await Configuracion.findOne();
+        const config = await Configuracion.findOne();  // Finds one configuration record
 
         if (!config) {
-            return res.status(404).send("Configuración no encontrada");
+            return res.status(404).send("Configuración no encontrada");  // If no record is found
         }
 
-        const configData = config.map(c => ({
-            ...c.dataValues,
-        }));
+        // Extract dataValues directly from the config instance and wrap it in an array
+        const configData = [config.dataValues];  // This makes configData an array
 
         res.render("administrador/Listado-configuracion", {
-             config: configData
-            });
+            config: configData  // Pass the data to the view
+        });
 
     } catch (error) {
         console.log(error);
-        res.render("administrador/Listado-configuracion", 
-            { pageTitle: "Error al cargar la configuración. Intente más tarde." });
+        res.render("administrador/Listado-configuracion", {
+            pageTitle: "Error al cargar la configuración. Intente más tarde."
+        });
     }
-}
+};
+
 
 exports.editconfigForm = async (req, res) => {
     try {
