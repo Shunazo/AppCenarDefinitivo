@@ -152,6 +152,7 @@ exports.tipoComercio = async (req, res) => {
       res.render("404", { pageTitle: "Error al cargar el tipo de comercio. Intente más tarde." });
   }
 };
+
 exports.toggleFavorito = async (req, res) => {
   try {
     const comercioId = req.params.id;
@@ -170,7 +171,7 @@ exports.toggleFavorito = async (req, res) => {
       await Favorito.create({ usuarioId, comercioId });
     }
 
-    
+
       res.redirect("/cliente/favoritos");
     
   } catch (error) {
@@ -180,37 +181,46 @@ exports.toggleFavorito = async (req, res) => {
 };
 
 exports.favoritos = async (req, res) => {
-  try {
-    const usuarioId = req.session.userId; 
-    const usuarioRecord = await Usuario.findByPk(usuarioId);
-    const favoritos = await Favorito.findAll({
-      where: { usuarioId },
-      include: { model: Comercio, as: "comercio" },
-    });
-
+    try {
+      const usuarioId = req.session.userId; 
+      const usuarioRecord = await Usuario.findByPk(usuarioId);
   
-    if (favoritos.length === 0) {
-      return res.render("cliente/misFavoritos", {
+      // Fetch all favorite commerces with their associated information
+      const favoritos = await Favorito.findAll({
+        where: { usuarioId },
+        include: { model: Comercio, as: "comercio" },
+      });
+  
+      // If the user has no favoritos
+      if (favoritos.length === 0) {
+        return res.render("cliente/misFavoritos", {
+          pageTitle: "Mis Favoritos",
+          usuario: usuarioRecord.dataValues,
+          favoritos: [],
+          message: "No tienes comercios favoritos.",
+        });
+      }
+  
+      // Map the favoritos to include a 'catalogoUrl' field for each comercio
+      const comerciosFavoritos = favoritos.map(fav => {
+        return {
+          ...fav.comercio.dataValues,
+          catalogoUrl: `/catalogo/${fav.comercio.id}`,  // Add the catalogo URL here
+        };
+      });
+  
+      // Render the 'misFavoritos' page with the updated comerciosFavoritos array
+      res.render("cliente/misFavoritos", {
         pageTitle: "Mis Favoritos",
         usuario: usuarioRecord.dataValues,
-        favoritos: [],
-        message: "No tienes comercios favoritos.",
+        favoritos: comerciosFavoritos,  // Pass the updated comerciosFavoritos list
       });
+    } catch (error) {
+      console.log(error);
+      res.render("404", { pageTitle: "Error al cargar los favoritos. Intente más tarde." });
     }
-
-    const comerciosFavoritos = favoritos.map(fav => fav.comercio.dataValues);
-
-    res.render("cliente/misFavoritos", {
-      pageTitle: "Mis Favoritos",
-      usuario: usuarioRecord.dataValues,
-      favoritos: comerciosFavoritos,  
-    });
-  } catch (error) {
-    console.log(error);
-    res.render("404", { pageTitle: "Error al cargar los favoritos. Intente más tarde." });
-  }
 };
-
+  
 
   
 
