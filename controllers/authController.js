@@ -316,7 +316,7 @@ exports.resetToken = async (req, res) => {
 
         const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: "5m" });
 
-        const resetLink = `${req.protocol}://${req.get("host")}/auth/reset-password/${token}`;
+        const resetLink = `${req.protocol}://${req.get("host")}/new-password/${token}`;
 
         await transporter.sendMail({
             from: "Sistema <no-reply@example.com>",
@@ -329,7 +329,7 @@ exports.resetToken = async (req, res) => {
 
         res.render("auth/reset-password", {
             pageTitle: "Restablecer Contraseña",
-            success: "Revisa tu correo para restablecer la contraseña.",
+            success: "Revisa tu correo para restablecer la contraseña, tiene 5 minutos.",
         });
     } catch (error) {
         console.log(error);

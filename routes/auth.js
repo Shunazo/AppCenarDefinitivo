@@ -17,8 +17,8 @@ router.post("/registro/comercio", authController.registerComercio);  // procesar
 router.get("/reset-password", authController.resetForm); //form de reestablecer contraseña
 router.post("/reset-password", authController.resetToken);  // procesar
 
-router.get("/reset-password/:token", authController.passwordForm); // form de nueva contraseña
-router.post("/reset-password/:token", authController.password); // procesar
+router.get("/new-password/:token", authController.passwordForm); // form de nueva contraseña
+router.post("/new-password/:token", authController.password); // procesar
 
 router.get("/auth/activate/:token", authController.activateAccount); // activar cuenta
 
