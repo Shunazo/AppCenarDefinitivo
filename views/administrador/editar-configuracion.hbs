@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="public\assets\css\admin\editar-configuracion.css">
+<div class="config-edit-container">
+    <div class="config-edit-card">
+        <div class="card-header">
+            <i class="fas fa-cogs header-icon"></i>
+            <h2>Editar Configuración del Sistema</h2>
+            <p>Modifique los valores de configuración</p>
+        </div>
+        
+        <form id="editConfigForm" action="/administrador/config/update/{{config.id}}" method="POST" class="config-form">
+            <div class="form-group">
+                <label for="itbis">
+                    <i class="fas fa-percentage"></i> ITBIS (%)
+                </label>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="itbis" 
+                        name="itbis" 
+                        value="{{config.itbis}}" 
+                        step="0.01" 
+                        min="0" 
+                        max="100" 
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="/administrador/config" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

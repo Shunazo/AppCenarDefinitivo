@@ -1,50 +1,85 @@
-<!-- Modal Crear Administrador -->
-
-<link href="/assets/css/admin/home-admin.css" rel="stylesheet">
-<link href="/assets/css/auth/forms.css" rel="stylesheet">
-    <div class="modal fade" id="createAdminModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nuevo Administrador</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<link href="/assets/css/admin/crear-admin.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<div class="admin-create-container">
+    <div class="create-admin-card">
+        <div class="card-header">
+            <i class="fas fa-user-shield header-icon"></i>
+            <h2>Crear Nuevo Administrador</h2>
+            <p>Complete los datos del nuevo administrador</p>
+        </div>
+        
+        <form id="createAdminForm" action="/administrador/create" method="POST" class="admin-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nombre">
+                        <i class="fas fa-user"></i> Nombre
+                    </label>
+                    <input type="text" id="nombre" name="nombre" required>
                 </div>
-                <div class="modal-body">
-                    <form id="createAdminForm" action="/administrador/create" method="POST">
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="apellido" class="form-label">Apellido</label>
-                            <input type="text" class="form-control" id="apellido" name="apellido" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cedula" class="form-label">Cédula</label>
-                            <input type="text" class="form-control" id="cedula" name="cedula" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="correo" class="form-label">Correo</label>
-                            <input type="email" class="form-control" id="correo" name="correo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="usuario" class="form-label">Usuario</label>
-                            <input type="text" class="form-control" id="usuario" name="usuario" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Crear Administrador</button>
-                        </div>
-                    </form>
+                
+                <div class="form-group">
+                    <label for="apellido">
+                        <i class="fas fa-user"></i> Apellido
+                    </label>
+                    <input type="text" id="apellido" name="apellido" required>
                 </div>
             </div>
-        </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cedula">
+                        <i class="fas fa-id-card"></i> Cédula
+                    </label>
+                    <input type="text" id="cedula" name="cedula" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="correo">
+                        <i class="fas fa-envelope"></i> Correo Electrónico
+                    </label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="usuario">
+                        <i class="fas fa-user-tag"></i> Nombre de Usuario
+                    </label>
+                    <input type="text" id="usuario" name="usuario" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Contraseña
+                    </label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" required>
+                        <i class="fas fa-eye toggle-password" data-target="password"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        <i class="fas fa-lock"></i> Confirmar Contraseña
+                    </label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <i class="fas fa-eye toggle-password" data-target="confirmPassword"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <a href="/administrador/home" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Crear Administrador
+                </button>
+            </div>
+        </form>
     </div>
+</div>
+<script src="/assets/js/index.js"></script>
