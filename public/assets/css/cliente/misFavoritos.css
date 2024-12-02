@@ -152,14 +152,21 @@
     text-decoration: none;
 }
 
-.comercio-logo {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-    position: relative;
-}
 
+
+
+
+
+
+
+
+  .comercio-logo {
+      background: white;
+      border-radius: 20px;
+      padding: 15px;  /* Reduced from 30px to 15px */
+      text-align: center;
+      position: relative;
+  }
 .comercio-logo img {
     width: 140px;
     height: 140px;
