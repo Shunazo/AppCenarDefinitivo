@@ -1,48 +1,84 @@
-<!-- Modal Editar Administrador -->
-    <div class="modal fade" id="editAdminModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar Administrador</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editAdminForm" action="/administrador/editar" method="POST" class="needs-validation" novalidate onsubmit="return validarCampos(this)">
-                        <input type="hidden" id="editId" name="id">
-                        <div class="mb-3">
-                            <label for="editNombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="editNombre" name="nombre" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editApellido" class="form-label">Apellido</label>
-                            <input type="text" class="form-control" id="editApellido" name="apellido" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editCedula" class="form-label">Cédula</label>
-                            <input type="text" class="form-control" id="editCedula" name="cedula" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editCorreo" class="form-label">Correo</label>
-                            <input type="email" class="form-control" id="editCorreo" name="correo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUsuario" class="form-label">Usuario</label>
-                            <input type="text" class="form-control" id="editUsuario" name="usuario" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editPassword" class="form-label">Nueva Contraseña (dejar en blanco si no desea cambiarla)</label>
-                            <input type="password" class="form-control" id="editPassword" name="password">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editConfirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="editConfirmPassword" name="confirmPassword">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                        </div>
-                    </form>
-                </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Administrador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/admin/crear-admin.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-create-container">
+        <div class="create-admin-card">
+            <div class="card-header">
+                <i class="fas fa-user-edit header-icon"></i>
+                <h2>Editar Administrador</h2>
+                <p>Actualiza la información del administrador</p>
             </div>
+
+            <form class="admin-form" action="/administrador/editar" method="POST" class="needs-validation" novalidate onsubmit="return validarCampos(this)">
+                <input type="hidden" id="editId" name="id" value="{{admin.id}}">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nombre</label>
+                        <input type="text" id="editNombre" name="nombre" value="{{admin.nombre}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Apellido</label>
+                        <input type="text" id="editApellido" name="apellido" value="{{admin.apellido}}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-id-card"></i> Cédula</label>
+                        <input type="text" id="editCedula" name="cedula" value="{{admin.cedula}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Correo</label>
+                        <input type="email" id="editCorreo" name="correo" value="{{admin.correo}}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-user-circle"></i> Usuario</label>
+                        <input type="text" id="editUsuario" name="usuario" value="{{admin.usuario}}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Nueva Contraseña</label>
+                        <div class="password-input">
+                            <input type="password" id="editPassword" name="password">
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Confirmar Contraseña</label>
+                        <div class="password-input">
+                            <input type="password" id="editConfirmPassword" name="confirmPassword">
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/administrador/administradores" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/admin/editar-admin.js"></script>
+</body>
+</html>
