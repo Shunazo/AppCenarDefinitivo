@@ -546,18 +546,23 @@ exports.createAdmin = async (req, res) => {
 
 exports.editAdminForm = async (req, res) => {
     try {
+        // Fetch the Usuario record along with its associated Administrador record
         const adminRecord = await Usuario.findByPk(req.params.id, {
             include: [{ model: Administrador, as: "administrador" }]
         });
 
+        // If no admin is found, return a 404 error
         if (!adminRecord) {
             return res.status(404).send("Administrador no encontrado");
         }
 
+        const usuarioData = adminRecord.dataValues; 
+        const administradorData = adminRecord.administrador ? adminRecord.administrador.dataValues : {}; 
+
         res.render("administrador/editar-administrador", {
             pageTitle: "Editar Administrador",
-            usuario: adminRecord.dataValues,
-            administrador: adminRecord.administrador.dataValues
+            usuario: usuarioData,
+            administrador: administradorData
         });
     } catch (error) {
         console.log(error);
