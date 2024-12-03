@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f6f8fb 0%, #f5f7fa 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    padding: 1.5rem;
+    border: none;
+}
+
+.card-header h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.card-header i {
+    font-size: 1.5rem;
+}
+
+.card-body {
+    padding: 2.5rem;
+}
+
+.form-label {
+    color: #34495e;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.form-label i {
+    color: #3498db;
+}
+
+.form-control {
+    padding: 1rem;
+    border: 2px solid #eef2f7;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
+}
+
+.btn-secondary {
+    background: #f8fafc;
+    color: #95a5a6;
+}
+
+.btn-secondary:hover {
+    background: #f1f5f9;
+    color: #7f8c8d;
+    transform: translateY(-2px);
+}
+
+.input-error {
+    border-color: #e74c3c;
+    border-width: 2px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    .d-flex {
+        flex-direction: column;
+    }
+}
+  .btn-create {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 1.2rem 2.5rem;
+      box-shadow: 0 8px 15px rgba(52, 152, 219, 0.2);
+  }
+
+  .btn-create:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 20px rgba(52, 152, 219, 0.3);
+      background: linear-gradient(135deg, #2980b9, #2472a4);
+      color: white;
+  }
+
+  .btn-create i {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+  }
+
+  .btn-create:hover i {
+      transform: rotate(90deg);
+  }
