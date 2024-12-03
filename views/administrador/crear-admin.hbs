@@ -39,14 +39,16 @@
                     <label for="cedula">
                         <i class="fas fa-id-card"></i> Cédula
                     </label>
-                    <input type="text" id="cedula" name="cedula" required>
+                    <input type="text" id="cedula" name="cedula" required
+                    oninput="formatCedula(this);">
                 </div>
                 
                 <div class="form-group">
                     <label for="correo">
                         <i class="fas fa-envelope"></i> Correo Electrónico
                     </label>
-                    <input type="email" id="correo" name="correo" required>
+                    <input type="email" id="correo" name="correo" required
+                    >
                 </div>
             </div>
 

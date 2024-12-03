@@ -216,3 +216,24 @@ function validarCampos(form) {
   }
 
 
+  function formatCedula(input) {
+    // Remove all non-numeric characters
+    let value = input.value.replace(/\D/g, '');
+
+    // Limit the length to 11 characters (cédula max length)
+    if (value.length > 11) {
+        value = value.substring(0, 11);
+    }
+
+    // Apply formatting based on length
+    if (value.length > 10) {
+        value = value.replace(/(\d{3})(\d{7})(\d{1})/, '$1-$2-$3'); // Full cédula format
+    } else if (value.length > 3) {
+        value = value.replace(/(\d{3})(\d{7})?/, '$1-$2'); // Partial format
+    }
+
+    // Update the input field value
+    input.value = value;
+}
+
+

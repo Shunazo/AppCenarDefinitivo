@@ -324,17 +324,14 @@ exports.comercios = async (req, res) => {
 exports.activateComercio = async (req, res) => {
     try {
         
-        const comercioRecord = await Comercio.findOne({
-            where: { 
-                '$usuario.id$': req.params.id  
-            },
+        const comercioRecord = await Comercio.findByPk(req.params.id, {
             include: [
                 {
                     model: Usuario,
                     as: 'usuario',
                 }
             ]
-        });
+        })
 
         if (!comercioRecord) {
             return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
@@ -342,7 +339,6 @@ exports.activateComercio = async (req, res) => {
 
         
         const usuarioRecord = comercioRecord.usuario;
-        
         
         await usuarioRecord.update({ activo: true });
 
@@ -357,17 +353,14 @@ exports.activateComercio = async (req, res) => {
 exports.deactivateComercio = async (req, res) => {
     try {
         
-        const comercioRecord = await Comercio.findOne({
-            where: { 
-                '$usuario.id$': req.params.id  
-            },
+        const comercioRecord = await Comercio.findByPk(req.params.id, {
             include: [
                 {
                     model: Usuario,
                     as: 'usuario',
                 }
             ]
-        });
+        })
 
         if (!comercioRecord) {
             return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
@@ -546,24 +539,24 @@ exports.createAdmin = async (req, res) => {
 
 exports.editAdminForm = async (req, res) => {
     try {
-        // Fetch the Usuario record along with its associated Administrador record
-        const adminRecord = await Usuario.findByPk(req.params.id, {
-            include: [{ model: Administrador, as: "administrador" }]
+        const adminRecord = await Administrador.findByPk(req.params.id, {
+            include: [{ model: Usuario, as: "usuario" }]
         });
-
-        // If no admin is found, return a 404 error
+        
         if (!adminRecord) {
             return res.status(404).send("Administrador no encontrado");
         }
-
-        const usuarioData = adminRecord.dataValues; 
-        const administradorData = adminRecord.administrador ? adminRecord.administrador.dataValues : {}; 
-
+        
+        const usuarioData = adminRecord.usuario ? adminRecord.usuario.dataValues : {};
+        const administradorData = adminRecord.dataValues;
+        
         res.render("administrador/editar-administrador", {
             pageTitle: "Editar Administrador",
             usuario: usuarioData,
-            administrador: administradorData
+            administrador: administradorData,
+            id: req.params.id
         });
+        
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al cargar el administrador");
@@ -573,46 +566,43 @@ exports.editAdminForm = async (req, res) => {
 
 exports.editAdmin = async (req, res) => {
     try {
-        const { nombre, apellido, correo, telefono, cedula, password, confirmar } = req.body;
+        const { nombre, apellido, correo, nombreUsuario, cedula, password, confirmar } = req.body;
 
-        const adminRecord = await Usuario.findByPk(req.params.id, {
-            include: [{ model: Administrador, as: "administrador" }]
+        const adminRecord = await Administrador.findByPk(req.params.id, {
+            include: [{ model: Usuario, as: "usuario" }]
         });
-
-        if (!adminRecord || !adminRecord.administrador) {
+        
+        if (!adminRecord || !adminRecord.usuario) {
             return res.status(404).send("Administrador no encontrado");
         }
-
-       
-        if (!nombre || !apellido || !correo || !telefono || !cedula || !password || !confirmar) {
+        
+        const usuarioRecord = adminRecord.usuario;
+        
+        if (!nombre || !apellido || !correo || !nombreUsuario || !cedula || !password || !confirmar) {
             return res.status(400).send("Todos los campos son obligatorios.");
         }
-
-       
+        
         if (password !== confirmar) {
             return res.status(400).send("Las contraseñas no coinciden.");
         }
-
-
-        const existingAdmin = await Usuario.findOne({ where: { correo } });
-        if (existingAdmin && existingAdmin.id !== adminRecord.id) {
+        
+        const existingUsuario = await Usuario.findOne({ where: { correo } });
+        if (existingUsuario && existingUsuario.id !== usuarioRecord.id) {
             return res.status(400).send("Ya existe una cuenta registrada con ese correo.");
         }
-
+        
         const hashedPassword = await bcrypt.hash(password, 12);
-
-        await adminRecord.update({
+        
+        await usuarioRecord.update({
             nombre,
             apellido,
             correo,
-            telefono,
+            nombreUsuario,
             password: hashedPassword
         });
-
-        await adminRecord.administrador.update({ 
-            cedula 
-        });
-
+        
+        await adminRecord.update({ cedula });
+        
         res.redirect("/administrador/administradores");
     } catch (error) {
         console.log(error);
