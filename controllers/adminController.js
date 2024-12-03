@@ -324,14 +324,17 @@ exports.comercios = async (req, res) => {
 exports.activateComercio = async (req, res) => {
     try {
         
-        const comercioRecord = await Comercio.findByPk(req.params.id, {
+        const comercioRecord = await Comercio.findOne({
+            where: { 
+                '$usuario.id$': req.params.id  
+            },
             include: [
                 {
                     model: Usuario,
                     as: 'usuario',
                 }
             ]
-        })
+        });
 
         if (!comercioRecord) {
             return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
@@ -339,6 +342,7 @@ exports.activateComercio = async (req, res) => {
 
         
         const usuarioRecord = comercioRecord.usuario;
+        
         
         await usuarioRecord.update({ activo: true });
 
@@ -353,14 +357,17 @@ exports.activateComercio = async (req, res) => {
 exports.deactivateComercio = async (req, res) => {
     try {
         
-        const comercioRecord = await Comercio.findByPk(req.params.id, {
+        const comercioRecord = await Comercio.findOne({
+            where: { 
+                '$usuario.id$': req.params.id  
+            },
             include: [
                 {
                     model: Usuario,
                     as: 'usuario',
                 }
             ]
-        })
+        });
 
         if (!comercioRecord) {
             return res.status(404).send("Comercio no encontrado para el Usuario con ID " + req.params.id);
