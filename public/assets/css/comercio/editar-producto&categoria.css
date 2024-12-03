@@ -234,3 +234,21 @@ input[type="number"].form-control::-webkit-outer-spin-button {
 .logout-btn:focus {
     outline: none; 
 }
+
+#content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+}
+
+.edit-card {
+    margin: 0 auto;
+    width: 100%;
+}
