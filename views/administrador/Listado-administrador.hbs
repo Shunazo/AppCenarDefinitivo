@@ -59,11 +59,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each admins}} <!-- Iterating over the 'admins' array -->
+                    {{#each admins}} 
                     <tr>
                         <td>{{nombre}}</td>
                         <td>{{apellido}}</td>
-                        <td>{{usuario}}</td>
+                        <td>{{nombreUsuario}}</td>
                         <td>{{cedula}}</td>
                         <td>{{correo}}</td>
                         <td>
@@ -72,20 +72,29 @@
                             </span>
                         </td>
                         <td>
-                            {{#unless isCurrentUser}} <!-- Prevent editing the current user -->
-                                <button class="btn btn-info btn-sm me-2" onclick="editarAdmin('{{id}}')" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
+                            {{#if isCurrentUser}}
+                            <h6>La cuenta logueada actualmente</h6>
+                            <h6>no puede ser modificada</h6>     
+                            {{/if}}
+                            {{#unless isCurrentUser}}
+                                <a href="/administrador/administradores/edit/{{id}}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-edit me-1"></i> 
+                                </a>
                                 {{#if activo}}
-                                    <button class="btn btn-danger btn-sm" onclick="confirmarInactivar('{{id}}')" title="Inactivar">
-                                        <i class="fas fa-user-slash"></i>
-                                    </button>
+                                <form action="/administrador/administradores/deactivate/{{id}}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-user-slash me-1"></i> 
+                                            </button>
+                                        </form>
                                 {{else}}
-                                    <button class="btn btn-success btn-sm" onclick="confirmarActivar('{{id}}')" title="Activar">
-                                        <i class="fas fa-user-check"></i>
-                                    </button>
+                                <form action="/administrador/administradores/activate/{{id}}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fas fa-user-alt me-1"></i> 
+                                            </button>
+                                        </form>
                                 {{/if}}
                             {{/unless}}
+
                         </td>
                     </tr>
                     {{/each}}

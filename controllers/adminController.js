@@ -11,7 +11,8 @@ const Favorito = require("../models/favorito");
 const tipoComercio = require("../models/tipocomercio");
 const Comercio = require("../models/comercio");
 const Administrador = require("../models/administrador");
-const { Op } = require("sequelize");
+const bcrypt = require("bcryptjs");
+const { Op, where } = require("sequelize");
 
 exports.home = async (req, res) => {
     try {
@@ -433,7 +434,7 @@ exports.editconfig = async (req, res) => {
     try {
         const configRecord = await Configuracion.findOne();
 
-        if (!config) {
+        if (!configRecord) {
             return res.status(404).send("Configuración no encontrada");
         }
         const { itbis } = req.body;
@@ -450,33 +451,39 @@ exports.editconfig = async (req, res) => {
     
 exports.administradores = async (req, res) => {
     try {
+        // Get the logged-in user's ID from the session
+        const currentUserId = req.session.userId;
+
+        // Fetch all administrators from the database
         const admins = await Usuario.findAll({
             where: { rol: "administrador" },
             include: [{ model: Administrador, as: "administrador" }]
         });
 
+        // Map data and include `isCurrentUser` property
         const adminList = admins.map(a => {
             const usuarioData = a.dataValues;
             const administradorData = usuarioData.administrador ? usuarioData.administrador.dataValues : {};
             return {
                 ...usuarioData,
-                ...administradorData
+                ...administradorData,
+                isCurrentUser: usuarioData.id === currentUserId // Check if it's the logged-in user
             };
         });
 
-
+        // Render the view with the updated list
         res.render("administrador/Listado-administrador", {
             pageTitle: "Listado de Administradores",
             admins: adminList
         });
-
-    } 
-    catch (error) {
-        console.log(error);
-        res.render("administrador/Listado-administrador", { 
-            pageTitle: "Error al cargar el listado de administradores. Intente más tarde." });
+    } catch (error) {
+        console.error(error);
+        res.render("administrador/Listado-administrador", {
+            pageTitle: "Error al cargar el listado de administradores. Intente más tarde."
+        });
     }
 };
+
 
 
 exports.createAdminForm = (req, res) => {
@@ -488,14 +495,21 @@ exports.createAdminForm = (req, res) => {
 
 exports.createAdmin = async (req, res) => {
     try {
-        const { nombre, apellido, correo, telefono, password, cedula } = req.body;
+        const { nombre, apellido, correo, nombreUsuario, cedula, password, confirmar } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        if (!nombre || !apellido || !correo || !telefono || !password || !cedula) {
+        if (!nombre || !apellido || !correo || !nombreUsuario || !cedula || !password || !confirmar) {
             return res.render("administrador/crear-admin", {
                 pageTitle: "Crear Administrador",
                 error: "Todos los campos son obligatorios."
+            });
+        }
+
+        if (password !== confirmar) {
+            return res.render("administrador/crear-admin", {
+                pageTitle: "Crear Administrador",
+                error: "Las contraseñas no coinciden."
             });
         }
 
@@ -511,7 +525,7 @@ exports.createAdmin = async (req, res) => {
             nombre,
             apellido,
             correo,
-            telefono,
+            nombreUsuario,
             password: hashedPassword,
             rol: "administrador",
             activo: false
@@ -605,13 +619,17 @@ exports.editAdmin = async (req, res) => {
 
 exports.activateAdmin = async (req, res) => {
     try {
-        const adminRecord = await Usuario.findByPk(req.params.id);
+        const adminRecord = await Administrador.findByPk(req.params.id, {
+            include: [{ model: Usuario, as: 'usuario' }]
+        })
 
-        if (!adminRecord || adminRecord.rol !== "administrador") {
+        if (!adminRecord) {
             return res.status(404).send("Administrador no encontrado");
         }
 
-        await adminRecord.update({ activo: true });
+       const usuarioRecord = adminRecord.usuario;
+
+        await usuarioRecord.update({ activo: true });
 
         res.redirect("/administrador/administradores");
     } catch (error) {
@@ -623,13 +641,17 @@ exports.activateAdmin = async (req, res) => {
 
 exports.deactivateAdmin = async (req, res) => {
     try {
-        const adminRecord = await Usuario.findByPk(req.params.id);
+        const adminRecord = await Administrador.findByPk(req.params.id, {
+            include: [{ model: Usuario, as: 'usuario' }]
+        })
 
-        if (!adminRecord || adminRecord.rol !== "administrador") {
+        if (!adminRecord) {
             return res.status(404).send("Administrador no encontrado");
         }
 
-        await adminRecord.update({ activo: false });
+        const usuarioRecord = adminRecord.usuario;
+
+        await usuarioRecord.update({ activo: false });
 
         res.redirect("/administrador/administradores");
     } catch (error) {

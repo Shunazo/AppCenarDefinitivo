@@ -7,8 +7,17 @@
             <h2>Crear Nuevo Administrador</h2>
             <p>Complete los datos del nuevo administrador</p>
         </div>
+
+        {{#if error}}
+                        <div class="alert alert-danger">{{error}}</div>
+                        {{/if}}
+
+                        {{#if success}}
+                        <div class="alert alert-success">{{success}}</div>
+                        {{/if}}
         
-        <form id="createAdminForm" action="/administrador/create" method="POST" class="admin-form" onsubmit="return validarCampos(this)">
+        
+        <form id="createAdminForm" action="/administrador/administradores/create" method="POST" class="admin-form" onsubmit="return validarCampos(this)">
             <div class="form-row">
                 <div class="form-group">
                     <label for="nombre">
@@ -46,7 +55,7 @@
                     <label for="usuario">
                         <i class="fas fa-user-tag"></i> Nombre de Usuario
                     </label>
-                    <input type="text" id="usuario" name="usuario" required>
+                    <input type="text" id="nombreUsuario" name="nombreUsuario" required>
                 </div>
             </div>
 
@@ -66,8 +75,8 @@
                         <i class="fas fa-lock"></i> Confirmar Contraseña
                     </label>
                     <div class="password-input">
-                        <input type="password" id="confirmPassword" name="confirmPassword" required>
-                        <i class="fas fa-eye toggle-password" data-target="confirmPassword"></i>
+                        <input type="password" id="confirmar" name="confirmar" required>
+                        <i class="fas fa-eye toggle-password" data-target="confirmar"></i>
                     </div>
                 </div>
             </div>
@@ -83,4 +92,4 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/assets/js/index.js"></script>
+<script src="../../assets/js/index.js"></script>
