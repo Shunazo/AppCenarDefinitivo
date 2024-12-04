@@ -12,7 +12,7 @@ const Favorito = connection.define("favorito", {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    usuarioId: {
+    clienteId: {
         type: Sequelize.INTEGER,
         allowNull: false
     }
@@ -20,7 +20,7 @@ const Favorito = connection.define("favorito", {
 
 Favorito.associate = (models) => {
     Favorito.belongsTo(models.Cliente, {
-        foreignKey: "usuarioId",
+        foreignKey: "clienteId",
         onDelete: "CASCADE",
         as: "cliente"
     });

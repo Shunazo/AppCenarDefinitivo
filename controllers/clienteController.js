@@ -11,6 +11,7 @@ const Delivery = require("../models/delivery");
 const Configuracion = require("../models/configuracion");
 const Categoria = require("../models/categoria");
 const { productos } = require("./comercioController");
+const { clientes } = require("./adminController");
 
 exports.home = async (req, res) => {
     try {
@@ -103,6 +104,11 @@ exports.tipoComercio = async (req, res) => {
       const searchQuery = req.query.search ? req.query.search.toLowerCase() : "";
       const usuarioId = req.session.userId;
       const usuarioRecord = await Usuario.findByPk(req.session.userId);
+      const clienteRecord = await Cliente.findOne({ where: { usuarioId } });
+
+      if (!clienteRecord) {
+          return res.status(404).render("404", { pageTitle: "Cliente no encontrado" });
+      }
   
       const comercios = await Comercio.findAll({
           where: { tipoComercioId: tipoId },
@@ -111,7 +117,7 @@ exports.tipoComercio = async (req, res) => {
       });
   
       const favoritos = await Favorito.findAll({
-          where: { usuarioId },
+          where: { clienteId: clienteRecord.id },
           attributes: ["comercioId"], 
       });
       
@@ -142,6 +148,7 @@ exports.tipoComercio = async (req, res) => {
       res.render("cliente/tipo-comercio", {
           pageTitle: `Comercios de tipo ${tipocomercioRecord.nombre}`,
           usuario: usuarioRecord.dataValues,
+          cliente: clienteRecord.dataValues,
           tipoNombre: tipocomercioRecord.nombre,
           comercios: comerciosWithFavoritoStatus, 
           cantidad: filteredComercios.length,
@@ -157,18 +164,23 @@ exports.toggleFavorito = async (req, res) => {
   try {
     const comercioId = req.params.id;
     const usuarioId = req.session.userId;
-    const tipoId = req.params.tipoId; 
+    const clienteRecord = await Cliente.findOne({ where: { usuarioId } });
 
+    if (!clienteRecord) {
+      return res.status(404).render("404", { pageTitle: "Cliente no encontrado" });
+    }
+
+    const clienteId = clienteRecord.id;
    
     const favorito = await Favorito.findOne({
-      where: { usuarioId, comercioId },
+      where: { clienteId, comercioId },
     });
 
    
     if (favorito) {
       await favorito.destroy();
     } else {
-      await Favorito.create({ usuarioId, comercioId });
+      await Favorito.create({ clienteId, comercioId });
     }
 
 
@@ -184,10 +196,11 @@ exports.favoritos = async (req, res) => {
     try {
       const usuarioId = req.session.userId; 
       const usuarioRecord = await Usuario.findByPk(usuarioId);
+      const clienteRecord = await Cliente.findOne({ where: { usuarioId } });
   
-      // Fetch all favorite commerces with their associated information
+      
       const favoritos = await Favorito.findAll({
-        where: { usuarioId },
+        where: { clienteId: clienteRecord.id },
         include: { model: Comercio, as: "comercio" },
       });
   
@@ -196,6 +209,7 @@ exports.favoritos = async (req, res) => {
         return res.render("cliente/misFavoritos", {
           pageTitle: "Mis Favoritos",
           usuario: usuarioRecord.dataValues,
+          cliente: clienteRecord.dataValues,
           favoritos: [],
           message: "No tienes comercios favoritos.",
         });

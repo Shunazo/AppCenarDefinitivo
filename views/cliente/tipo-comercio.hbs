@@ -24,7 +24,7 @@
             </div>
             <ul class="list-unstyled components">
                 <li><a href="/cliente/home"><i class="fas fa-home me-2"></i>Home</a></li>
-                <li><a href="/cliente/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
+                <li><a href="/cliente/perfil/edit"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
                 <li><a href="/cliente/pedidos"><i class="fas fa-shopping-bag me-2"></i>Mis Pedidos</a></li>
                 <li><a href="/cliente/direcciones"><i class="fas fa-map-marker-alt me-2"></i>Mis Direcciones</a></li>
                 <li><a href="/cliente/favoritos"><i class="fas fa-heart me-2"></i>Mis Favoritos</a></li>
@@ -42,18 +42,19 @@
 
         <h2 class="mb-4"><i class="fas fa-store me-2"></i>Comercios - {{tipoNombre}}</h2>
         <span>{{comercios.length}} comercios encontrados</span>
-        {{#if comercios.length}}
-            <div class="row g-4">
-                {{#each comercios}}
-
-            <form action ="/cliente/tipo-comercio/{{id}}" method="GET">
-                <div class="search-bar">
+        <div class="search-bar">
                     <i class="fas fa-search"></i>
                     <input type="text" name="search"placeholder="¿Qué te gustaría comer hoy?" class="form-control">
                     <button type="submit" class="btn btn-general">
                    <i class="bi bi-search"></i> Buscar
                    </button>
                 </div>
+        {{#if comercios.length}}
+            <div class="row g-4">
+                {{#each comercios}}
+
+            <form action ="/cliente/tipo-comercio/{{id}}" method="GET">
+                
             </form>
                 <div class="col-6 col-md-4 col-lg-3">
                     <a href="/cliente{{catalogoUrl}}" class="comercio-card">

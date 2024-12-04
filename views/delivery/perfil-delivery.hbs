@@ -20,7 +20,7 @@
                     {{else}}
                         <i class="fas fa-user-circle fa-4x"></i>
                     {{/if}}
-                    <h4>{{usuario.nombreUsuario}}</h4>
+                    <h4>{{usuario.nombre}}</h4>
                     <span class="badge 
                         {{#ifEquals delivery.estado 'ocupado'}}bg-warning{{/ifEquals}}
                         {{#ifEquals delivery.estado 'disponible'}}bg-success{{/ifEquals}}">
@@ -147,6 +147,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../assets/js/index.js"></script>
 </body>
 </html>

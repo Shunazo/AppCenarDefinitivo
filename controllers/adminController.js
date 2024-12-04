@@ -584,11 +584,7 @@ exports.editAdmin = async (req, res) => {
         }
         
         const usuarioRecord = adminRecord.usuario;
-        
-        if (!nombre || !apellido || !correo || !nombreUsuario || !cedula || !password || !confirmar) {
-            return res.status(400).send("Todos los campos son obligatorios.");
-        }
-        
+            
         if (password !== confirmar) {
             return res.status(400).send("Las contraseñas no coinciden.");
         }
