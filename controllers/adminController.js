@@ -517,9 +517,18 @@ exports.createAdmin = async (req, res) => {
         if (existingUser) {
             return res.render("administrador/crear-admin", {
                 pageTitle: "Crear Administrador",
-                error: "Ya existe un administrador registrado con ese correo."
+                error: "Ya existe un usuario registrado con ese correo."
             });
         }
+
+        const existingAdmin = await Usuario.findOne({ where: { nombreUsuario } });
+        if (existingAdmin) {
+            return res.render("administrador/crear-admin", {
+                pageTitle: "Crear Administrador",
+                error: "Ya existe un usuario registrado con ese nombre de usuario."
+            });
+        }
+        
     
         const newUser = await Usuario.create({
             nombre,
