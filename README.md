@@ -1,6 +1,22 @@
 # UberEats-like Food Delivery Application
 
-A small food delivery web application inspired by Uber Eats. The project allows customers to browse businesses, place orders, and manage their accounts, while businesses, delivery personnel, and administrators have their own dashboards and management tools.
+A small food delivery web application inspired by the Uber Eats web app. The project allows customers to browse businesses, place orders, and manage their accounts, while businesses, delivery personnel, and administrators have their own dashboards and management tools.
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- Handlebars
+- Sequelize
+- SQLite
+- Nodemailer
+- Multer
+- UUID
+- JWT
+- Bcrypt
+- Express-session
+- Connect-flash
+- Dotenv
 
 ## General Features
 
