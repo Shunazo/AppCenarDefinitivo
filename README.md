@@ -1,49 +1,101 @@
-Small UberEats-like project.
+# UberEats-like Food Delivery Application
 
-General Features 🌐 
+A small food delivery web application inspired by the Uber Eats web app. The project allows customers to browse businesses, place orders, and manage their accounts, while businesses, delivery personnel, and administrators have their own dashboards and management tools.
 
-🔐 Login and Registration: Users can easily create an account and activate it via Gmail or log in to access all available features.
+## Technologies Used
 
-Customer Features 👤 
+- Node.js
+- Express.js
+- Handlebars
+- Sequelize
+- SQLite
+- Nodemailer
+- Multer
+- UUID
+- JWT
+- Bcrypt
+- Express-session
+- Connect-flash
+- Dotenv
 
-🏪 Business Listings: Access a complete directory of associated businesses with search and filter options. 
+## General Features
 
-🛒 Product Catalog: Intuitive browsing of products offered by each business, with options to add items to the cart and make purchases quickly. 
+- User registration and login
+- Email account activation through Gmail
+- Role-based access for customers, businesses, delivery personnel, and administrators
 
-📄 My Profile: A section to manage personal information, update details, and review order history. 
+---
 
-📦 My Orders: A detailed record of past orders. 
+## Customer Features
 
-📍 My Addresses: Manage delivery addresses for a faster checkout process. 
+### Business Listings
+- Browse all registered businesses
+- Search and filter businesses
 
-❤️ My Favorites: Save and quickly access favorite products and businesses.
+### Product Catalog
+- View products offered by each business
+- Add products to the shopping cart
+- Place orders
 
-Business Features 🏢 
+### My Profile
+- Update personal information
+- View order history
 
-🏠 Business Dashboard: A control panel for daily operations. 
+### My Orders
+- View previous orders and their details
 
-📄 My Profile: Manage business information, including contact details and operating hours. 
+### My Addresses
+- Add, edit, and remove delivery addresses
 
-🗂️ Category Management: Tools to organize and manage product categories, improving navigation for customers. 
+### My Favorites
+- Save favorite businesses and products for quick access
 
-📝 Product Management: Add, edit, or remove products from the catalog in real time, ensuring a constantly updated inventory.
+---
 
-Delivery Features 🚚 
+## Business Features
 
-🏠 Delivery Dashboard: A dedicated space for delivery personnel to manage daily orders, and detailed order information. 
+### Dashboard
+- Overview of business activity
 
-📄 My Profile: Used to update personal information.
+### My Profile
+- Manage business information, contact details, and operating hours
 
-Administrator Features 👨‍💼 
+### Category Management
+- Create, edit, and delete product categories
 
-📊 Dashboard (Home): A control panel with an overview of operations, key metrics, and important alerts. 
+### Product Management
+- Add, edit, and remove products from the catalog
 
-👥 Customer List: View and manage all registered customers, with options to assist them via account activation or the like. 
+---
 
-🚚 Delivery List: Manage delivery personnel profiles and such. 
+## Delivery Features
 
-🏪 Business List: Complete management of associated businesses. 
+### Dashboard
+- View assigned orders
+- Access order details
 
-⚙️ Configuration Management: Adjust itbis rate. 
+### My Profile
+- Update personal information
 
-👨‍💼 Administrator Management: Tools to manage administrator profiles.
+---
+
+## Administrator Features
+
+### Dashboard
+- View platform statistics and recent activity
+
+### Customer Management
+- View and manage registered customers
+- Assist with account activation when needed
+
+### Delivery Management
+- Manage delivery personnel accounts
+
+### Business Management
+- View and manage registered businesses
+
+### Configuration
+- Update the ITBIS (tax) rate
+
+### Administrator Management
+- Manage administrator accounts
